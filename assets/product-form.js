@@ -173,28 +173,34 @@ if (!customElements.get('product-form')) {
       const notice = document.getElementById('ship-notice');
       if (!notice) return;
 
-      // Get selected options from FINISH and HANDLE only (not custom options)
+      // Get the current variant from the form
       const variantSelector = this.querySelector('variant-selects');
-      if (!variantSelector) return;
+      if (!variantSelector) {
+        // No variants, check initial quickship inventory from data attribute
+        const quickshipInventory = parseInt(notice.dataset.quickshipInventory || '0', 10);
+        return; // Already set correctly on page load
+      }
       
-      const selectedButtons = variantSelector.querySelectorAll('.option-button.selected');
-      let hasAnyStock = false;
-
-      selectedButtons.forEach(button => {
-        const stockValue = parseInt(button.dataset.stock || '0', 10);
-        const hasStockBadge = button.querySelector('.option-stock');
-        
-        if (stockValue > 0 || hasStockBadge) {
-          hasAnyStock = true;
-        }
-      });
-
-      // Update notice based on inventory
-      if (hasAnyStock) {
+      const variantsJson = variantSelector.querySelector('.product-variants-json');
+      if (!variantsJson) return;
+      
+      const variants = JSON.parse(variantsJson.textContent);
+      const currentVariantId = this.variantIdInput.value;
+      const currentVariant = variants.find(v => v.id == currentVariantId);
+      
+      if (!currentVariant) return;
+      
+      // Check if variant has quickship-inventory metafield
+      const quickshipInventory = currentVariant.metafields?.custom?.quickship_inventory || 0;
+      
+      // Update notice based on quickship inventory
+      if (quickshipInventory > 0) {
         notice.classList.remove('made-to-order');
+        notice.setAttribute('data-quickship-inventory', quickshipInventory);
         notice.innerHTML = '<strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.';
       } else {
         notice.classList.add('made-to-order');
+        notice.setAttribute('data-quickship-inventory', '0');
         notice.innerHTML = '<strong>Made to order product:</strong> This item is not quick ship. Made to order product typically takes 7-10 days to produce upon receiving product from Delta.';
       }
     }
@@ -231,13 +237,21 @@ if (!customElements.get('product-form')) {
           .then(item => {
             console.log('Item added to cart:', item);
             
-            // Trigger cart refresh
-            this.updateCartCount();
-            
             // Show success feedback
             this.showSuccessFeedback(item);
             
-            // Dispatch custom event for other components
+            // Dispatch Horizon theme cart update event
+            document.dispatchEvent(new CustomEvent('theme:cart:update', {
+              bubbles: true,
+              detail: {
+                data: {
+                  itemCount: item.quantity,
+                  source: 'product-form-component'
+                }
+              }
+            }));
+            
+            // Also dispatch legacy event for compatibility
             document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
               bubbles: true
             }));
@@ -253,21 +267,6 @@ if (!customElements.get('product-form')) {
       });
     }
 
-    updateCartCount() {
-      fetch(window.Shopify.routes.root + 'cart.js')
-        .then(response => response.json())
-        .then(cart => {
-          // Update cart count in header
-          const cartCountElements = document.querySelectorAll('.cart-count-bubble, [data-cart-count]');
-          cartCountElements.forEach(element => {
-            element.textContent = cart.item_count;
-            if (cart.item_count > 0) {
-              element.classList.remove('hidden');
-            }
-          });
-        })
-        .catch(error => console.error('Error updating cart count:', error));
-    }
 
     showSuccessFeedback(item) {
       // Change button text temporarily

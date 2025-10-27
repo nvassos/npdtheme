@@ -1,0 +1,219 @@
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+
+<div class="collection-page-wrapper">
+  <div class="collection-page-container page-width">
+    
+    {% if section.settings.enable_filtering %}
+      <div class="collection-sidebar">
+        <div class="filter-section">
+          <h2 class="filter-title">Filter</h2>
+          
+          {%- comment -%} Active Filter Tags {%- endcomment -%}
+          <div class="filter-tags" id="active-filters">
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'list' -%}
+                {%- for value in filter.active_values -%}
+                  <div class="filter-tag">
+                    {{ value.label }}
+                    <a href="{{ value.url_to_remove }}" class="filter-tag-remove">×</a>
+                  </div>
+                {%- endfor -%}
+              {%- elsif filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <div class="filter-tag">
+                    Price: {{ filter.min_value.value | money }} - {{ filter.max_value.value | money }}
+                    <a href="{{ filter.url_to_remove }}" class="filter-tag-remove">×</a>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          
+          {% assign active_filter_count = 0 %}
+          {%- for filter in collection.filters -%}
+            {%- assign active_filter_count = active_filter_count | plus: filter.active_values.size -%}
+          {%- endfor -%}
+          
+          {% if active_filter_count > 0 %}
+            <a href="{{ collection.url }}" class="clear-all-btn">Clear All</a>
+          {% endif %}
+        </div>
+
+        <form id="FacetFiltersForm" class="facets-form">
+          {%- for filter in collection.filters -%}
+            <div class="filter-group {% if forloop.index > 2 %}filter-group--collapsed{% endif %}">
+              <button 
+                type="button"
+                class="filter-group-title collapsible {% if forloop.index > 2 %}collapsed{% endif %}"
+                aria-expanded="{% if forloop.index <= 2 %}true{% else %}false{% endif %}"
+              >
+                {{ filter.label }}
+              </button>
+              
+              <div class="filter-options {% if forloop.index > 2 %}collapsed{% endif %}">
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                    {%- for value in filter.values -%}
+                      <div class="filter-option">
+                        <input 
+                          type="checkbox" 
+                          id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          {% if value.active %}checked{% endif %}
+                          {% if value.count == 0 %}disabled{% endif %}
+                        >
+                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                          {{ value.label }}
+                          <span class="filter-count">({{ value.count }})</span>
+                        </label>
+                      </div>
+                    {%- endfor -%}
+                    
+                    {%- if filter.values.size > 10 -%}
+                      <button type="button" class="show-more">Show more</button>
+                    {%- endif -%}
+                  
+                  {%- when 'price_range' -%}
+                    <div class="price-range-inputs">
+                      <div class="price-input-wrapper">
+                        <label for="Filter-{{ filter.param_name }}-GTE">From</label>
+                        <input 
+                          type="number"
+                          id="Filter-{{ filter.param_name }}-GTE"
+                          name="{{ filter.min_value.param_name }}"
+                          value="{{ filter.min_value.value }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          placeholder="0"
+                        >
+                      </div>
+                      
+                      <div class="price-input-wrapper">
+                        <label for="Filter-{{ filter.param_name }}-LTE">To</label>
+                        <input 
+                          type="number"
+                          id="Filter-{{ filter.param_name }}-LTE"
+                          name="{{ filter.max_value.param_name }}"
+                          value="{{ filter.max_value.value }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        >
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </form>
+      </div>
+    {% endif %}
+
+    <div class="collection-main">
+      {% if section.settings.enable_sorting %}
+        <div class="sort-section">
+          <label class="sort-label" for="SortBy">Sort by:</label>
+          <select 
+            name="sort_by" 
+            id="SortBy" 
+            class="sort-select"
+            aria-label="Sort products"
+          >
+            {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+            {% for option in collection.sort_options %}
+              <option 
+                value="{{ option.value }}" 
+                {% if option.value == sort_by %}selected{% endif %}
+              >
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+
+      <div 
+        id="product-grid" 
+        class="product-grid"
+        data-id="{{ section.id }}"
+      >
+        {% paginate collection.products by section.settings.products_per_page %}
+          {% for product in collection.products %}
+            {% render 'product-card-home', 
+              product: product, 
+              show_vendor: true,
+              show_quick_ship_badge: true 
+            %}
+          {% else %}
+            <div class="no-results">
+              <p>No products found matching your filters.</p>
+            </div>
+          {% endfor %}
+
+          {% if paginate.pages > 1 %}
+            <div class="pagination-wrapper">
+              {% render 'pagination', paginate: paginate %}
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Product Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 50,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "Sidebar"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "sidebar",
+      "label": "Filter type"
+    }
+  ]
+}
+{% endschema %}
+

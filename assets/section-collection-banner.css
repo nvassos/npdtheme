@@ -1,0 +1,72 @@
+.collection-banner-section {
+  background-color: #EBF0F9;
+  padding: 40px 0 20px;
+}
+
+.collection-banner-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.collection-title {
+  font-size: 48px;
+  color: #18223E;
+  font-weight: 300;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}
+
+.collection-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.breadcrumb-link {
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #5B8DB8;
+}
+
+.breadcrumb-separator {
+  color: #000;
+  margin: 0 4px;
+}
+
+.breadcrumb-current {
+  color: #000;
+}
+
+.collection-results-count {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .collection-banner-section {
+    padding: 30px 0 15px;
+  }
+
+  .collection-banner-container {
+    padding: 0 20px;
+  }
+
+  .collection-title {
+    font-size: 32px;
+  }
+
+  .collection-breadcrumb {
+    font-size: 12px;
+  }
+}
+
