@@ -1,0 +1,258 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product-page-wrapper">
+  <div class="product-page-container page-width">
+    <div class="product-container">
+      {%- comment -%} Product Gallery {%- endcomment -%}
+      <div class="product-media-wrapper">
+        <div class="product-images">
+          {% if product.featured_media %}
+            {% if product.tags contains 'quick-ship' or product.tags contains 'Quick Ship' %}
+              <div class="product-quick-ship-badge">Quick Ship</div>
+            {% endif %}
+            
+            <img 
+              src="{{ product.featured_media | image_url: width: 1000 }}"
+              alt="{{ product.featured_media.alt | escape }}"
+              class="product-main-image"
+              width="1000"
+              height="1000"
+            >
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'product-main-image' }}
+          {% endif %}
+        </div>
+      </div>
+
+      {%- comment -%} Product Info {%- endcomment -%}
+      <div class="product-info-wrapper">
+        <product-form class="product-form">
+          {%- form 'product', product, id: 'product-form', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" class="product-variant-id">
+            
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                
+                {%- when 'vendor' -%}
+                  {% if product.vendor != blank %}
+                    <div class="product-vendor" {{ block.shopify_attributes }}>
+                      {{ product.vendor }}
+                    </div>
+                  {% endif %}
+
+                {%- when 'title' -%}
+                  <h1 class="product-title" {{ block.shopify_attributes }}>
+                    {{ product.title }}
+                  </h1>
+
+                {%- when 'sku' -%}
+                  <div class="product-sku" {{ block.shopify_attributes }}>
+                    {% if current_variant.sku != blank %}
+                      {{ current_variant.sku }}
+                    {% else %}
+                      {{ product.metafields.custom.sku | default: 'N/A' }}
+                    {% endif %}
+                  </div>
+
+                {%- when 'shipping_notice' -%}
+                  <div class="product-shipping-notice" id="ship-notice" {{ block.shopify_attributes }}>
+                    <strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.
+                  </div>
+
+                {%- when 'variant_picker' -%}
+                  {% unless product.has_only_default_variant %}
+                    {% render 'product-variant-options', 
+                      product: product, 
+                      block: block,
+                      picker_type: block.settings.picker_type 
+                    %}
+                  {% endunless %}
+
+                {%- when 'custom_options' -%}
+                  <div class="product-custom-options" {{ block.shopify_attributes }}>
+                    {% render 'product-custom-options', product: product %}
+                  </div>
+
+                {%- when 'quantity' -%}
+                  <div class="product-quantity-section" {{ block.shopify_attributes }}>
+                    <div class="quantity-label">QUANTITY</div>
+                    <div class="quantity-wrapper">
+                      <div class="quantity-control">
+                        <button type="button" class="quantity-btn quantity-minus" aria-label="Decrease quantity">−</button>
+                        <input 
+                          type="number" 
+                          class="quantity-input" 
+                          name="quantity" 
+                          id="quantity" 
+                          value="1" 
+                          min="1" 
+                          max="99"
+                          aria-label="Quantity"
+                        >
+                        <button type="button" class="quantity-btn quantity-plus" aria-label="Increase quantity">+</button>
+                      </div>
+                      <div class="quantity-note">
+                        <span class="quick-ship-available">5 quick ship available</span><br>
+                        Quantities beyond this are made to order and billed to your no-charge account.
+                      </div>
+                    </div>
+                  </div>
+
+                {%- when 'price' -%}
+                  <div class="product-price-section" {{ block.shopify_attributes }}>
+                    <div class="product-price">
+                      {% if current_variant.compare_at_price > current_variant.price %}
+                        <span class="price-compare">{{ current_variant.compare_at_price | money }}</span>
+                      {% endif %}
+                      <span class="price-current">{{ current_variant.price | money }}</span>
+                    </div>
+                    <div class="price-note">Estimated cost to your no-charge account</div>
+                  </div>
+
+                {%- when 'buy_buttons' -%}
+                  <div class="product-form-buttons" {{ block.shopify_attributes }}>
+                    <button
+                      type="submit"
+                      name="add"
+                      class="product-add-to-cart"
+                      {% if current_variant.available == false %}disabled{% endif %}
+                    >
+                      {% if current_variant.available %}
+                        Add to Cart
+                      {% else %}
+                        Sold Out
+                      {% endif %}
+                    </button>
+                  </div>
+
+                {%- when 'description' -%}
+                  {% if product.metafields.custom.additional_notes != blank or block.settings.show_description %}
+                    <div class="product-additional-notes" {{ block.shopify_attributes }}>
+                      <div class="notes-title">ADDITIONAL NOTES</div>
+                      <div class="notes-content">
+                        {{ product.metafields.custom.additional_notes | default: product.description }}
+                      </div>
+                    </div>
+                  {% endif %}
+
+              {%- endcase -%}
+            {%- endfor -%}
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "sku",
+      "name": "SKU",
+      "limit": 1
+    },
+    {
+      "type": "shipping_notice",
+      "name": "Shipping Notice",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker Type",
+          "options": [
+            {
+              "value": "button",
+              "label": "Button"
+            },
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            }
+          ],
+          "default": "button"
+        }
+      ]
+    },
+    {
+      "type": "custom_options",
+      "name": "Custom Options",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name": "Quantity Selector",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_description",
+          "label": "Show Product Description",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "label": "Enable Sticky Product Info",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Gallery Layout",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        },
+        {
+          "value": "thumbnail",
+          "label": "Thumbnail"
+        }
+      ],
+      "default": "stacked"
+    }
+  ]
+}
+{% endschema %}
+

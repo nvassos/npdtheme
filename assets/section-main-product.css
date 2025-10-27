@@ -1,0 +1,379 @@
+/* Product Page Wrapper */
+.product-page-wrapper {
+  background-color: #EBF0F9;
+  padding: 0 0 80px;
+  min-height: 70vh;
+}
+
+.product-page-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Product Container */
+.product-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  background: transparent;
+  border-radius: 12px;
+  padding: 40px 0;
+}
+
+/* Product Images */
+.product-media-wrapper {
+  position: relative;
+}
+
+.product-images {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-quick-ship-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #8B7355;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.product-main-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Product Info */
+.product-info-wrapper {
+  padding-top: 20px;
+}
+
+.product-vendor {
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.product-title {
+  font-size: 32px;
+  color: #18223E;
+  font-weight: 300;
+  line-height: 1.3;
+  margin: 0 0 10px 0;
+}
+
+.product-sku {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Shipping Notice */
+.product-shipping-notice {
+  background: #8B7355;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 30px;
+  border: 1px solid transparent;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+}
+
+.product-shipping-notice.made-to-order {
+  background: white;
+  border-color: #D4DCE7;
+  color: #333;
+}
+
+/* Product Options */
+.product-option-section {
+  margin-bottom: 30px;
+}
+
+.option-label {
+  font-size: 12px;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.option-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.option-button {
+  padding: 10px 24px;
+  border: 1px solid #D4DCE7;
+  background: white;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+  font-family: inherit;
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: #5B8DB8;
+}
+
+.option-button.selected {
+  background: #18223E;
+  color: white;
+  border-color: #18223E;
+}
+
+.option-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.option-name {
+  font-weight: 500;
+}
+
+.option-stock {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Quantity Section */
+.product-quantity-section {
+  margin-bottom: 30px;
+}
+
+.quantity-label {
+  font-size: 12px;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.quantity-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #D4DCE7;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  color: #333;
+  font-weight: 600;
+}
+
+.quantity-btn:hover {
+  background: #F5F5F5;
+}
+
+.quantity-input {
+  width: 60px;
+  height: 40px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  border-left: 1px solid #D4DCE7;
+  border-right: 1px solid #D4DCE7;
+  background: white;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.quantity-note {
+  font-size: 12px;
+  color: #666;
+  flex: 1;
+  line-height: 1.5;
+}
+
+.quick-ship-available {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Price Section */
+.product-price-section {
+  margin-bottom: 30px;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.price-current {
+  font-size: 28px;
+  font-weight: 400;
+  color: #18223E;
+}
+
+.price-compare {
+  font-size: 20px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.price-note {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Add to Cart Button */
+.product-form-buttons {
+  margin-bottom: 30px;
+}
+
+.product-add-to-cart {
+  background: #18223E;
+  color: white;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease;
+  font-family: inherit;
+}
+
+.product-add-to-cart:hover:not(:disabled) {
+  background: #252F4A;
+}
+
+.product-add-to-cart:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+/* Additional Notes */
+.product-additional-notes {
+  border-top: 1px solid #E0E6EF;
+  padding-top: 20px;
+}
+
+.notes-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.notes-content {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .product-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-page-wrapper {
+    padding: 0 0 60px;
+  }
+
+  .product-page-container {
+    padding: 0 20px;
+  }
+
+  .product-container {
+    padding: 20px 0;
+  }
+
+  .product-title {
+    font-size: 24px;
+  }
+
+  .option-buttons {
+    gap: 8px;
+  }
+
+  .option-button {
+    min-width: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .quantity-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-quick-ship-badge {
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .option-button {
+    width: 100%;
+    min-width: auto;
+  }
+}
+

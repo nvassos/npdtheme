@@ -1,0 +1,102 @@
+{% comment %}
+  Renders product variant options with inventory display
+
+  Accepts:
+  - product: {Object} Product object
+  - block: {Object} Block object
+  - picker_type: {String} 'button' or 'dropdown'
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-selects class="product-variant-selects" data-url="{{ product.url }}">
+    {%- for option in product.options_with_values -%}
+      <div class="product-option-section" data-option-name="{{ option.name | handle }}">
+        <div class="option-label">{{ option.name | upcase }}</div>
+        
+        <div class="option-buttons" data-option-position="{{ forloop.index }}">
+          {%- for value in option.values -%}
+            {%- liquid
+              assign option_disabled = true
+              assign available_variants = product.variants | where: 'available', true
+              
+              for variant in available_variants
+                case forloop.parentloop.index
+                  when 1
+                    if variant.option1 == value
+                      assign option_disabled = false
+                      break
+                    endif
+                  when 2
+                    if variant.option2 == value
+                      assign option_disabled = false
+                      break
+                    endif
+                  when 3
+                    if variant.option3 == value
+                      assign option_disabled = false
+                      break
+                    endif
+                endcase
+              endfor
+              
+              assign is_selected = false
+              if forloop.parentloop.index == 1 and product.selected_or_first_available_variant.option1 == value
+                assign is_selected = true
+              elsif forloop.parentloop.index == 2 and product.selected_or_first_available_variant.option2 == value
+                assign is_selected = true
+              elsif forloop.parentloop.index == 3 and product.selected_or_first_available_variant.option3 == value
+                assign is_selected = true
+              endif
+              
+              comment
+                Check inventory for this option value
+                Look through variants that have this option value and sum up inventory
+              endcomment
+              assign total_inventory = 0
+              for variant in product.variants
+                assign matches = false
+                case forloop.parentloop.index
+                  when 1
+                    if variant.option1 == value
+                      assign matches = true
+                    endif
+                  when 2
+                    if variant.option2 == value
+                      assign matches = true
+                    endif
+                  when 3
+                    if variant.option3 == value
+                      assign matches = true
+                    endif
+                endcase
+                
+                if matches and variant.inventory_quantity > 0
+                  assign total_inventory = total_inventory | plus: variant.inventory_quantity
+                endif
+              endfor
+            -%}
+            
+            <button 
+              type="button"
+              class="option-button {% if is_selected %}selected{% endif %}"
+              data-option-value="{{ value | escape }}"
+              data-stock="{{ total_inventory }}"
+              data-{{ option.name | handle }}="{{ value | escape }}"
+              {% if option_disabled %}disabled{% endif %}
+            >
+              <span class="option-name">{{ value }}</span>
+              {%- if total_inventory > 0 -%}
+                <span class="option-stock">{{ total_inventory }} in-stock</span>
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+    
+    <script type="application/json" class="product-variants-json">
+      {{ product.variants | json }}
+    </script>
+  </variant-selects>
+{%- endunless -%}
+

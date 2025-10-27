@@ -1,0 +1,49 @@
+.product-breadcrumb-wrapper {
+  background-color: #EBF0F9;
+  padding: 20px 0;
+}
+
+.product-breadcrumb-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.product-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #000;
+}
+
+.breadcrumb-link {
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #5B8DB8;
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: #000;
+  margin: 0 4px;
+}
+
+.breadcrumb-current {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .product-breadcrumb-container {
+    padding: 0 20px;
+  }
+
+  .product-breadcrumb {
+    font-size: 11px;
+  }
+}
+

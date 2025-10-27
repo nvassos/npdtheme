@@ -1,0 +1,26 @@
+{{ 'section-product-breadcrumb.css' | asset_url | stylesheet_tag }}
+
+<div class="product-breadcrumb-wrapper">
+  <div class="product-breadcrumb-container page-width">
+    <nav class="product-breadcrumb" aria-label="Breadcrumb">
+      <a href="/" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-separator">|</span>
+      {% if collection %}
+        <a href="{{ collection.url }}" class="breadcrumb-link">{{ collection.title }}</a>
+        <span class="breadcrumb-separator">|</span>
+      {% else %}
+        <a href="/collections/all" class="breadcrumb-link">Custom Displays</a>
+        <span class="breadcrumb-separator">|</span>
+      {% endif %}
+      <span class="breadcrumb-current">{{ product.title | truncate: 50 }}</span>
+    </nav>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Breadcrumb",
+  "settings": []
+}
+{% endschema %}
+
