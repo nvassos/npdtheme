@@ -10,8 +10,7 @@
         "products_per_page": 24,
         "columns_desktop": 4,
         "enable_filtering": true,
-        "enable_sorting": true,
-        "filter_type": "sidebar"
+        "enable_sorting": true
       }
     }
   },
