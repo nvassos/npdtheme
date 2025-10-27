@@ -1,0 +1,67 @@
+{%- doc -%}
+  Renders pagination for collections
+{%- enddoc -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="Pagination">
+    <ul class="pagination-list">
+      {%- if paginate.previous -%}
+        <li class="pagination-item">
+          <a href="{{ paginate.previous.url }}" class="pagination-link pagination-link--prev" aria-label="Previous page">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </li>
+      {%- else -%}
+        <li class="pagination-item">
+          <span class="pagination-link pagination-link--prev pagination-link--disabled">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <li class="pagination-item">
+            <a href="{{ part.url }}" class="pagination-link" aria-label="Page {{ part.title }}">
+              {{ part.title }}
+            </a>
+          </li>
+        {%- else -%}
+          {%- if part.title == paginate.current_page -%}
+            <li class="pagination-item">
+              <span class="pagination-link pagination-link--current" aria-label="Page {{ part.title }}" aria-current="page">
+                {{ part.title }}
+              </span>
+            </li>
+          {%- else -%}
+            <li class="pagination-item">
+              <span class="pagination-link pagination-link--ellipsis">{{ part.title }}</span>
+            </li>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <li class="pagination-item">
+          <a href="{{ paginate.next.url }}" class="pagination-link pagination-link--next" aria-label="Next page">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </li>
+      {%- else -%}
+        <li class="pagination-item">
+          <span class="pagination-link pagination-link--next pagination-link--disabled">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}
