@@ -230,18 +230,17 @@ if (!customElements.get('product-form')) {
         fetch(window.Shopify.routes.root + 'cart/add.js', config)
           .then(response => {
             if (!response.ok) {
-              throw new Error('Network response was not ok');
+              return response.json().then(err => {
+                throw new Error(err.description || 'Could not add to cart');
+              });
             }
             return response.json();
           })
           .then(item => {
             console.log('Item added to cart:', item);
             
-            // Show success feedback
-            this.showSuccessFeedback(item);
-            
-            // Dispatch Horizon theme cart update event
-            document.dispatchEvent(new CustomEvent('theme:cart:update', {
+            // Dispatch Horizon theme cart update event (correct event name is 'cart:update')
+            document.dispatchEvent(new CustomEvent('cart:update', {
               bubbles: true,
               detail: {
                 data: {
@@ -251,41 +250,33 @@ if (!customElements.get('product-form')) {
               }
             }));
             
-            // Also dispatch legacy event for compatibility
-            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
-              bubbles: true
-            }));
+            // Show success feedback
+            this.addButton.textContent = '✓ Added to Cart';
+            this.addButton.style.background = '#4CAF50';
+            
+            // Reset after delay
+            setTimeout(() => {
+              this.addButton.disabled = false;
+              this.addButton.textContent = originalText;
+              this.addButton.style.background = '';
+            }, 2000);
           })
           .catch(error => {
             console.error('Error adding to cart:', error);
-            this.showError('There was an error adding to cart. Please try again.');
-          })
-          .finally(() => {
-            this.addButton.disabled = false;
-            this.addButton.textContent = originalText;
+            this.addButton.textContent = 'Error - Try Again';
+            this.addButton.style.background = '#f44336';
+            
+            // Reset after delay
+            setTimeout(() => {
+              this.addButton.disabled = false;
+              this.addButton.textContent = originalText;
+              this.addButton.style.background = '';
+            }, 3000);
           });
       });
     }
 
 
-    showSuccessFeedback(item) {
-      // Change button text temporarily
-      const originalText = this.addButton.textContent;
-      this.addButton.textContent = '✓ Added to Cart';
-      this.addButton.style.background = '#4CAF50';
-      
-      setTimeout(() => {
-        this.addButton.textContent = originalText;
-        this.addButton.style.background = '';
-      }, 2000);
-      
-      // You can also redirect to cart or open cart drawer here
-      // window.location.href = '/cart';
-    }
-
-    showError(message) {
-      alert(message);
-    }
 
     formatMoney(cents) {
       return '$' + (cents / 100).toFixed(2);
