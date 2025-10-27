@@ -120,10 +120,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
   text-align: left;
   padding: 0;
   font-family: inherit;
+}
+
+.filter-group-title.collapsible {
+  cursor: pointer;
 }
 
 .filter-group-title.collapsible::after {
@@ -134,6 +137,13 @@
 
 .filter-group-title.collapsible.collapsed::after {
   content: "+";
+}
+
+.filter-group-subtitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #18223E;
 }
 
 .filter-options {
@@ -151,7 +161,7 @@
 
 .filter-option {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
   font-size: 14px;
   color: #333;
@@ -159,23 +169,25 @@
 
 .filter-option input[type="checkbox"] {
   margin-right: 10px;
+  margin-top: 2px;
   width: 16px;
   height: 16px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .filter-option label {
   cursor: pointer;
   flex: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
 .filter-count {
   color: #999;
   font-size: 12px;
-  margin-left: 5px;
+  margin-top: 2px;
+  font-style: italic;
 }
 
 .show-more {
@@ -271,6 +283,12 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+/* Override product card styles for collection page */
+.product-grid .product-card {
+  background: #EBF0F9 !important;
+  border: 2px solid #8EA2BB !important;
 }
 
 /* No Results */

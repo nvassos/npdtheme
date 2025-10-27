@@ -12,7 +12,7 @@
     
     {% if collection.all_products_count > 0 %}
       <div class="collection-results-count">
-        <span id="ProductCount">{{ collection.all_products_count }}</span> Results
+        <span id="ProductCount">{{ collection.products_count }}</span> / {{ collection.all_products_count }} Results
       </div>
     {% endif %}
   </div>
