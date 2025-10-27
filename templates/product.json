@@ -29,10 +29,6 @@
             "picker_type": "button"
           }
         },
-        "custom_options": {
-          "type": "custom_options",
-          "settings": {}
-        },
         "quantity": {
           "type": "quantity",
           "settings": {}
@@ -56,7 +52,6 @@
         "sku",
         "shipping_notice",
         "variant_picker",
-        "custom_options",
         "quantity",
         "price",
         "buy_buttons",

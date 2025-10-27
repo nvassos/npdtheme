@@ -58,9 +58,15 @@
                   </div>
 
                 {%- when 'shipping_notice' -%}
-                  <div class="product-shipping-notice" id="ship-notice" {{ block.shopify_attributes }}>
-                    <strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.
-                  </div>
+                  {% if product.tags contains 'quick-ship' or product.tags contains 'Quick Ship' %}
+                    <div class="product-shipping-notice" id="ship-notice" {{ block.shopify_attributes }}>
+                      <strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.
+                    </div>
+                  {% else %}
+                    <div class="product-shipping-notice made-to-order" id="ship-notice" {{ block.shopify_attributes }}>
+                      <strong>Made to order product:</strong> This item is not quick ship. Made to order product typically takes 7-10 days to produce upon receiving product from Delta.
+                    </div>
+                  {% endif %}
 
                 {%- when 'variant_picker' -%}
                   {% unless product.has_only_default_variant %}
@@ -70,11 +76,6 @@
                       picker_type: block.settings.picker_type 
                     %}
                   {% endunless %}
-
-                {%- when 'custom_options' -%}
-                  <div class="product-custom-options" {{ block.shopify_attributes }}>
-                    {% render 'product-custom-options', product: product %}
-                  </div>
 
                 {%- when 'quantity' -%}
                   <div class="product-quantity-section" {{ block.shopify_attributes }}>
@@ -94,10 +95,16 @@
                         >
                         <button type="button" class="quantity-btn quantity-plus" aria-label="Increase quantity">+</button>
                       </div>
-                      <div class="quantity-note">
-                        <span class="quick-ship-available">5 quick ship available</span><br>
-                        Quantities beyond this are made to order and billed to your no-charge account.
-                      </div>
+                      {% if current_variant.inventory_quantity > 0 %}
+                        <div class="quantity-note">
+                          <span class="quick-ship-available">{{ current_variant.inventory_quantity }} quick ship available</span><br>
+                          Quantities beyond this are made to order and billed to your no-charge account.
+                        </div>
+                      {% else %}
+                        <div class="quantity-note">
+                          Quantities are made to order and billed to your no-charge account.
+                        </div>
+                      {% endif %}
                     </div>
                   </div>
 
@@ -194,11 +201,6 @@
           "default": "button"
         }
       ]
-    },
-    {
-      "type": "custom_options",
-      "name": "Custom Options",
-      "limit": 1
     },
     {
       "type": "quantity",

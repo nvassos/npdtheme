@@ -10,7 +10,6 @@ if (!customElements.get('product-form')) {
       
       this.setupQuantityControls();
       this.setupOptionButtons();
-      this.setupCustomOptions();
       this.setupFormSubmit();
       
       // Initialize shipping notice
@@ -79,33 +78,6 @@ if (!customElements.get('product-form')) {
       });
     }
 
-    setupCustomOptions() {
-      const customOptionsGroups = this.querySelectorAll('.custom-option-buttons');
-      
-      customOptionsGroups.forEach(group => {
-        const propertyName = group.dataset.propertyName;
-        const hiddenInput = this.querySelector(`input[name="properties[${propertyName}]"]`);
-        
-        group.addEventListener('click', (e) => {
-          const button = e.target.closest('.option-button');
-          
-          if (button) {
-            // Remove selected from siblings
-            group.querySelectorAll('.option-button').forEach(btn => {
-              btn.classList.remove('selected');
-            });
-            
-            // Add selected to clicked button
-            button.classList.add('selected');
-            
-            // Update hidden input
-            if (hiddenInput) {
-              hiddenInput.value = button.dataset.propertyValue || button.textContent.trim();
-            }
-          }
-        });
-      });
-    }
 
     updateVariant() {
       const variantSelector = this.querySelector('variant-selects');
@@ -233,48 +205,87 @@ if (!customElements.get('product-form')) {
         
         if (this.addButton.disabled) return;
         
-        this.addButton.classList.add('loading');
-        this.addButton.disabled = true;
-        
+        // Get the form data
         const formData = new FormData(this.form);
-        
-        fetch('/cart/add.js', {
+        const config = {
           method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/javascript'
+          },
           body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Trigger cart update event
-          document.dispatchEvent(new CustomEvent('cart:updated'));
-          
-          // Show success message or update cart drawer
-          this.showAddedToCart();
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('There was an error adding to cart. Please try again.');
-        })
-        .finally(() => {
-          this.addButton.classList.remove('loading');
-          this.addButton.disabled = false;
-        });
+        };
+        
+        // Disable button and show loading
+        const originalText = this.addButton.textContent;
+        this.addButton.disabled = true;
+        this.addButton.textContent = 'Adding...';
+        
+        fetch(window.Shopify.routes.root + 'cart/add.js', config)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(item => {
+            console.log('Item added to cart:', item);
+            
+            // Trigger cart refresh
+            this.updateCartCount();
+            
+            // Show success feedback
+            this.showSuccessFeedback(item);
+            
+            // Dispatch custom event for other components
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+              bubbles: true
+            }));
+          })
+          .catch(error => {
+            console.error('Error adding to cart:', error);
+            this.showError('There was an error adding to cart. Please try again.');
+          })
+          .finally(() => {
+            this.addButton.disabled = false;
+            this.addButton.textContent = originalText;
+          });
       });
     }
 
-    showAddedToCart() {
-      // Simple alert for now - you can enhance this with a modal or cart drawer
-      const productTitle = this.querySelector('.product-title')?.textContent || 'Product';
-      alert(`${productTitle} added to cart!`);
-      
-      // Optionally refresh cart count
-      fetch('/cart.js')
+    updateCartCount() {
+      fetch(window.Shopify.routes.root + 'cart.js')
         .then(response => response.json())
         .then(cart => {
-          const cartIcon = document.querySelector('.cart-icon-bubble');
-          if (cartIcon) {
-            cartIcon.textContent = cart.item_count;
-          }
-        });
+          // Update cart count in header
+          const cartCountElements = document.querySelectorAll('.cart-count-bubble, [data-cart-count]');
+          cartCountElements.forEach(element => {
+            element.textContent = cart.item_count;
+            if (cart.item_count > 0) {
+              element.classList.remove('hidden');
+            }
+          });
+        })
+        .catch(error => console.error('Error updating cart count:', error));
+    }
+
+    showSuccessFeedback(item) {
+      // Change button text temporarily
+      const originalText = this.addButton.textContent;
+      this.addButton.textContent = '✓ Added to Cart';
+      this.addButton.style.background = '#4CAF50';
+      
+      setTimeout(() => {
+        this.addButton.textContent = originalText;
+        this.addButton.style.background = '';
+      }, 2000);
+      
+      // You can also redirect to cart or open cart drawer here
+      // window.location.href = '/cart';
+    }
+
+    showError(message) {
+      alert(message);
     }
 
     formatMoney(cents) {
