@@ -1,0 +1,113 @@
+{
+  "sections": {
+    "faq_hero": {
+      "type": "faq-hero",
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "show_breadcrumb": true
+      }
+    },
+    "faq_content": {
+      "type": "faq-accordion",
+      "blocks": {
+        "question_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I do not see the faucet that I want on your site, how can I have it mounted and shipped to me?",
+            "answer": "If there is a faucet you wish to order but do not see on our site please reach out to us directly at 1-833-845-0768 or email us at deltadisplays@mascohy.com.",
+            "is_open": true
+          }
+        },
+        "question_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where can I find information on the available acrylic pod options?",
+            "answer": "You can find detailed information about our acrylic pod options on the Acrylics page. We offer various sizes and styles including Delta Rectangle, Delta Curve, Brizo Rectangle, and custom drilling options. Each product page will show you the compatible acrylic options for that specific faucet model.",
+            "is_open": false
+          }
+        },
+        "question_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where can I view details on current display fixture models?",
+            "answer": "Current display fixture models can be viewed on our Showroom Display Fixtures page. Here you'll find specifications, dimensions, pricing, and availability for all our fixture systems. You can also request service or replacement parts for existing fixtures through this section.",
+            "is_open": false
+          }
+        },
+        "question_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I request service for a damaged showroom display?",
+            "answer": "To request service for a damaged showroom display, please contact our service department directly at 1-833-845-0768 or email us at deltadisplays@mascohy.com with your showroom information, SAP number, and details about the damage. Our team will assess the issue and coordinate repair or replacement options.",
+            "is_open": false
+          }
+        },
+        "question_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the process for ordering quarterly launch displays?",
+            "answer": "Quarterly launch displays, also known as NPD (New Product Display) orders, are coordinated through your agency's loyalty manager. Orders are typically placed during specific ordering windows throughout the year. You'll receive notifications about upcoming order periods and can access the order form through the NPD Site section of our website.",
+            "is_open": false
+          }
+        },
+        "question_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where can I access guidelines for faucet mounting options?",
+            "answer": "Faucet mounting guidelines and specifications are available on each product detail page under the mounting options section. You can also download our comprehensive mounting guide PDF which includes detailed instructions for various acrylic types, drilling specifications, and installation best practices.",
+            "is_open": false
+          }
+        },
+        "question_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I track the status of my recent display order?",
+            "answer": "You can track your order status by logging into your account and visiting the 'Your Orders' page. Here you'll see all your recent orders with their current status (Approved, In Review, Processing, Shipped). For shipped orders, tracking numbers will be provided. You can also contact us directly for order updates.",
+            "is_open": false
+          }
+        },
+        "question_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What information is needed to order drilled acrylic panels?",
+            "answer": "To order drilled acrylic panels, you'll need to provide: the faucet model number (SKU), the acrylic type you want (Rectangle, Curve with/without tab), the finish of your faucet, and the quantity needed. Our system will automatically determine the correct drilling pattern based on the faucet model you select.",
+            "is_open": false
+          }
+        },
+        "question_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where can I download instructions for assembling fixtures?",
+            "answer": "Assembly instructions for display fixtures are available in the Showroom Display Fixtures section. Each fixture model has downloadable PDF instructions that include step-by-step assembly guides, parts lists, and maintenance recommendations. You can also request physical copies to be shipped with your fixture order.",
+            "is_open": false
+          }
+        },
+        "question_10": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I find replacement parts for existing showroom units?",
+            "answer": "Replacement parts can be ordered through the Showroom Display Fixtures page. Navigate to the specific fixture model you need parts for, and you'll find a 'Replacement Parts' option. Common parts include mounting brackets, acrylic holders, signage clips, and hardware kits. For parts not listed online, please contact our service team with your fixture model number.",
+            "is_open": false
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7",
+        "question_8",
+        "question_9",
+        "question_10"
+      ]
+    }
+  },
+  "order": [
+    "faq_hero",
+    "faq_content"
+  ]
+}
+

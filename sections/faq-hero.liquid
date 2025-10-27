@@ -1,0 +1,41 @@
+{{ 'section-faq-hero.css' | asset_url | stylesheet_tag }}
+
+<div class="faq-hero-section">
+  <div class="faq-hero-container page-width">
+    <h1 class="faq-hero-title">{{ section.settings.title }}</h1>
+    
+    {% if section.settings.show_breadcrumb %}
+      <nav class="faq-breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="faq-breadcrumb-link">Home</a>
+        <span class="faq-breadcrumb-separator">|</span>
+        <span class="faq-breadcrumb-current">{{ section.settings.title }}</span>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show Breadcrumb",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Hero"
+    }
+  ]
+}
+{% endschema %}
+

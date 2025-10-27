@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Displays by MPS - Delta Faucet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Add padding to body to account for fixed header */
+        body {
+            padding-top: 80px;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #EBF0F9;
+            padding: 150px 0 50px;
+        }
+
+        .hero-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .hero-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 70px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 23px;
+            margin-bottom: 20px;
+        }
+
+        .hero-description {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 22px;
+            margin-bottom: 10px;
+        }
+
+        .hero-cta {
+            border-radius: 12px;
+            border: 1px solid #18223E;
+            background: #18223E;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .hero-cta:hover {
+            background: #252F4A;
+            border-color: #252F4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 34, 62, 0.3);
+        }
+
+        /* Hero Right Cards */
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .hero-card-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 30px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-card-title::after {
+            content: "→";
+            font-size: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-card:hover .hero-card-title::after {
+            transform: translateX(8px);
+        }
+
+        .hero-card-description {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 22px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #18223E;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a,
+        .footer-links span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Quick Ship Section */
+        .quickship-section {
+            background-color: #EBF0F9;
+            padding: 50px 0;
+        }
+
+        .quickship-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .quickship-left {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .quickship-eyebrow {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quickship-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 45px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 55px;
+        }
+
+        .quickship-description {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 130%;
+            margin-bottom: 8px;
+        }
+
+        .quickship-cta {
+            border-radius: 12px;
+            border: 1px solid #18223E;
+            background: #18223E;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .quickship-cta:hover {
+            background: #252F4A;
+            border-color: #252F4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 34, 62, 0.3);
+        }
+
+        /* Product Grid */
+        .quickship-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #EBF0F9;
+            border: 2px solid #8EA2BB;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .quick-ship-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: #997F48;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 9px 9px 0 0;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: capitalize;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .product-image-container {
+            position: relative;
+            padding-top: 100%;
+            background: #F8F9FA;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-brand {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 22px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 22px;
+            margin-bottom: 8px;
+            flex: 1;
+        }
+
+        .product-sku {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 22px;
+        }
+
+        /* New Products Section */
+        .newproducts-section {
+            background-color: #EBF0F9;
+            padding: 50px 0;
+            border-top: 2px solid #8EA2BB;
+        }
+
+        .newproducts-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .newproducts-left {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .newproducts-eyebrow {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .newproducts-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 45px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 55px;
+        }
+
+        .newproducts-description {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 130%;
+            margin-bottom: 8px;
+        }
+
+        .newproducts-cta {
+            border-radius: 12px;
+            border: 1px solid #18223E;
+            background: #18223E;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .newproducts-cta:hover {
+            background: #252F4A;
+            border-color: #252F4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 34, 62, 0.3);
+        }
+
+        .newproducts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* Standard Acrylics Section */
+        .acrylics-section {
+            background-color: #EBF0F9;
+            padding: 50px 0;
+            border-top: 2px solid #8EA2BB;
+        }
+
+        .acrylics-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .acrylics-left {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .acrylics-eyebrow {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .acrylics-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 45px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 55px;
+        }
+
+        .acrylics-description {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 130%;
+            margin-bottom: 8px;
+        }
+
+        .acrylics-cta {
+            border-radius: 12px;
+            border: 1px solid #18223E;
+            background: #18223E;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .acrylics-cta:hover {
+            background: #252F4A;
+            border-color: #252F4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 34, 62, 0.3);
+        }
+
+        .acrylics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* Help Section */
+        .help-section {
+            background-color: white;
+            padding: 50px 0;
+        }
+
+        .help-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .help-title {
+            color: #18223E;
+            font-family: "Work Sans", sans-serif;
+            font-size: 45px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 55px;
+            margin-bottom: 40px;
+        }
+
+        .help-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .help-cta-primary {
+            border-radius: 12px;
+            background: #18223E;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #18223E;
+        }
+
+        .help-cta-primary:hover {
+            background: #252F4A;
+            border-color: #252F4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 34, 62, 0.3);
+        }
+
+        .help-cta-secondary {
+            border-radius: 12px;
+            background: #997F48;
+            color: #FFF;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #997F48;
+        }
+
+        .help-cta-secondary:hover {
+            background: #7F6A3D;
+            border-color: #7F6A3D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 127, 72, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .quickship-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .newproducts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .acrylics-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .hero-title {
+                font-size: 50px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+
+            .quickship-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .quickship-left {
+                position: static;
+            }
+
+            .quickship-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .newproducts-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .newproducts-left {
+                position: static;
+            }
+
+            .newproducts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .acrylics-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .acrylics-left {
+                position: static;
+            }
+
+            .acrylics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-container {
+                padding: 0 20px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .hero-title {
+                font-size: 40px;
+            }
+            
+            .hero-card {
+                padding: 30px;
+            }
+            
+            .hero-card-title {
+                font-size: 24px;
+            }
+
+            .quickship-container {
+                padding: 0 20px;
+            }
+
+            .quickship-title {
+                font-size: 32px;
+                line-height: 40px;
+            }
+
+            .quickship-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .product-info {
+                padding: 15px;
+            }
+
+            .product-name {
+                font-size: 16px;
+            }
+
+            .product-sku {
+                font-size: 14px;
+            }
+
+            .newproducts-container {
+                padding: 0 20px;
+            }
+
+            .newproducts-title {
+                font-size: 32px;
+                line-height: 40px;
+            }
+
+            .newproducts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .acrylics-container {
+                padding: 0 20px;
+            }
+
+            .acrylics-title {
+                font-size: 32px;
+                line-height: 40px;
+            }
+
+            .acrylics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .help-container {
+                padding: 0 20px;
+            }
+
+            .help-title {
+                font-size: 32px;
+                line-height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quickship-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newproducts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .acrylics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <div class="cart-icon">
+                    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-left">
+                <h1 class="hero-title">Displays by MPS</h1>
+                <p class="hero-description">
+                    Displays by MPS provides everything you need to maintain your Brizo, Delta, or Peerless displays. Order custom displays or request drilled acrylics to mount faucets, fulfilled quickly by MPS.
+                </p>
+                <a href="#" class="hero-cta">Shop Custom Displays</a>
+            </div>
+
+            <div class="hero-right">
+                <a href="#" class="hero-card">
+                    <div class="hero-card-title">New Product Display Launches</div>
+                    <div class="hero-card-description">Order bucket displays for your agency's showroom locations.</div>
+                </a>
+
+                <a href="#" class="hero-card">
+                    <div class="hero-card-title">Showroom Display Fixtures</div>
+                    <div class="hero-card-description">Order new or refurbished displays, replacement parts, or request service.</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="quickship-section">
+        <div class="quickship-container">
+            <div class="quickship-left">
+                <div class="quickship-eyebrow">Quick Ship</div>
+                <h2 class="quickship-title">Need it fast?</h2>
+                <p class="quickship-description">
+                    Quick ship items typically ship between 2-3 business days and have no cost towards your no-charge account.
+                </p>
+                <a href="#" class="quickship-cta">Browse Quick Ship</a>
+            </div>
+
+            <div class="quickship-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newproducts-section">
+        <div class="newproducts-container">
+            <div class="newproducts-left">
+                <div class="newproducts-eyebrow">New Products</div>
+                <h2 class="newproducts-title">Fresh on Display.</h2>
+                <p class="newproducts-description">
+                    The latest additions to our lineup. Keep your displays current with fresh styles and finishes.
+                </p>
+                <a href="#" class="newproducts-cta">Browse New Products</a>
+            </div>
+
+            <div class="newproducts-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="acrylics-section">
+        <div class="acrylics-container">
+            <div class="acrylics-left">
+                <div class="acrylics-eyebrow">Standard Acrylics</div>
+                <h2 class="acrylics-title">Choose, Drill, Deliver.</h2>
+                <p class="acrylics-description">
+                    Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.
+                </p>
+                <a href="#" class="acrylics-cta">Browse Acrylics</a>
+            </div>
+
+            <div class="acrylics-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="sampleacrylic.jpg" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="sampleacrylic.jpg" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="sampleacrylic.jpg" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="sampleacrylic.jpg" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">2572LF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <div class="help-container">
+            <h2 class="help-title">Have a question or need help with an order?</h2>
+            <div class="help-buttons">
+                <a href="#" class="help-cta-primary">Frequently Asked Questions</a>
+                <a href="#" class="help-cta-secondary">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

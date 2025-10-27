@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details - Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 150px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 40px 40px 100px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 40px 40px 80px;
+            }
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Content styling */
+        .main-content { 
+            background-color: transparent; 
+            border-radius: 8px; 
+            padding: 0;
+        }
+        .page-title-wrapper { padding: 20px 0; }
+        .content-area { padding: 20px 0 0 0; }
+
+        h1 { color: #333; font-size: 32px; font-weight: 300; margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+
+        /* Two-column orders layout */
+        .orders-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .orders-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Table container and table */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            overflow-x: auto;
+            border: 1px solid #D4DCE7;
+        }
+
+        table.orders-table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Header */
+        .orders-table thead th {
+            background: linear-gradient(180deg, #8EA2BB 0%, #617491 100%);
+            color: white;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 14px;
+            white-space: normal;
+            line-height: 1.35;
+            text-align: center;
+            border-right: 1px solid #B0BED1;
+        }
+        .orders-table thead th:first-child { border-top-left-radius: 8px; }
+        .orders-table thead th:last-child { border-top-right-radius: 8px; border-right: none; }
+
+        /* Body */
+        tbody tr { border-bottom: 1px solid #B0BED1; }
+        tbody tr:hover { background-color: #F8FBFD; }
+        .orders-table td {
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #333;
+            white-space: normal;
+            word-break: break-word;
+            vertical-align: top;
+            text-align: center;
+            border-right: 1px solid #B0BED1;
+            background-color: white;
+        }
+
+        .orders-table td:nth-child(1),
+        .orders-table td:nth-child(2),
+        .orders-table td:nth-child(3),
+        .orders-table td:nth-child(4),
+        .orders-table td:nth-child(5) {
+            text-align: left;
+        }
+
+        /* Equal column visual weight */
+        .orders-table tbody td, .orders-table thead th { width: 12.5%; }
+
+        .orders-table tbody tr:nth-child(even) td { background-color: #F4F7FB; }
+
+        /* Borders */
+        .orders-table th:first-child, .orders-table td:first-child { border-left: 1px solid #B0BED1; }
+        .orders-table th:last-child, .orders-table td:last-child { border-right: 1px solid #B0BED1; }
+
+        .status-cell { text-align: center; }
+        .total-cell { text-align: right; }
+
+
+        /* Status badge */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+        }
+        .status-approved { background-color: #63748C; }
+        .status-review { background-color: #9FC1EF; color: #18223E; }
+        .status-shipped { background-color: #8EA2BB; }
+        .status-processing { background-color: #18223E; }
+
+        .tiny-note { display: block; color: #7a8699; font-size: 10px; line-height: 1.3; margin-top: 4px; text-transform: none; }
+        .track-link { color: #5B8DB8; text-decoration: underline; font-size: 11px; }
+
+        /* Sidebar */
+        .account-card {
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 20px 0 20px 20px;
+            height: fit-content;
+        }
+        .account-title { font-size: 20px; color: #18223E; margin-bottom: 16px; }
+        .account-section { margin-bottom: 18px; }
+        .label { font-size: 12px; color: #8B6914; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+        .value { font-size: 14px; color: #18223E; }
+        .sidebar-link { display: block; color: #5B8DB8; font-size: 13px; margin: 10px 0; text-decoration: underline; }
+        .sidebar-note { font-size: 11px; color: #b44b4b; margin-top: 12px; line-height: 1.4; }
+
+        /* Footer */
+        footer { background-color: #18223E; color: white; padding: 40px 0; margin-top: 60px; text-align: center; }
+        .footer-content { max-width: 1440px; margin: 0 auto; padding: 0 40px; }
+        .footer-links { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .footer-links a, .footer-links span { color: white; text-decoration: none; font-size: 14px; transition: opacity 0.2s ease; }
+        .footer-links a:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="main-content">
+            <div class="page-title-wrapper">
+                <h1>Your Orders</h1>
+                <p class="subtitle">Account</p>
+            </div>
+
+            <div class="content-area">
+                <div class="orders-layout">
+                    <!-- Orders table -->
+                    <div class="table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Date Ordered</th>
+                                    <th>Order Type</th>
+                                    <th>Showroom</th>
+                                    <th>Delivery Address</th>
+                                    <th>Estimated Delivery</th>
+                                    <th>Order Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 5, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-approved">Approved</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 12, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-review">In Review</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 3, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-approved">Approved</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 17, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-approved">Approved</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 24, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-shipped">Shipped</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>June 23, 2025</td>
+                                    <td>NPD</td>
+                                    <td>Ferguson - IL Chicago (1124)</td>
+                                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                                    <td>
+                                        July 29, 2025<br>
+                                        <a href="#" class="track-link">Track Shipment</a>
+                                    </td>
+                                    <td class="status-cell"><span class="status-badge status-processing">Processing</span></td>
+                                    <td class="total-cell">
+                                        $0.00
+                                        <span class="tiny-note">Estimated No Charge:<br>$0.00</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <aside class="account-card">
+                        <div class="account-title">Account Details</div>
+
+                        <div class="account-section">
+                            <div class="label">Agency</div>
+                            <div class="value">Added Sales Co</div>
+                        </div>
+
+                        <div class="account-section">
+                            <div class="label">Loyalty Manager</div>
+                            <div class="value">Beth Kraus</div>
+                        </div>
+
+                        <div class="account-section">
+                            <div class="label">Agency Address</div>
+                            <div class="value">795 Mittel Dr.<br>Wood Dale, IL 60191</div>
+                        </div>
+
+                        <div class="account-section">
+                            <div class="label">Email</div>
+                            <div class="value">kkraus@addedsales.com</div>
+                        </div>
+
+                        <a href="#" class="sidebar-link">Edit Account Details</a>
+                        <a href="#" class="sidebar-link">View Customs Order Addresses</a>
+                        <a href="#" class="sidebar-link">View NPD Order Addresses</a>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+

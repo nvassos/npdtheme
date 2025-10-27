@@ -1,0 +1,118 @@
+{{ 'section-homepage-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="hero-section">
+  <div class="hero-container page-width">
+    <div class="hero-left">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      <p class="hero-description">{{ section.settings.description }}</p>
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="hero-cta">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="hero-right">
+      {% if section.settings.card_1_title != blank %}
+        <a href="{{ section.settings.card_1_link }}" class="hero-card">
+          <div class="hero-card-title">
+            {{ section.settings.card_1_title }}
+          </div>
+          <div class="hero-card-description">
+            {{ section.settings.card_1_description }}
+          </div>
+        </a>
+      {% endif %}
+
+      {% if section.settings.card_2_title != blank %}
+        <a href="{{ section.settings.card_2_link }}" class="hero-card">
+          <div class="hero-card-title">
+            {{ section.settings.card_2_title }}
+          </div>
+          <div class="hero-card-description">
+            {{ section.settings.card_2_description }}
+          </div>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Homepage Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Displays by MPS"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Displays by MPS provides everything you need to maintain your Brizo, Delta, or Peerless displays."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Custom Displays"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Card 1 Title",
+      "default": "New Product Display Launches"
+    },
+    {
+      "type": "textarea",
+      "id": "card_1_description",
+      "label": "Card 1 Description",
+      "default": "Order bucket displays for your agency's showroom locations."
+    },
+    {
+      "type": "url",
+      "id": "card_1_link",
+      "label": "Card 1 Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Card 2 Title",
+      "default": "Showroom Display Fixtures"
+    },
+    {
+      "type": "textarea",
+      "id": "card_2_description",
+      "label": "Card 2 Description",
+      "default": "Order new or refurbished displays, replacement parts, or request service."
+    },
+    {
+      "type": "url",
+      "id": "card_2_link",
+      "label": "Card 2 Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Hero"
+    }
+  ]
+}
+{% endschema %}
+

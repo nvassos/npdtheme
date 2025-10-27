@@ -1,0 +1,75 @@
+{
+  "sections": {
+    "hero": {
+      "type": "homepage-hero",
+      "settings": {
+        "title": "Displays by MPS",
+        "description": "Displays by MPS provides everything you need to maintain your Brizo, Delta, or Peerless displays. Order custom displays or request drilled acrylics to mount faucets, fulfilled quickly by MPS.",
+        "button_text": "Shop Custom Displays",
+        "button_link": "/collections/custom-displays",
+        "card_1_title": "New Product Display Launches",
+        "card_1_description": "Order bucket displays for your agency's showroom locations.",
+        "card_1_link": "/pages/npd-site",
+        "card_2_title": "Showroom Display Fixtures",
+        "card_2_description": "Order new or refurbished displays, replacement parts, or request service.",
+        "card_2_link": "/collections/showroom-fixtures"
+      }
+    },
+    "quick_ship": {
+      "type": "collection-grid",
+      "settings": {
+        "eyebrow": "Quick Ship",
+        "title": "Need it fast?",
+        "description": "Quick ship items typically ship between 2-3 business days and have no cost towards your no-charge account.",
+        "button_text": "Browse Quick Ship",
+        "button_link": "/collections/quick-ship",
+        "collection": "",
+        "products_to_show": 4,
+        "show_border_top": false
+      }
+    },
+    "new_products": {
+      "type": "collection-grid",
+      "settings": {
+        "eyebrow": "New Products",
+        "title": "Fresh on Display.",
+        "description": "The latest additions to our lineup. Keep your displays current with fresh styles and finishes.",
+        "button_text": "Browse New Products",
+        "button_link": "/collections/new-products",
+        "collection": "",
+        "products_to_show": 4,
+        "show_border_top": true
+      }
+    },
+    "standard_acrylics": {
+      "type": "collection-grid",
+      "settings": {
+        "eyebrow": "Standard Acrylics",
+        "title": "Choose, Drill, Deliver.",
+        "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
+        "button_text": "Browse Acrylics",
+        "button_link": "/collections/acrylics",
+        "collection": "",
+        "products_to_show": 4,
+        "show_border_top": true
+      }
+    },
+    "help_section": {
+      "type": "homepage-help",
+      "settings": {
+        "title": "Have a question or need help with an order?",
+        "primary_button_text": "Frequently Asked Questions",
+        "primary_button_link": "/pages/faq",
+        "secondary_button_text": "Contact Us",
+        "secondary_button_link": "/pages/contact"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "quick_ship",
+    "new_products",
+    "standard_acrylics",
+    "help_section"
+  ]
+}

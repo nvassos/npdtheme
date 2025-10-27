@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saylor Two Handle Widespread Bathroom Sink Faucet - Delta Faucet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-wrapper {
+            width: 100%;
+        }
+
+        .breadcrumb-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 20px 40px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .breadcrumb a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: #000;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px 150px;
+            flex: 1;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 0 40px 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 0 40px 80px;
+            }
+        }
+
+        /* Product container */
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            background: transparent;
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        /* Product images */
+        .product-images {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        .quick-ship-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #8B7355;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Product info */
+        .product-info {
+            padding-top: 20px;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 32px;
+            color: #18223E;
+            font-weight: 300;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .product-sku {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .quick-ship-notice {
+            background: #8B7355;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 30px;
+            border: 1px solid transparent;
+            line-height: 1.5;
+        }
+
+        /* Made to order notice */
+        .quick-ship-notice.made-to-order {
+            background: white;
+            border-color: #D4DCE7;
+            color: #333;
+        }
+
+        /* Product options */
+        .option-section {
+            margin-bottom: 30px;
+        }
+
+        .option-label {
+            font-size: 12px;
+            color: #333;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .option-button {
+            padding: 10px 24px;
+            border: 1px solid #D4DCE7;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        .option-button:hover {
+            border-color: #5B8DB8;
+        }
+
+        .option-button.selected {
+            background: #18223E;
+            color: white;
+            border-color: #18223E;
+        }
+
+        .option-button .option-name {
+            font-weight: 500;
+        }
+
+        .option-button .option-stock {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Quantity section */
+        .quantity-section {
+            margin-bottom: 30px;
+        }
+
+        .quantity-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #D4DCE7;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #F5F5F5;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            border-left: 1px solid #D4DCE7;
+            border-right: 1px solid #D4DCE7;
+            background: white;
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .quantity-input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .quantity-note {
+            font-size: 12px;
+            color: #666;
+            flex: 1;
+        }
+
+        /* Price section */
+        .price-section {
+            margin-bottom: 30px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: 400;
+            color: #18223E;
+            margin-bottom: 5px;
+        }
+
+        .price-note {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Add to cart button */
+        .add-to-cart {
+            background: #18223E;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s ease;
+            margin-bottom: 30px;
+        }
+
+        .add-to-cart:hover {
+            background: #252F4A;
+        }
+
+        /* Additional notes */
+        .additional-notes {
+            border-top: 1px solid #E0E6EF;
+            padding-top: 20px;
+        }
+
+        .notes-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .notes-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #18223E;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a,
+        .footer-links span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Re-center link */
+        .recenter-link {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 1024px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <div class="cart-icon">
+                    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="breadcrumb-wrapper">
+        <div class="breadcrumb-container">
+            <div class="breadcrumb">
+                <a href="#">Home</a>
+                <span>|</span>
+                <a href="#">Custom Displays</a>
+                <span>|</span>
+                <span>Broderick Bath Accessories on Acrylic</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="product-container">
+            <!-- Product Images -->
+            <div class="product-images">
+                <div class="quick-ship-badge">Quick Ship</div>
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=500&fit=crop" alt="Saylor Two Handle Widespread Bathroom Sink Faucet" class="main-image">
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <div class="brand-name">DELTA</div>
+                <h1 class="product-title">Saylor Two Handle Widespread Bathroom Sink Faucet</h1>
+                <div class="product-sku">78435-BL</div>
+
+                <div id="ship-notice" class="quick-ship-notice">
+                    <strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.
+                </div>
+
+                <!-- Finish Options -->
+                <div class="option-section">
+                    <div class="option-label">FINISH</div>
+                    <div class="option-buttons">
+                        <button class="option-button selected" data-finish="chrome" data-stock="0">
+                            <span class="option-name">Chrome</span>
+                        </button>
+                        <button class="option-button" data-finish="arctic-stainless" data-stock="1">
+                            <span class="option-name">Arctic Stainless</span>
+                            <span class="option-stock">1 in-stock</span>
+                        </button>
+                        <button class="option-button" data-finish="black-stainless" data-stock="3">
+                            <span class="option-name">Black Stainless</span>
+                            <span class="option-stock">3 in-stock</span>
+                        </button>
+                        <button class="option-button" data-finish="champagne-bronze" data-stock="0">
+                            <span class="option-name">Champagne Bronze</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Handle Options -->
+                <div class="option-section">
+                    <div class="option-label">HANDLE(S)</div>
+                    <div class="option-buttons">
+                        <button class="option-button selected" data-handle="HK5367-PCCL">
+                            <span class="option-name">HK5367-PCCL</span>
+                        </button>
+                        <button class="option-button" data-handle="HL5368-PC" data-stock="6">
+                            <span class="option-name">HL5368-PC</span>
+                            <span class="option-stock">6 in-stock</span>
+                        </button>
+                        <button class="option-button" data-handle="HL5368-PCCL">
+                            <span class="option-name">HL5368-PCCL</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Acrylic POD Options -->
+                <div class="option-section">
+                    <div class="option-label">ACRYLIC POD</div>
+                    <div class="option-buttons">
+                        <button class="option-button selected" data-pod="rectangle-delta">Rectangle w/ Delta Logo</button>
+                        <button class="option-button" data-pod="curve-no-tab">Curve w/o Tab</button>
+                        <button class="option-button" data-pod="curve-with-tab">Curve w/ Tab</button>
+                    </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="quantity-section">
+                    <div class="option-label">QUANTITY</div>
+                    <div class="quantity-wrapper">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="decreaseQuantity()">−</button>
+                            <input type="number" class="quantity-input" id="quantity" value="2" min="1" max="99">
+                            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                        </div>
+                        <div class="quantity-note">
+                            5 quick ship available<br>
+                            Quantities beyond this are made to order and billed to your no-charge account.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="price-section">
+                    <div class="price">$0.00 USD</div>
+                    <div class="price-note">Estimated cost to your no-charge account</div>
+                </div>
+
+                <!-- Add to Cart -->
+                <button class="add-to-cart" onclick="addToCart()">Add to Cart</button>
+
+                <!-- Additional Notes -->
+                <div class="additional-notes">
+                    <div class="notes-title">ADDITIONAL NOTES</div>
+                    <div class="notes-content">
+                        The Broderick Bath Accessories Acrylic includes the following models: 78435-BL, 78460-BL, 784500-BL, and 776600.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Re-center link -->
+    <a href="#" class="recenter-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+        </svg>
+        Re-center Shift+2
+    </a>
+
+    <script>
+        // Quantity controls
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue < 99) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        // Option button selection
+        document.querySelectorAll('.option-buttons').forEach(buttonGroup => {
+            buttonGroup.addEventListener('click', (e) => {
+                let button = e.target;
+                
+                // Find the button element if clicked on child
+                if (!button.classList.contains('option-button')) {
+                    button = button.closest('.option-button');
+                }
+                
+                if (button && button.classList.contains('option-button')) {
+                    // Remove selected from siblings
+                    button.parentElement.querySelectorAll('.option-button').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    // Add selected to clicked button
+                    button.classList.add('selected');
+                    
+                    // Check inventory across all selected options
+                    updateShippingNotice();
+                }
+            });
+        });
+
+        // Update shipping notice based on selected FINISH and HANDLE options only
+        function updateShippingNotice() {
+            const notice = document.getElementById('ship-notice');
+            if (!notice) return;
+
+            // Only check FINISH and HANDLE options (not ACRYLIC POD)
+            const selectedOptions = [
+                document.querySelector('[data-finish].selected'),
+                document.querySelector('[data-handle].selected')
+            ].filter(Boolean);
+
+            let hasAnyStock = false;
+
+            selectedOptions.forEach(option => {
+                const stockValue = parseInt(option.dataset.stock ?? 'NaN', 10);
+                const showsInventoryBadge = !!option.querySelector('.option-stock');
+
+                if ((!Number.isNaN(stockValue) && stockValue > 0) || showsInventoryBadge) {
+                    hasAnyStock = true;
+                }
+            });
+
+            // If ANY selected option has inventory numbers, show BROWN quick-ship notice
+            // If ALL selected options lack inventory numbers, show WHITE made-to-order notice
+            if (hasAnyStock) {
+                notice.classList.remove('made-to-order');
+                notice.innerHTML = '<strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.';
+            } else {
+                notice.classList.add('made-to-order');
+                notice.innerHTML = '<strong>Made to order product:</strong> This item is not quick ship. Made to order product typically takes 7-10 days to produce upon receiving product from Delta.';
+            }
+        }
+        
+        // Initialize shipping notice on page load
+        updateShippingNotice();
+
+        // Add to cart
+        function addToCart() {
+            const quantity = document.getElementById('quantity').value;
+            const finish = document.querySelector('[data-finish].selected')?.dataset.finish || 'chrome';
+            const pod = document.querySelector('[data-pod].selected')?.dataset.pod || 'rectangle-delta';
+            
+            alert(`Added to cart:\nQuantity: ${quantity}\nFinish: ${finish}\nAcrylic POD: ${pod}`);
+        }
+    </script>
+</body>
+</html>

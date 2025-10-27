@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Showroom Table with Filter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+         body {
+             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+             background-color: white;
+             margin: 0;
+             padding: 0;
+             min-height: 100vh;
+             display: flex;
+             flex-direction: column;
+         }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 150px;
+            flex: 1;
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+         .logo {
+             width: 170px;
+             height: auto;
+         }
+         
+         .logo img {
+             width: 100%;
+             height: auto;
+             display: block;
+         }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+         /* Main content styling */
+         .main-content {
+             background-color: transparent;
+             border-radius: 8px;
+             padding: 0;
+         }
+         .page-title-wrapper { padding: 20px 0; }
+         
+         /* Info section wrapper */
+         .info-wrapper {
+             background-color: transparent;
+             margin: 0 0 30px 0;
+             padding: 0;
+         }
+         
+         /* Content area */
+         .content-area {
+             background-color: transparent;
+             margin: 0;
+             padding: 30px 0;
+             border-radius: 0 0 8px 8px;
+         }
+
+         h1 {
+             color: #333;
+             font-size: 32px;
+             font-weight: 300;
+             margin-bottom: 10px;
+             text-align: center;
+         }
+
+         .subtitle {
+             text-align: center;
+             font-size: 16px;
+             color: #666;
+             margin-bottom: 40px;
+             font-style: italic;
+         }
+
+         .info-section {
+             display: grid;
+             grid-template-columns: repeat(4, 1fr);
+             gap: 30px;
+             margin-bottom: 20px;
+             padding: 10px 0;
+         }
+
+         .info-item {
+             text-align: left;
+         }
+
+         .info-label {
+             font-size: 12px;
+             color: #8B6914;
+             text-transform: uppercase;
+             font-weight: 600;
+             margin-bottom: 5px;
+         }
+
+         .info-value {
+             font-size: 14px;
+             color: #333;
+         }
+
+         .edit-link {
+             font-size: 12px;
+             color: #5B8DB8;
+             text-decoration: underline;
+             cursor: pointer;
+             font-style: italic;
+         }
+
+         h2 {
+             color: #333;
+             font-size: 24px;
+             font-weight: 400;
+             margin: 0 0 20px 0;
+         }
+
+        /* Filter Section */
+        .filter-section {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #18223E;
+        }
+
+        /* Custom Dropdown */
+        .filter-dropdown {
+            position: relative;
+        }
+
+         .dropdown-toggle {
+             background-color: white;
+             color: #333;
+             border: 1px solid #ddd;
+             padding: 10px 36px 10px 20px;
+             border-radius: 20px;
+             cursor: pointer;
+             font-size: 14px;
+             font-weight: 500;
+             display: flex;
+             align-items: center;
+             position: relative;
+             min-height: 40px;
+             width: 200px;
+             transition: all 0.2s ease;
+         }
+
+         .dropdown-toggle:hover {
+             background-color: #f8f8f8;
+         }
+
+         .dropdown-toggle::after {
+             content: '▼';
+             position: absolute;
+             right: 16px;
+             font-size: 10px;
+             color: #666;
+         }
+
+         .dropdown-menu {
+             position: absolute;
+             top: 100%;
+             left: 0;
+             right: 0;
+             background-color: white;
+             border: 1px solid #B0BED1;
+             border-radius: 4px;
+             margin-top: 4px;
+             display: none;
+             z-index: 9999;
+             max-height: 200px;
+             overflow-y: auto;
+         }
+        
+        /* Search input in dropdown */
+        .dropdown-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid #E8F1F8;
+        }
+        
+        .dropdown-search input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #B0BED1;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+         .table-container {
+             background-color: white;
+             border-radius: 8px;
+             overflow: hidden;
+             position: relative;
+             overflow-x: auto;
+             border: 1px solid #D4DCE7;
+         }
+
+        table {
+            border-collapse: collapse;
+            width: auto;
+            min-width: 100%;
+        }
+
+         /* Make the first 4 columns sticky */
+         th:nth-child(1),
+         th:nth-child(2),
+         th:nth-child(3),
+         th:nth-child(4),
+         td:nth-child(1),
+         td:nth-child(2),
+         td:nth-child(3),
+         td:nth-child(4) {
+             position: sticky;
+             background-color: white;
+             z-index: 1000;
+         }
+         
+         /* Ensure sticky column borders are visible */
+         th:nth-child(4),
+         td:nth-child(4) {
+             border-right: 1px solid #B0BED1 !important;
+         }
+         
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            left: 0;
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            left: 120px;
+            width: 160px;
+            min-width: 160px;
+            max-width: 160px;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            left: 280px;
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+         th:nth-child(4),
+         td:nth-child(4) {
+             left: 380px;
+             width: 80px;
+             min-width: 80px;
+             max-width: 80px;
+         }
+
+        /* Header styling */
+        .header-row {
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-row th {
+            padding: 8px 8px;
+            text-align: center;
+            white-space: nowrap;
+            border-right: 1px solid #B0BED1;
+        }
+
+        /* Individual header background colors */
+        .showroom-header {
+            background-color: #8EA2BB !important;
+        }
+
+        .delta-header {
+            background-color: #9FC1EF !important;
+        }
+
+        .brizo-header {
+            background-color: #63748C !important;
+        }
+
+        .ship-header {
+            background-color: #18223E !important;
+        }
+
+        /* Border radius for corners */
+        .header-row th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        .header-row th:last-child {
+            border-top-right-radius: 8px;
+            border-right: none;
+        }
+
+        /* Sub-header styling */
+        .sub-header {
+            background-color: #E8F1F8;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .sub-header th {
+            padding: 8px 8px;
+            font-weight: normal;
+            white-space: normal;
+            text-align: center;
+            vertical-align: middle;
+            border-right: 1px solid #B0BED1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .sub-header th:nth-child(1),
+        .sub-header th:nth-child(2),
+        .sub-header th:nth-child(3),
+        .sub-header th:nth-child(4) {
+            background-color: #E8F1F8;
+            text-align: center !important;
+            z-index: 1001;
+        }
+        
+        /* Ensure showroom header has highest z-index */
+        .header-row th.showroom-header {
+            z-index: 1002;
+        }
+
+        /* Data rows */
+        tbody tr {
+            border-bottom: 1px solid #B0BED1;
+        }
+
+        tbody tr:hover {
+            background-color: #F8FBFD;
+        }
+
+        tbody tr.hidden {
+            display: none;
+        }
+
+         td {
+             padding: 8px 8px;
+             font-size: 12px;
+             color: #333;
+             white-space: nowrap;
+             vertical-align: middle;
+             text-align: center;
+             border-right: 1px solid #B0BED1;
+             background-color: white;
+         }
+
+        /* Center alignment for showroom columns */
+        td:nth-child(1),
+        td:nth-child(2),
+        td:nth-child(3),
+        td:nth-child(4) {
+            text-align: center !important;
+        }
+        
+        /* Enable text wrapping for first two columns */
+        td:nth-child(1),
+        td:nth-child(2),
+        th:nth-child(1),
+        th:nth-child(2) {
+            white-space: normal !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Column widths */
+        th:nth-child(5), td:nth-child(5) { min-width: 60px; }  /* SPP Delta Tier */
+        th:nth-child(6), td:nth-child(6) { min-width: 120px; } /* Planogram Restriction */
+        th:nth-child(7), td:nth-child(7) { min-width: 60px; }  /* Checkbox column */
+        th:nth-child(8), td:nth-child(8) { min-width: 60px; }  /* Checkbox column */
+        th:nth-child(9), td:nth-child(9) { min-width: 60px; }  /* Checkbox column */
+        th:nth-child(10), td:nth-child(10) { min-width: 140px; } /* Mounted/Product column */
+        th:nth-child(11), td:nth-child(11) { min-width: 60px; } /* SPP Brizo Tier */
+        th:nth-child(12), td:nth-child(12) { min-width: 60px; } /* Checkbox column */
+        th:nth-child(13), td:nth-child(13) { min-width: 60px; } /* Radio button column */
+        th:nth-child(14), td:nth-child(14) { min-width: 60px; } /* Radio button column */
+        th:nth-child(15), td:nth-child(15) { min-width: 100px; } /* Other/Add Address */
+
+        /* Checkbox and radio styling */
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #18223E;
+            border: 1px solid #B0BED1;
+        }
+        
+        /* Custom checkbox styling */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: white;
+            border: 1px solid #B0BED1;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        input[type="checkbox"]:checked {
+            background-color: #18223E;
+            border-color: #18223E;
+        }
+        
+         input[type="checkbox"]:checked::after {
+             content: '✓';
+             position: absolute;
+             color: white;
+             font-size: 12px;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+         }
+         
+         /* Disabled checkbox styling */
+         input[type="checkbox"]:disabled {
+             opacity: 0.4;
+             cursor: not-allowed;
+         }
+
+        /* Icons */
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .icon-A { background-color: #63748C; }
+        .icon-B { background-color: #63748C; }
+        .icon-C { background-color: #63748C; }
+
+        /* Circle icons */
+        .circle-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #9FC1EF;
+            color: white;
+            text-align: center;
+            line-height: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Add Address button styling */
+        .add-btn {
+            font-size: 11px;
+            color: #5B8DB8;
+            text-decoration: underline;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .add-btn:hover {
+            color: #4A7A9A;
+        }
+
+        /* Scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Special cell styling */
+        .product-option {
+            line-height: 1.4;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .product-option input {
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+        
+        /* Specific styling for the product column */
+        td:nth-child(10) {
+            text-align: left !important;
+        }
+
+         /* Add left border to first column */
+         th:first-child,
+         td:first-child {
+             border-left: 1px solid #B0BED1;
+         }
+         
+         /* Add right border to last column */
+         th:last-child,
+         td:last-child {
+             border-right: 1px solid #B0BED1;
+         }
+         
+         /* Button section styling */
+         .button-section {
+             display: flex;
+             justify-content: center;
+             gap: 15px;
+             margin-top: 30px;
+             padding-top: 30px;
+             border-top: 1px solid #ddd;
+         }
+         
+         .btn {
+             padding: 12px 30px;
+             font-size: 16px;
+             font-weight: 500;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+             transition: all 0.2s ease;
+         }
+         
+         .btn-draft {
+             background-color: white;
+             color: #333;
+             border: 2px solid #ddd;
+         }
+         
+         .btn-draft:hover {
+             background-color: #f8f8f8;
+             border-color: #bbb;
+         }
+         
+         .btn-submit {
+             background-color: #18223E;
+             color: white;
+         }
+         
+         .btn-submit:hover {
+             background-color: #252F4A;
+         }
+         
+        /* Footer spacing */
+        .page-container {
+            padding-bottom: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding-bottom: 100px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                padding-bottom: 80px;
+            }
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #18223E;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a,
+        .footer-links span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+ <body>
+     <div class="background-wrapper"></div>
+     
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        </div>
+    </header>
+     
+     <div class="page-container">
+         <div class="main-content">
+             <div class="page-title-wrapper">
+                 <h1>2026 2nd Bucket Display Order Form</h1>
+                 <p class="subtitle">All orders due by 3/23/26. Orders placed after this date will not be accepted.</p>
+             </div>
+             <div class="info-wrapper">
+                 
+                 <div class="info-section">
+                     <div class="info-item">
+                         <div class="info-label">AGENCY</div>
+                         <div class="info-value">Added Sales Co</div>
+                         <div class="edit-link">Edit Account</div>
+                     </div>
+                     <div class="info-item">
+                         <div class="info-label">LOYALTY MANAGER</div>
+                         <div class="info-value">Beth Kraus</div>
+                     </div>
+                     <div class="info-item">
+                         <div class="info-label">AGENCY ADDRESS</div>
+                         <div class="info-value">795 Mittel Dr.<br>Wood Dale, IL 60191</div>
+                     </div>
+                     <div class="info-item">
+                         <div class="info-label">EMAIL</div>
+                         <div class="info-value">kkraus@addedsales.com</div>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="content-area">
+                 <h2>Order for Showrooms with New Display System</h2>
+             
+             <!-- Filter Section -->
+             <div class="filter-section">
+                 <span class="filter-label">Filter by:</span>
+                 <div class="filter-dropdown">
+            <div class="dropdown-toggle" onclick="toggleDropdown()">
+                <span id="filter-text">Showroom Manager</span>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="dropdown-search">
+                    <input type="text" placeholder="Search..." onkeyup="filterManagers(this.value)">
+                </div>
+                <label class="dropdown-item">
+                    <input type="checkbox" value="Beth Kraus" onchange="applyFilter()">
+                    Beth Kraus
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" value="Samuel Serif" onchange="applyFilter()">
+                    Samuel Serif
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" value="Penny Tool" onchange="applyFilter()">
+                    Penny Tool
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" value="Lance Bogrol" onchange="applyFilter()">
+                    Lance Bogrol
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" value="Piff Jenkins" onchange="applyFilter()">
+                    Piff Jenkins
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr class="header-row">
+                    <th colspan="4" class="showroom-header">SHOWROOM INFORMATION</th>
+                    <th colspan="6" class="delta-header">DELTA DISPLAYS</th>
+                    <th colspan="2" class="brizo-header">BRIZO DISPLAYS</th>
+                    <th colspan="3" class="ship-header">SHIP LOCATION</th>
+                </tr>
+                <tr class="sub-header">
+                    <th>Showroom Name/Address</th>
+                    <th>Showroom Name/Address</th>
+                    <th>Showroom Manager</th>
+                    <th>SAP Number</th>
+                    <th>SPP Delta Tier</th>
+                    <th>Planogram Restriction ⓘ</th>
+                    <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                    <th>Renaldi Bridge<br>23B4L-PN-PR-DST</th>
+                    <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                    <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                    <th>SPP Brizo Tier</th>
+                    <th>Litze Widespread<br>6533FL-BLL</th>
+                    <th>Showroom</th>
+                    <th>Agency</th>
+                    <th>Other</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-manager="Beth Kraus">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Beth Kraus</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>Y</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product
+                        </label>
+                    </td>
+                    <td><span class="icon icon-B">B</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row1" checked></td>
+                    <td><input type="radio" name="ship-location-row1"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Samuel Serif">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Samuel Serif</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">B</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product
+                        </label>
+                    </td>
+                    <td><span class="icon icon-B">B</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row2" checked></td>
+                    <td><input type="radio" name="ship-location-row2"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Penny Tool">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Penny Tool</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">B</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" checked></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-A">A</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row3" checked></td>
+                    <td><input type="radio" name="ship-location-row3"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Beth Kraus">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Beth Kraus</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">C</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-A">A</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row4" checked></td>
+                    <td><input type="radio" name="ship-location-row4"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Lance Bogrol">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Lance Bogrol</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-C">C</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row5" checked></td>
+                    <td><input type="radio" name="ship-location-row5"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Beth Kraus">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Beth Kraus</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-A">A</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row6" checked></td>
+                    <td><input type="radio" name="ship-location-row6"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Piff Jenkins">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Piff Jenkins</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-A">A</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row7" checked></td>
+                    <td><input type="radio" name="ship-location-row7"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Samuel Serif">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Samuel Serif</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">B</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-B">B</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row8" checked></td>
+                    <td><input type="radio" name="ship-location-row8"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Beth Kraus">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Beth Kraus</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-B">B</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row9" checked></td>
+                    <td><input type="radio" name="ship-location-row9"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+                <tr data-manager="Penny Tool">
+                    <td>Ferguson - IL Chicago (1124)</td>
+                    <td>3419 Western Ave, Chicago, IL 60618</td>
+                    <td>Penny Tool</td>
+                    <td>210756</td>
+                    <td><span class="circle-icon">A</span></td>
+                    <td>N</td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" disabled></td>
+                    <td>
+                        <label class="product-option">
+                            <input type="checkbox"> Mounted<br>
+                            <input type="checkbox"> Product only
+                        </label>
+                    </td>
+                    <td><span class="icon icon-B">B</span></td>
+                    <td><input type="checkbox" checked></td>
+                    <td><input type="radio" name="ship-location-row10" checked></td>
+                    <td><input type="radio" name="ship-location-row10"></td>
+                    <td><button class="add-btn">Add Address</button></td>
+                </tr>
+             </tbody>
+         </table>
+     </div>
+
+     <h2 style="padding-top: 20px;">Order for Showrooms with Old Display System</h2>
+     
+    
+
+     <div class="table-container">
+         <table>
+             <thead>
+                 <tr class="header-row">
+                     <th colspan="4" class="showroom-header">SHOWROOM INFORMATION</th>
+                     <th colspan="6" class="delta-header">DELTA DISPLAYS</th>
+                     <th colspan="2" class="brizo-header">BRIZO DISPLAYS</th>
+                     <th colspan="3" class="ship-header">SHIP LOCATION</th>
+                 </tr>
+                 <tr class="sub-header">
+                     <th>Showroom Name/Address</th>
+                     <th>Showroom Name/Address</th>
+                     <th>Showroom Manager</th>
+                     <th>SAP Number</th>
+                     <th>SPP Delta Tier</th>
+                     <th>Planogram Restriction ⓘ</th>
+                     <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                     <th>Renaldi Bridge<br>23B4L-PN-PR-DST</th>
+                     <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                     <th>Renaldi Pull-Down<br>9184-BL-DST</th>
+                     <th>SPP Brizo Tier</th>
+                     <th>Litze Widespread<br>6533FL-BLL</th>
+                     <th>Showroom</th>
+                     <th>Agency</th>
+                     <th>Other</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr data-manager-2="Beth Kraus">
+                     <td>Ferguson - IL Chicago (1124)</td>
+                     <td>3419 Western Ave, Chicago, IL 60618</td>
+                     <td>Beth Kraus</td>
+                     <td>210756</td>
+                     <td><span class="circle-icon">A</span></td>
+                     <td>Y</td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="checkbox"></td>
+                     <td><input type="checkbox" disabled></td>
+                     <td>
+                         <label class="product-option">
+                             <input type="checkbox"> Mounted<br>
+                             <input type="checkbox"> Product
+                         </label>
+                     </td>
+                     <td><span class="icon icon-B">B</span></td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="radio" name="ship-location-row11" checked></td>
+                     <td><input type="radio" name="ship-location-row11"></td>
+                     <td><button class="add-btn">Add Address</button></td>
+                 </tr>
+                 <tr data-manager-2="Samuel Serif">
+                     <td>Ferguson - IL Chicago (1124)</td>
+                     <td>3419 Western Ave, Chicago, IL 60618</td>
+                     <td>Samuel Serif</td>
+                     <td>210756</td>
+                     <td><span class="circle-icon">A</span></td>
+                     <td>N</td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="checkbox"></td>
+                     <td>
+                         <label class="product-option">
+                             <input type="checkbox"> Mounted<br>
+                             <input type="checkbox"> Product only
+                         </label>
+                     </td>
+                     <td><span class="icon icon-C">C</span></td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="radio" name="ship-location-row12" checked></td>
+                     <td><input type="radio" name="ship-location-row12"></td>
+                     <td><button class="add-btn">Add Address</button></td>
+                 </tr>
+                 <tr data-manager-2="Penny Tool">
+                     <td>Ferguson - IL Chicago (1124)</td>
+                     <td>3419 Western Ave, Chicago, IL 60618</td>
+                     <td>Penny Tool</td>
+                     <td>210756</td>
+                     <td><span class="circle-icon">A</span></td>
+                     <td>N</td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="checkbox" disabled></td>
+                     <td>
+                         <label class="product-option">
+                             <input type="checkbox"> Mounted<br>
+                             <input type="checkbox"> Product only
+                         </label>
+                     </td>
+                     <td><span class="icon icon-B">B</span></td>
+                     <td><input type="checkbox" checked></td>
+                     <td><input type="radio" name="ship-location-row13" checked></td>
+                     <td><input type="radio" name="ship-location-row13"></td>
+                     <td><button class="add-btn">Add Address</button></td>
+                 </tr>
+             </tbody>
+         </table>
+     </div>
+     
+     <!-- Button Section -->
+     <div class="button-section">
+         <button class="btn btn-draft" onclick="saveDraft()">Save Draft</button>
+         <button class="btn btn-submit" onclick="submitOrder()">Submit Order</button>
+     </div>
+     
+             </div> <!-- End content-area -->
+         </div> <!-- End main-content -->
+
+     <script>
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.filter-dropdown');
+            if (!dropdown.contains(event.target)) {
+                document.getElementById('dropdown-menu').classList.remove('show');
+            }
+        });
+
+       // Apply filter based on selected checkboxes (affects both tables)
+       function applyFilter() {
+            const checkboxes = document.querySelectorAll('#dropdown-menu input[type="checkbox"]');
+            const selectedManagers = [];
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedManagers.push(checkbox.value);
+                }
+            });
+
+           // Show/hide rows based on filter - first table
+            const firstTable = document.querySelectorAll('.table-container')[0];
+            const rows = firstTable.querySelectorAll('tbody tr[data-manager]');
+            
+            // If no managers selected, show all rows
+            if (selectedManagers.length === 0) {
+                rows.forEach(row => {
+                    row.classList.remove('hidden');
+                });
+            } else {
+                // Otherwise filter by selected managers
+                rows.forEach(row => {
+                    const manager = row.getAttribute('data-manager');
+                    if (selectedManagers.includes(manager)) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            }
+
+           // Show/hide rows based on filter - second table
+           const secondTable = document.querySelectorAll('.table-container')[1];
+           if (secondTable) {
+               const rows2 = secondTable.querySelectorAll('tbody tr[data-manager-2]');
+               if (selectedManagers.length === 0) {
+                   rows2.forEach(row => {
+                       row.classList.remove('hidden');
+                   });
+               } else {
+                   rows2.forEach(row => {
+                       const manager2 = row.getAttribute('data-manager-2');
+                       if (selectedManagers.includes(manager2)) {
+                           row.classList.remove('hidden');
+                       } else {
+                           row.classList.add('hidden');
+                       }
+                   });
+               }
+           }
+
+            // Update dropdown text
+            const filterText = document.getElementById('filter-text');
+            if (selectedManagers.length === 0) {
+                filterText.textContent = 'Showroom Manager';
+            } else if (selectedManagers.length === 1) {
+                filterText.textContent = selectedManagers[0];
+            } else {
+                filterText.textContent = `${selectedManagers.length} selected`;
+            }
+        }
+
+        // Search functionality for managers
+        function filterManagers(searchTerm) {
+            const items = document.querySelectorAll('#dropdown-menu .dropdown-item');
+            const term = searchTerm.toLowerCase();
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize - don't apply filter on load to show all rows
+        // applyFilter();
+
+       // Removed second dropdown functions; top filter now controls both tables
+
+        // Add Address button functionality
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Add Address functionality would go here');
+            });
+        });
+
+       // Second dropdown removed
+        
+        // Save Draft functionality
+        function saveDraft() {
+            alert('Draft saved successfully!');
+        }
+        
+        // Submit Order functionality
+        function submitOrder() {
+            if (confirm('Are you sure you want to submit this order?')) {
+                alert('Order submitted successfully!');
+            }
+        }
+    </script>
+    </div> <!-- End page-container -->
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

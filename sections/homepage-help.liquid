@@ -1,0 +1,65 @@
+{{ 'section-homepage-help.css' | asset_url | stylesheet_tag }}
+
+<section class="help-section">
+  <div class="help-container page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="help-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    <div class="help-buttons">
+      {% if section.settings.primary_button_text != blank %}
+        <a href="{{ section.settings.primary_button_link }}" class="help-cta-primary">
+          {{ section.settings.primary_button_text }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.secondary_button_text != blank %}
+        <a href="{{ section.settings.secondary_button_link }}" class="help-cta-secondary">
+          {{ section.settings.secondary_button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Homepage Help",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Have a question or need help with an order?"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary Button Text",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Help"
+    }
+  ]
+}
+{% endschema %}
+

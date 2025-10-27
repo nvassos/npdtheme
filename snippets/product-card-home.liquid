@@ -1,0 +1,52 @@
+{% comment %}
+  Renders a product card for homepage/collection grids
+
+  Accepts:
+  - product: {Object} Product object
+  - show_vendor: {Boolean} Show product vendor/brand (optional)
+  - show_quick_ship_badge: {Boolean} Show quick ship badge if tagged (optional)
+  - image_ratio: {String} Image aspect ratio (optional)
+
+  Usage:
+  {% render 'product-card-home', product: product, show_vendor: true %}
+{% endcomment %}
+
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card-link">
+    <div class="product-image-container">
+      {% if show_quick_ship_badge %}
+        {% if product.tags contains 'quick-ship' or product.tags contains 'Quick Ship' %}
+          <div class="quick-ship-badge">Quick Ship Options Available</div>
+        {% endif %}
+      {% endif %}
+      
+      {% if product.featured_image %}
+        <img 
+          src="{{ product.featured_image | image_url: width: 600 }}" 
+          alt="{{ product.featured_image.alt | escape }}"
+          class="product-image"
+          loading="lazy"
+          width="600"
+          height="600"
+        >
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+      {% endif %}
+    </div>
+    
+    <div class="product-info">
+      {% if show_vendor and product.vendor != blank %}
+        <div class="product-brand">{{ product.vendor }}</div>
+      {% endif %}
+      
+      <div class="product-name">{{ product.title }}</div>
+      
+      {% if product.metafields.custom.sku != blank %}
+        <div class="product-sku">{{ product.metafields.custom.sku }}</div>
+      {% elsif product.selected_or_first_available_variant.sku != blank %}
+        <div class="product-sku">{{ product.selected_or_first_available_variant.sku }}</div>
+      {% endif %}
+    </div>
+  </a>
+</div>
+

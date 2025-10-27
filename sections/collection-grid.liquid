@@ -1,0 +1,157 @@
+{{ 'section-collection-grid.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  if section.settings.collection != blank
+    assign collection = collections[section.settings.collection]
+    assign products = collection.products
+  else
+    assign products = collections.all.products
+  endif
+  
+  assign products_to_show = section.settings.products_to_show | default: 4
+%}
+
+<section class="collection-grid-section {% if section.settings.show_border_top %}collection-grid-section--border{% endif %}">
+  <div class="collection-grid-container page-width">
+    <div class="collection-grid-left">
+      {% if section.settings.eyebrow != blank %}
+        <div class="collection-grid-eyebrow">{{ section.settings.eyebrow }}</div>
+      {% endif %}
+      
+      {% if section.settings.title != blank %}
+        <h2 class="collection-grid-title">{{ section.settings.title }}</h2>
+      {% endif %}
+      
+      {% if section.settings.description != blank %}
+        <p class="collection-grid-description">{{ section.settings.description }}</p>
+      {% endif %}
+      
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="collection-grid-cta">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="collection-grid-right">
+      <div class="product-grid">
+        {% for product in products limit: products_to_show %}
+          <div class="product-card">
+            <div class="product-image-container">
+              {% if product.tags contains 'quick-ship' or product.tags contains 'Quick Ship' %}
+                <div class="quick-ship-badge">Quick Ship Options Available</div>
+              {% endif %}
+              
+              {% if product.featured_image %}
+                <img 
+                  src="{{ product.featured_image | image_url: width: 600 }}" 
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="product-image"
+                  loading="lazy"
+                  width="600"
+                  height="600"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+              {% endif %}
+            </div>
+            
+            <div class="product-info">
+              {% if product.vendor != blank %}
+                <div class="product-brand">{{ product.vendor }}</div>
+              {% endif %}
+              
+              <a href="{{ product.url }}" class="product-name-link">
+                <div class="product-name">{{ product.title }}</div>
+              </a>
+              
+              {% if product.metafields.custom.sku != blank %}
+                <div class="product-sku">{{ product.metafields.custom.sku }}</div>
+              {% elsif product.selected_or_first_available_variant.sku != blank %}
+                <div class="product-sku">{{ product.selected_or_first_available_variant.sku }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+          {% comment %} Fallback if no products {% endcomment %}
+          {% for i in (1..products_to_show) %}
+            <div class="product-card product-card--placeholder">
+              <div class="product-image-container">
+                {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+              </div>
+              <div class="product-info">
+                <div class="product-brand">DELTA</div>
+                <div class="product-name">Sample Product {{ i }}</div>
+                <div class="product-sku">SKU-{{ i }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Quick Ship"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Need it fast?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Quick ship items typically ship between 2-3 business days."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Browse Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Products to Show",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_top",
+      "label": "Show Top Border",
+      "default": false,
+      "info": "Add a border separator above this section"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Grid"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 150px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 40px 40px 100px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 40px 40px 80px;
+            }
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .main-content { background-color: transparent; border-radius: 8px; padding: 0; }
+        .page-title-wrapper { padding: 20px 0; }
+        .content-area { background-color: transparent; margin: 0; padding: 20px 0; border-radius: 0 0 8px 8px; }
+
+        h1 { color: #333; font-size: 32px; font-weight: 300; margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .showroom-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: 1px solid #D4DCE7;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: auto auto auto minmax(0, 220px);
+            align-items: center;
+            gap: 24px;
+        }
+
+        .card-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .card-section--tiers,
+        .card-section--meta {
+            gap: 12px;
+        }
+
+        .card-section--primary h3 {
+            font-size: 18px;
+            color: #18223E;
+            font-weight: 600;
+        }
+
+        .card-section--primary p {
+            font-size: 12px;
+            color: #4F5671;
+            line-height: 1.55;
+        }
+
+        .tier-label {
+            font-size: 12px;
+            color: #18223E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tier-badge {
+            display: inline-flex;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .tier-badge.delta {
+            background: #9FC1EF;
+        }
+
+        .tier-badge.brizo {
+            background: #77859A;
+        }
+
+        .meta-item {
+            font-size: 12px;
+            color: #4F5671;
+        }
+
+        .meta-item strong {
+            color: #18223E;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            justify-self: end;
+            text-align: center;
+        }
+
+        .btn-edit {
+            background-color: #18223E;
+            color: white;
+            border: none;
+            border-radius: 22px;
+            padding: 10px 26px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-edit:hover { background-color: #243255; }
+
+        .delete-link {
+            font-size: 12px;
+            color: #5B8DB8;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .add-address {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .add-address button {
+            background: none;
+            border: none;
+            color: #5B8DB8;
+            text-decoration: underline;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .page-note {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #c25151;
+        }
+
+        footer { background-color: #18223E; color: white; padding: 40px 0; margin-top: auto; text-align: center; }
+        .footer-content { max-width: 1440px; margin: 0 auto; padding: 0 40px; }
+        .footer-links { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .footer-links a, .footer-links span { color: white; text-decoration: none; font-size: 14px; transition: opacity 0.2s ease; }
+        .footer-links a:hover { opacity: 0.8; }
+
+        @media (max-width: 900px) {
+            .card-row {
+                grid-template-columns: 1fr;
+                justify-items: flex-start;
+            }
+            .card-actions {
+                align-items: flex-start;
+                justify-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="main-content">
+            <div class="page-title-wrapper">
+                <h1>New Product Display Showroom Information</h1>
+                <p class="subtitle">Account / Edit Addresses</p>
+            </div>
+
+            <div class="content-area">
+                <div class="card-list">
+                    <div class="showroom-card">
+                        <div class="card-row">
+                            <div class="card-section card-section--primary">
+                                <h3>Added Sales Co</h3>
+                                <p>3419 Western Ave, Chicago, IL 60618</p>
+                                <p>SAP Number: 79423824</p>
+                            </div>
+                            <div class="card-section card-section--tiers">
+                                <div class="tier-label">Delta Tier <span class="tier-badge delta">A</span></div>
+                                <div class="tier-label">Brizo Tier <span class="tier-badge brizo">B</span></div>
+                            </div>
+                            <div class="card-section card-section--meta">
+                                <div class="meta-item"><strong>SAP Number:</strong> 79423824</div>
+                                <div class="meta-item"><strong>No Charge:</strong> $0.00</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-edit">Edit Details</button>
+                                <a href="#" class="delete-link">Delete Address</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="showroom-card">
+                        <div class="card-row">
+                            <div class="card-section card-section--primary">
+                                <h3>Added Sales Co</h3>
+                                <p>3419 Western Ave, Chicago, IL 60618</p>
+                                <p>SAP Number: 79423824</p>
+                            </div>
+                            <div class="card-section card-section--tiers">
+                                <div class="tier-label">Delta Tier <span class="tier-badge delta">A</span></div>
+                                <div class="tier-label">Brizo Tier <span class="tier-badge brizo">B</span></div>
+                            </div>
+                            <div class="card-section card-section--meta">
+                                <div class="meta-item"><strong>SAP Number:</strong> 79423824</div>
+                                <div class="meta-item"><strong>No Charge:</strong> $0.00</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-edit">Edit Details</button>
+                                <a href="#" class="delete-link">Delete Address</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="showroom-card">
+                        <div class="card-row">
+                            <div class="card-section card-section--primary">
+                                <h3>Added Sales Co</h3>
+                                <p>3419 Western Ave, Chicago, IL 60618</p>
+                                <p>SAP Number: 79423824</p>
+                            </div>
+                            <div class="card-section card-section--tiers">
+                                <div class="tier-label">Delta Tier <span class="tier-badge delta">A</span></div>
+                                <div class="tier-label">Brizo Tier <span class="tier-badge brizo">B</span></div>
+                            </div>
+                            <div class="card-section card-section--meta">
+                                <div class="meta-item"><strong>SAP Number:</strong> 79423824</div>
+                                <div class="meta-item"><strong>No Charge:</strong> $0.00</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-edit">Edit Details</button>
+                                <a href="#" class="delete-link">Delete Address</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="showroom-card">
+                        <div class="card-row">
+                            <div class="card-section card-section--primary">
+                                <h3>Added Sales Co</h3>
+                                <p>3419 Western Ave, Chicago, IL 60618</p>
+                                <p>SAP Number: 79423824</p>
+                            </div>
+                            <div class="card-section card-section--tiers">
+                                <div class="tier-label">Delta Tier <span class="tier-badge delta">A</span></div>
+                                <div class="tier-label">Brizo Tier <span class="tier-badge brizo">B</span></div>
+                            </div>
+                            <div class="card-section card-section--meta">
+                                <div class="meta-item"><strong>SAP Number:</strong> 79423824</div>
+                                <div class="meta-item"><strong>No Charge:</strong> $0.00</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-edit">Edit Details</button>
+                                <a href="#" class="delete-link">Delete Address</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-address">
+                    <button type="button">Add Address</button>
+                </div>
+
+                <div class="page-note">
+                    (NOTE: Once we get access to whats needed here we will have to see what is possible on this page. Still investigating)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+

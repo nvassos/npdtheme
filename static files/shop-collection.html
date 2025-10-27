@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Displays - Delta Faucet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Page title section */
+        .page-title-section {
+            background-color: #EBF0F9;
+            padding: 20px 0;
+            margin-top: 0;
+        }
+
+        .page-title-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            color: #18223E;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #5B8DB8;
+            text-decoration: none;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 150px;
+            flex: 1;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 110px;
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+        
+        .sidebar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* Filter section */
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
+            font-size: 20px;
+            color: #18223E;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-tag {
+            background: #9EC0EF;
+            color: #18223E;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-tag-remove {
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .clear-all-btn {
+            background: #18223E;
+            border: 1px solid #18223E;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clear-all-btn:hover {
+            background: #0F1829;
+            border-color: #0F1829;
+        }
+
+        /* Filter groups */
+        .filter-group {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #E0E6EF;
+            padding-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+
+        .filter-group-title {
+            font-size: 14px;
+            color: #18223E;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .filter-group-title.collapsible::after {
+            content: "−";
+            font-size: 18px;
+            color: #666;
+        }
+
+        .filter-group-title.collapsible.collapsed::after {
+            content: "+";
+        }
+
+        .filter-options {
+            display: block;
+        }
+
+        .filter-options.collapsed {
+            display: none;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .filter-count {
+            color: #999;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .show-more {
+            color: #5B8DB8;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+
+        .show-more:hover {
+            text-decoration: underline;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Sort section */
+        .sort-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .sort-label {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .sort-select {
+            padding: 10px 35px 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: white;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px 8px;
+            box-shadow: none;
+            outline: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .sort-select:hover {
+            background-color: #F8F9FA;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            background-color: #F8F9FA;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        /* Product grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #EBF0F9;
+            border: 2px solid #8EA2BB;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .quick-ship-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: #997F48;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 9px 9px 0 0;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: capitalize;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .product-image-container {
+            position: relative;
+            padding-top: 100%;
+            background: #F8F9FA;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-brand {
+            color: #222;
+            font-family: "Work Sans";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 22px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            color: #222;
+            font-family: "Work Sans";
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 22px;
+            margin-bottom: 8px;
+            flex: 1;
+        }
+
+        .product-sku {
+            color: #222;
+            font-family: "Work Sans";
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 22px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #18223E;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a,
+        .footer-links span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 1200px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+                padding: 20px 40px 100px;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                margin-bottom: 30px;
+                padding-right: 0;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            /* Compact filters for mobile */
+            .filter-group {
+                display: none;
+            }
+            
+            .filter-group:nth-child(1),
+            .filter-group:nth-child(2),
+            .filter-group:nth-child(3) {
+                display: block;
+            }
+            
+            .filter-group.show-all {
+                display: block;
+            }
+            
+            .show-more-filters {
+                display: block;
+                text-align: center;
+                margin: 20px 0;
+                font-size: 12px;
+                color: #5B8DB8;
+                cursor: pointer;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-weight: 600;
+            }
+            
+            .show-more-filters:hover {
+                text-decoration: underline;
+            }
+            
+            .page-title {
+                font-size: 36px;
+            }
+            
+            .product-info {
+                padding: 15px;
+            }
+            
+            .product-name {
+                font-size: 16px;
+            }
+            
+            .product-sku {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 20px 40px 80px;
+            }
+        }
+        
+        /* Hide show more filters on desktop */
+        .show-more-filters {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <div class="cart-icon">
+                    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-title-section">
+        <div class="page-title-container">
+            <h1 class="page-title">Custom Displays</h1>
+            <div class="breadcrumb">
+                <a href="#">Home</a> | Custom Displays
+            </div>
+            <div class="results-count">243 / 876 Results</div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h2 class="filter-title">Filter</h2>
+                
+                <div class="filter-tags">
+                    <div class="filter-tag">
+                        Quick Ship
+                        <span class="filter-tag-remove">×</span>
+                    </div>
+                    <div class="filter-tag">
+                        Bath
+                        <span class="filter-tag-remove">×</span>
+                    </div>
+                </div>
+                
+                <button class="clear-all-btn">Clear All</button>
+            </div>
+
+            <!-- Availability -->
+            <div class="filter-group">
+                <div class="filter-group-title">Availability</div>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="quick-ship" checked>
+                        <label for="quick-ship">Quick Ship</label>
+                        <span class="filter-count">in stock and ready to ship</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="made-to-order">
+                        <label for="made-to-order">Made to Order</label>
+                        <span class="filter-count">7-10 days production</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible">Category</div>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="kitchen">
+                        <label for="kitchen">Kitchen</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="bath" checked>
+                        <label for="bath">Bath</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="repair-parts">
+                        <label for="repair-parts">Repair Parts</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="acrylics">
+                        <label for="acrylics">Acrylics</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planogram -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible">Planogram</div>
+                <div class="filter-options">
+                    <div class="filter-group-subtitle" style="font-weight: 600; margin-bottom: 8px; font-size: 13px;">DELTA</div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="12ft-bath">
+                        <label for="12ft-bath">12ft Bath</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="4ft-universal">
+                        <label for="4ft-universal">4ft Universal Shower</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="4ft-kitchen">
+                        <label for="4ft-kitchen">4ft Kitchen</label>
+                    </div>
+                    <a href="#" class="show-more">Show more</a>
+                    
+                    <div class="filter-group-subtitle" style="font-weight: 600; margin: 16px 0 8px 0; font-size: 13px;">BRIZO</div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brizo-12ft">
+                        <label for="brizo-12ft">12ft Bath</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brizo-2ft">
+                        <label for="brizo-2ft">2ft Essential Shower</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brizo-4ft">
+                        <label for="brizo-4ft">4ft Kitchen</label>
+                    </div>
+                    <a href="#" class="show-more">Show more</a>
+                </div>
+            </div>
+            
+            <!-- Show More Filters button for mobile -->
+            <div class="show-more-filters" onclick="toggleAllFilters()">Show More Filters</div>
+
+            <!-- Brand -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible collapsed">Brand</div>
+                <div class="filter-options collapsed">
+                    <div class="filter-option">
+                        <input type="checkbox" id="delta-brand">
+                        <label for="delta-brand">Delta</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brizo-brand">
+                        <label for="brizo-brand">Brizo</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="peerless-brand">
+                        <label for="peerless-brand">Peerless</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Type -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible collapsed">Product Type</div>
+                <div class="filter-options collapsed">
+                    <div class="filter-option">
+                        <input type="checkbox" id="faucets">
+                        <label for="faucets">Faucets</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="showers">
+                        <label for="showers">Showers</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="accessories">
+                        <label for="accessories">Accessories</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="toilets">
+                        <label for="toilets">Toilets</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="tubs">
+                        <label for="tubs">Tubs</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="handles">
+                        <label for="handles">Handles</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="drains">
+                        <label for="drains">Drains</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="valves">
+                        <label for="valves">Valves</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-Type -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible collapsed">Sub-Type</div>
+                <div class="filter-options collapsed">
+                    <div class="filter-option">
+                        <input type="checkbox" id="pull-down">
+                        <label for="pull-down">Pull-Down</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="pull-out">
+                        <label for="pull-out">Pull-Out</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="single-handle">
+                        <label for="single-handle">Single Handle</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="two-handle">
+                        <label for="two-handle">Two Handle</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="wall-mount">
+                        <label for="wall-mount">Wall Mount</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="deck-mount">
+                        <label for="deck-mount">Deck Mount</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="centerset">
+                        <label for="centerset">Centerset</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="widespread">
+                        <label for="widespread">Widespread</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="touchless">
+                        <label for="touchless">Touchless</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collection -->
+            <div class="filter-group">
+                <div class="filter-group-title collapsible collapsed">Collection</div>
+                <div class="filter-options collapsed">
+                    <div class="filter-option">
+                        <input type="checkbox" id="trinsic">
+                        <label for="trinsic">Trinsic</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="ara">
+                        <label for="ara">Ara</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cassidy">
+                        <label for="cassidy">Cassidy</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="essa">
+                        <label for="essa">Essa</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="linden">
+                        <label for="linden">Linden</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="addison">
+                        <label for="addison">Addison</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="lahara">
+                        <label for="lahara">Lahara</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="vero">
+                        <label for="vero">Vero</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="saylor">
+                        <label for="saylor">Saylor</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="broderick">
+                        <label for="broderick">Broderick</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="portwood">
+                        <label for="portwood">Portwood</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="ashlyn">
+                        <label for="ashlyn">Ashlyn</label>
+                    </div>
+                    <a href="#" class="show-more">Show more</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="sort-section">
+                <label class="sort-label">Sort by:</label>
+                <select class="sort-select">
+                    <option value="best-selling">Best Selling</option>
+                    <option value="price-low-high">Price: Low to High</option>
+                    <option value="price-high-low">Price: High to Low</option>
+                    <option value="newest">Newest</option>
+                    <option value="name-az">Name: A-Z</option>
+                    <option value="name-za">Name: Z-A</option>
+                </select>
+            </div>
+
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Trinsic Single Handle Pull-Down Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet with Touch2O Technology and MagnaTite Docking</div>
+                        <div class="product-sku">9159T-AR-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Ara Bath Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Ara Two Handle Widespread Bathroom Faucet</div>
+                        <div class="product-sku">3567-MPU-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Shower System" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Vettis Tempassure Thermostatic Shower Only with H2Okinetic Technology</div>
+                        <div class="product-sku">T60P220-BL</div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Essa Pull-Down Kitchen Faucet</div>
+                        <div class="product-sku">9113-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Cassidy Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Cassidy Single Handle Centerset Bathroom Faucet with Diamond Seal Technology and Integral Pop-Up Drain Assembly</div>
+                        <div class="product-sku">1597LF-MPU</div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Linden Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Linden Bath Faucet</div>
+                        <div class="product-sku">2594-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Addison Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Addison Single Handle Pull-Down Kitchen Faucet with Touch2O® Technology</div>
+                        <div class="product-sku">9192T-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Shower Trim" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Odin Shower Trim</div>
+                        <div class="product-sku">T60P421-BL</div>
+                    </div>
+                </div>
+
+                <!-- Product 9 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Bathroom Accessories" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Ara Towel Bar Set with 24" Bar, Tissue Holder, Robe Hook and Towel Ring</div>
+                        <div class="product-sku">ARA-BATH-SET</div>
+                    </div>
+                </div>
+
+                <!-- Product 10 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Vero Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Vero Single Handle Vessel Bathroom Faucet with Touch2O.xt Technology</div>
+                        <div class="product-sku">753LF</div>
+                    </div>
+                </div>
+
+                <!-- Product 11 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Shower System" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Jason Wu MultiChoice Integrated Shower Diverter Trim</div>
+                        <div class="product-sku">T60P030-BL</div>
+                    </div>
+                </div>
+
+                <!-- Product 12 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Lahara Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Lahara Two Handle Widespread Lavatory Faucet</div>
+                        <div class="product-sku">3538-MPU-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 13 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Pilar Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Pilar Single Handle Pull-Down Kitchen Faucet with Touch2O Technology</div>
+                        <div class="product-sku">4380T-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 14 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Victorian Bath Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Victorian Two Handle Widespread Bathroom Faucet with Diamond Seal Technology</div>
+                        <div class="product-sku">3555-MPU-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 15 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Odin Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Odin Single Handle Lavatory Faucet</div>
+                        <div class="product-sku">65175LF-PC</div>
+                    </div>
+                </div>
+
+                <!-- Product 16 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Sotria Shower" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Sotria TempAssure Thermostatic Shower with Integrated Volume Control</div>
+                        <div class="product-sku">T66T073-PC</div>
+                    </div>
+                </div>
+
+                <!-- Product 17 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Tesla Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Tesla Single Handle Pull-Down Kitchen Faucet with Touch2O Technology and VoiceIQ</div>
+                        <div class="product-sku">9159TV-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 18 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Rook Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Rook Single-Handle Lavatory Faucet with SmartTouchPlus Technology</div>
+                        <div class="product-sku">65061LF-BL</div>
+                    </div>
+                </div>
+
+                <!-- Product 19 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Zura Bath Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Zura Two Handle Widespread Bathroom Faucet</div>
+                        <div class="product-sku">3574-MPU-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 20 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Litze Bar Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Litze Bar Faucet with Angled Spout and Knurled Handle</div>
+                        <div class="product-sku">61063LF-GL</div>
+                    </div>
+                </div>
+
+                <!-- Product 21 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Mateo Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Mateo Single Handle Pull-Down Kitchen Faucet with ShieldSpray Technology</div>
+                        <div class="product-sku">9183-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 22 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=300&fit=crop" alt="Pivotal Bath Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Pivotal Single Handle Bathroom Faucet with Touch2O.xt Technology</div>
+                        <div class="product-sku">699-DST</div>
+                    </div>
+                </div>
+
+                <!-- Product 23 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=300&h=300&fit=crop" alt="Artesso Kitchen Faucet" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">BRIZO</div>
+                        <div class="product-name">Artesso Single Handle Articulating Kitchen Faucet with SmartTouch Technology</div>
+                        <div class="product-sku">64225LF-PC</div>
+                    </div>
+                </div>
+
+                <!-- Product 24 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <div class="quick-ship-badge">Quick Ship Options Available</div>
+                        <img src="https://images.unsplash.com/photo-1595514535116-d0401260e7cf?w=300&h=300&fit=crop" alt="Emerge Shower" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-brand">DELTA</div>
+                        <div class="product-name">Emerge Shower Column with Hand Shower and Multiple Spray Patterns</div>
+                        <div class="product-sku">78434-BL</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle filter groups
+        document.querySelectorAll('.filter-group-title.collapsible').forEach(title => {
+            title.addEventListener('click', () => {
+                title.classList.toggle('collapsed');
+                const options = title.nextElementSibling;
+                options.classList.toggle('collapsed');
+            });
+        });
+
+        // Remove filter tags
+        document.querySelectorAll('.filter-tag-remove').forEach(remove => {
+            remove.addEventListener('click', (e) => {
+                e.target.parentElement.remove();
+            });
+        });
+
+        // Clear all filters
+        document.querySelector('.clear-all-btn').addEventListener('click', () => {
+            document.querySelectorAll('.filter-tag').forEach(tag => tag.remove());
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        });
+
+        // Product card clicks
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // In a real app, this would navigate to the product detail page
+                console.log('Product clicked');
+            });
+        });
+        
+        // Toggle all filters on mobile
+        function toggleAllFilters() {
+            const filterGroups = document.querySelectorAll('.filter-group');
+            const showMoreBtn = document.querySelector('.show-more-filters');
+            
+            filterGroups.forEach(group => {
+                group.classList.toggle('show-all');
+            });
+            
+            if (showMoreBtn.textContent === 'Show More Filters') {
+                showMoreBtn.textContent = 'Show Less Filters';
+            } else {
+                showMoreBtn.textContent = 'Show More Filters';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+{{ 'section-faq-accordion.css' | asset_url | stylesheet_tag }}
+
+<div class="faq-accordion-section">
+  <div class="faq-accordion-container page-width">
+    <div class="faq-items">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_item' %}
+          <div class="faq-item {% if block.settings.is_open %}faq-item--open{% endif %}" {{ block.shopify_attributes }}>
+            <button 
+              class="faq-question" 
+              aria-expanded="{% if block.settings.is_open %}true{% else %}false{% endif %}"
+              aria-controls="faq-answer-{{ block.id }}"
+            >
+              <span class="faq-question-text">{{ block.settings.question }}</span>
+              <span class="faq-icon">
+                <svg class="faq-icon-close" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.5 9H13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <svg class="faq-icon-open" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 4.5V13.5M4.5 9H13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </button>
+            
+            <div 
+              class="faq-answer" 
+              id="faq-answer-{{ block.id }}"
+              {% unless block.settings.is_open %}hidden{% endunless %}
+            >
+              <div class="faq-answer-content">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const button = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      
+      button.addEventListener('click', () => {
+        const isOpen = item.classList.contains('faq-item--open');
+        
+        // Toggle current item
+        item.classList.toggle('faq-item--open');
+        button.setAttribute('aria-expanded', !isOpen);
+        
+        if (isOpen) {
+          answer.setAttribute('hidden', '');
+        } else {
+          answer.removeAttribute('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Your question here?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Your answer content here."
+        },
+        {
+          "type": "checkbox",
+          "id": "is_open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

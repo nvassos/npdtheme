@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter by Acrylic Type - Delta Faucet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background decorative element */
+        .background-wrapper {
+            background-color: #EBF0F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Header section */
+        header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #E0E6EF;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Add padding to body to account for fixed header */
+        body {
+            padding-top: 80px;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { 
+            width: 170px; 
+            height: auto; 
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #5B8DB8;
+        }
+
+        /* Header icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background-color: transparent;
+            padding: 60px 0;
+        }
+
+        .filter-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+        }
+
+        .filter-title {
+            font-size: 32px;
+            color: #18223E;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-card {
+            background: white;
+            border: 2px solid #8EA2BB;
+            border-radius: 12px;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            user-select: none;
+        }
+
+        .filter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .filter-card.active {
+            border-color: #18223E;
+            background: #EBF0F9;
+        }
+
+        .filter-card-image {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .filter-card-title {
+            color: #222;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 22px;
+            margin-bottom: 12px;
+        }
+
+        .filter-card-description {
+            color: #18223E;
+            text-align: center;
+            font-family: "Work Sans", sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 18px;
+        }
+
+        .filter-notes {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 150px;
+            flex: 1;
+        }
+
+        /* Product grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background: transparent;
+            border: 2px solid #8EA2BB;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .product-card.hidden {
+            display: none;
+        }
+
+        .product-image-container {
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: transparent;
+        }
+
+        .product-brand {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 22px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-name {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 22px;
+        }
+
+        .product-sku-primary {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 22px;
+            margin-top: 4px;
+        }
+
+        .product-sku-secondary {
+            color: #222;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 22px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #18223E;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a,
+        .footer-links span {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .filter-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 20px 20px 100px;
+            }
+            
+            .filter-container {
+                padding: 0 20px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .filter-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-title {
+                font-size: 24px;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper"></div>
+    
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://simon-myers.com/wp-content/uploads/2025/09/Delta-Faucet-Logo-1@2x.png" alt="Delta Faucet Logo">
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Custom Displays</a></li>
+                    <li><a href="#">Acrylics</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">NPD Site</a></li>
+                    <li><a href="#">Showroom Display Fixtures</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <div class="cart-icon">
+                    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="background-color: #EBF0F9; padding: 40px 0 20px;">
+        <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+            <h1 style="font-size: 48px; color: #18223E; font-weight: 300; margin-bottom: 10px;">Standard Acrylics</h1>
+            <div class="breadcrumb" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #000;">
+                <a href="#" style="color: #000; text-decoration: none;">Home</a>
+                <span style="color: #000;">|</span>
+                <span style="color: #000;">Standard Acrylics</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-container">
+            <h2 class="filter-title">Filter by Acrylic Type</h2>
+            
+            <div class="filter-cards">
+                <!-- Brizo Rectangle -->
+                <div class="filter-card" data-acrylic="brizo-rectangle">
+                    <img src="brizo-rect.png" alt="Brizo Rectangle" class="filter-card-image">
+                    <div class="filter-card-title">Brizo Rectangle</div>
+                    <div class="filter-card-description">For Brizo products; available in 5.5, 6, 11, and 15 inch predrilled slabs.</div>
+                </div>
+
+                <!-- Delta Rectangle -->
+                <div class="filter-card" data-acrylic="delta-rectangle">
+                    <img src="delta-rect.png" alt="Delta Rectangle" class="filter-card-image">
+                    <div class="filter-card-title">Delta Rectangle</div>
+                    <div class="filter-card-description">For Delta products; available in 6, 11, and 15 inch predrilled slabs.</div>
+                </div>
+
+                <!-- Delta Curve -->
+                <div class="filter-card" data-acrylic="delta-curve">
+                    <img src="deltacurve.png" alt="Delta Curve" class="filter-card-image">
+                    <div class="filter-card-title">Delta Curve</div>
+                    <div class="filter-card-description">For Delta products; available in 7 and 11 inch predrilled slabs; includes removable tab*.</div>
+                </div>
+
+                <!-- Delta Curve with Tab -->
+                <div class="filter-card" data-acrylic="delta-curve-tab">
+                    <img src="deltacurvetab.png" alt="Delta Curve with Tab" class="filter-card-image">
+                    <div class="filter-card-title">Delta Curve with Tab</div>
+                    <div class="filter-card-description">For Delta products; available in 5, 6, 7, 11**, and 15 inch predrilled slabs.**</div>
+                </div>
+
+                <!-- Specialty Acrylics -->
+                <div class="filter-card" data-acrylic="specialty-acrylics">
+                    <img src="delta-rect.png" alt="Specialty Acrylics" class="filter-card-image">
+                    <div class="filter-card-title">Specialty Acrylics</div>
+                    <div class="filter-card-description">A description would go here describing what these acrylics are used for.</div>
+                </div>
+            </div>
+
+            <div class="filter-notes">
+                *Removable tab can be removed with a standard screwdriver<br>
+                **Orders containing requests for "Curve W/o Tab" are subject to be mounted to the "Curve W/ Tab" option due to available inventory
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="product-grid" id="productGrid">
+            <!-- Product 1 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Trinsic Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">9159T-AR-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-001</div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Vettis Tempassure Thermostatic Shower</div>
+                    <div class="product-sku-primary">T60P220-BL</div>
+                    <div class="product-sku-secondary">ALT-SKU-002</div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Ara Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3567-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-003</div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Essa Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">9113-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-004</div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Cassidy Single Handle Centerset Bathroom Faucet</div>
+                    <div class="product-sku-primary">1597LF-MPU</div>
+                    <div class="product-sku-secondary">ALT-SKU-005</div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Linden Bath Faucet</div>
+                    <div class="product-sku-primary">2594-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-006</div>
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Addison Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">9192T-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-007</div>
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Pivotal Single Handle Bathroom Faucet</div>
+                    <div class="product-sku-primary">699-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-008</div>
+                </div>
+            </div>
+
+            <!-- Product 9 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Odin Shower Trim</div>
+                    <div class="product-sku-primary">T60P421-BL</div>
+                    <div class="product-sku-secondary">ALT-SKU-009</div>
+                </div>
+            </div>
+
+            <!-- Product 10 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Vero Single Handle Vessel Bathroom Faucet</div>
+                    <div class="product-sku-primary">753LF</div>
+                    <div class="product-sku-secondary">ALT-SKU-010</div>
+                </div>
+            </div>
+
+            <!-- Product 11 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Lahara Two Handle Widespread Lavatory Faucet</div>
+                    <div class="product-sku-primary">3538-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-011</div>
+                </div>
+            </div>
+
+            <!-- Product 12 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Pilar Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">4380T-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-012</div>
+                </div>
+            </div>
+
+            <!-- Product 13 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Jason Wu MultiChoice Integrated Shower</div>
+                    <div class="product-sku-primary">T60P030-BL</div>
+                    <div class="product-sku-secondary">ALT-SKU-013</div>
+                </div>
+            </div>
+
+            <!-- Product 14 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Victorian Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3555-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-014</div>
+                </div>
+            </div>
+
+            <!-- Product 15 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Zura Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3574-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-015</div>
+                </div>
+            </div>
+
+            <!-- Product 16 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Mateo Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">9183-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-016</div>
+                </div>
+            </div>
+
+            <!-- Product 17 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Litze Bar Faucet with Angled Spout</div>
+                    <div class="product-sku-primary">61063LF-GL</div>
+                    <div class="product-sku-secondary">ALT-SKU-017</div>
+                </div>
+            </div>
+
+            <!-- Product 18 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Tesla Single Handle Pull-Down Kitchen Faucet with VoiceIQ</div>
+                    <div class="product-sku-primary">9159TV-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-018</div>
+                </div>
+            </div>
+
+            <!-- Product 19 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Ashlyn Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3564-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-019</div>
+                </div>
+            </div>
+
+            <!-- Product 20 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Portwood Single Handle Bathroom Faucet</div>
+                    <div class="product-sku-primary">15768LF-SS</div>
+                    <div class="product-sku-secondary">ALT-SKU-020</div>
+                </div>
+            </div>
+
+            <!-- Product 21 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Artesso Single Handle Articulating Kitchen Faucet</div>
+                    <div class="product-sku-primary">64225LF-PC</div>
+                    <div class="product-sku-secondary">ALT-SKU-021</div>
+                </div>
+            </div>
+
+            <!-- Product 22 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Broderick Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3596LF-MPU</div>
+                    <div class="product-sku-secondary">ALT-SKU-022</div>
+                </div>
+            </div>
+
+            <!-- Product 23 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Emerge Shower Column with Hand Shower</div>
+                    <div class="product-sku-primary">78434-BL</div>
+                    <div class="product-sku-secondary">ALT-SKU-023</div>
+                </div>
+            </div>
+
+            <!-- Product 24 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Saylor Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3578-MPU-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-024</div>
+                </div>
+            </div>
+
+            <!-- Product 25 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Rook Single-Handle Lavatory Faucet</div>
+                    <div class="product-sku-primary">65061LF-BL</div>
+                    <div class="product-sku-secondary">ALT-SKU-025</div>
+                </div>
+            </div>
+
+            <!-- Product 26 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Foundations Single Handle Centerset Bathroom Faucet</div>
+                    <div class="product-sku-primary">B510LF</div>
+                    <div class="product-sku-secondary">ALT-SKU-026</div>
+                </div>
+            </div>
+
+            <!-- Product 27 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Dryden Two Handle Widespread Bathroom Faucet</div>
+                    <div class="product-sku-primary">3551LF-MPU</div>
+                    <div class="product-sku-secondary">ALT-SKU-027</div>
+                </div>
+            </div>
+
+            <!-- Product 28 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Grant Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">19912Z-SPSD-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-028</div>
+                </div>
+            </div>
+
+            <!-- Product 29 -->
+            <div class="product-card" data-acrylic="brizo-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">BRIZO</div>
+                    <div class="product-name">Sotria TempAssure Thermostatic Shower</div>
+                    <div class="product-sku-primary">T66T073-PC</div>
+                    <div class="product-sku-secondary">ALT-SKU-029</div>
+                </div>
+            </div>
+
+            <!-- Product 30 -->
+            <div class="product-card" data-acrylic="delta-rectangle">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Everly Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">9178-AR-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-030</div>
+                </div>
+            </div>
+
+            <!-- Product 31 -->
+            <div class="product-card" data-acrylic="delta-curve">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Stryke Single Handle Vessel Bathroom Faucet</div>
+                    <div class="product-sku-primary">759-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-031</div>
+                </div>
+            </div>
+
+            <!-- Product 32 -->
+            <div class="product-card" data-acrylic="delta-curve-tab">
+                <div class="product-image-container">
+                    <img src="sampleacrylic.jpg" alt="Product" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">DELTA</div>
+                    <div class="product-name">Lewiston Single Handle Pull-Down Kitchen Faucet</div>
+                    <div class="product-sku-primary">19922Z-SPSD-DST</div>
+                    <div class="product-sku-secondary">ALT-SKU-032</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            No products found for this acrylic type.
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Masco Brands</a>
+                <span>© 2025 Displays by MPS</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality with multi-select and deselect support
+        const filterCards = document.querySelectorAll('.filter-card');
+        const productCards = document.querySelectorAll('.product-card');
+        const noResults = document.getElementById('noResults');
+        const productGrid = document.getElementById('productGrid');
+
+        filterCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Toggle active class on clicked card
+                this.classList.toggle('active');
+                
+                // Get all selected filters
+                const selectedFilters = Array.from(document.querySelectorAll('.filter-card.active'))
+                    .map(card => card.getAttribute('data-acrylic'));
+                
+                // Filter products
+                let visibleCount = 0;
+                productCards.forEach(product => {
+                    const productAcrylic = product.getAttribute('data-acrylic');
+                    
+                    // If no filters selected, show all products
+                    // If filters selected, show only products matching any selected filter
+                    if (selectedFilters.length === 0 || selectedFilters.includes(productAcrylic)) {
+                        product.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        product.classList.add('hidden');
+                    }
+                });
+                
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                    productGrid.style.display = 'none';
+                } else {
+                    noResults.style.display = 'none';
+                    productGrid.style.display = 'grid';
+                }
+            });
+        });
+
+        // Initialize - show all products by default (no filter active)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show all products on initial load
+            productCards.forEach(product => {
+                product.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
