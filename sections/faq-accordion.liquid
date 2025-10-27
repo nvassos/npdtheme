@@ -25,7 +25,6 @@
             <div 
               class="faq-answer" 
               id="faq-answer-{{ block.id }}"
-              {% unless block.settings.is_open %}hidden{% endunless %}
             >
               <div class="faq-answer-content">
                 {{ block.settings.answer }}
@@ -52,12 +51,6 @@
         // Toggle current item
         item.classList.toggle('faq-item--open');
         button.setAttribute('aria-expanded', !isOpen);
-        
-        if (isOpen) {
-          answer.setAttribute('hidden', '');
-        } else {
-          answer.removeAttribute('hidden');
-        }
       });
     });
   });
