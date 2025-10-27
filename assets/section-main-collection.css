@@ -287,10 +287,103 @@
   gap: 20px;
 }
 
-/* Override product card styles for collection page */
+/* Product Card Styles - Override homepage styles for collection page */
+.collection-page-wrapper .product-card,
 .product-grid .product-card {
   background: #EBF0F9 !important;
   border: 2px solid #8EA2BB !important;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.collection-page-wrapper .product-card:hover,
+.product-grid .product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.collection-page-wrapper .quick-ship-badge,
+.product-grid .quick-ship-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #997F48;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 9px 9px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  z-index: 1;
+  text-align: center;
+}
+
+.collection-page-wrapper .product-image-container,
+.product-grid .product-image-container {
+  position: relative;
+  padding-top: 100%;
+  background: #F8F9FA;
+}
+
+.collection-page-wrapper .product-image,
+.product-grid .product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.collection-page-wrapper .product-info,
+.product-grid .product-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.collection-page-wrapper .product-brand,
+.product-grid .product-brand {
+  color: #222;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.collection-page-wrapper .product-name,
+.product-grid .product-name {
+  color: #222;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  margin-bottom: 8px;
+  flex: 1;
+}
+
+.collection-page-wrapper .product-sku,
+.product-grid .product-sku {
+  color: #222;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 22px;
 }
 
 /* No Results */
@@ -355,11 +448,30 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
+
+  .collection-page-wrapper .product-info,
+  .product-grid .product-info {
+    padding: 15px;
+  }
+
+  .collection-page-wrapper .product-name,
+  .product-grid .product-name {
+    font-size: 16px;
+  }
+
+  .collection-page-wrapper .product-sku,
+  .product-grid .product-sku {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
   .product-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .collection-page-container {
+    padding: 0 20px;
   }
 }
 
