@@ -1,11 +1,13 @@
 .acrylic-filter-section {
-  background-color: transparent;
-  padding: 60px 0;
+  background-color: #EBF0F9;
+  padding: 60px 0 0;
 }
 
 .acrylic-filter-container {
+  max-width: 1440px;
+  margin: 0 auto;
   background: white;
-  border-radius: 15px;
+  border-radius: 15px 15px 0 0;
   padding: 40px;
 }
 
@@ -22,7 +24,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .filter-card {
@@ -80,6 +82,8 @@
   font-style: italic;
   text-align: center;
   margin-top: 20px;
+  margin-bottom: 0;
+  padding-bottom: 0;
   line-height: 1.6;
   font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
