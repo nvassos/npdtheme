@@ -1,0 +1,133 @@
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "settings": {}
+    },
+    "acrylic_filters": {
+      "type": "acrylic-type-filters",
+      "blocks": {
+        "filter_1": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Brizo Rectangle",
+            "description": "For Brizo products; available in 5.5, 6, 11, and 15 inch predrilled slabs.",
+            "image": "",
+            "filter_tag": "brizo-rectangle"
+          }
+        },
+        "filter_2": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Delta Rectangle",
+            "description": "For Delta products; available in 6, 11, and 15 inch predrilled slabs.",
+            "image": "",
+            "filter_tag": "delta-rectangle"
+          }
+        },
+        "filter_3": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Delta Curve",
+            "description": "For Delta products; available in 7 and 11 inch predrilled slabs; includes removable tab*.",
+            "image": "",
+            "filter_tag": "delta-curve"
+          }
+        },
+        "filter_4": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Delta Curve with Tab",
+            "description": "For Delta products; available in 5, 6, 7, 11**, and 15 inch predrilled slabs.**",
+            "image": "",
+            "filter_tag": "delta-curve-tab"
+          }
+        },
+        "filter_5": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Specialty Acrylics",
+            "description": "A description would go here describing what these acrylics are used for.",
+            "image": "",
+            "filter_tag": "specialty-acrylics"
+          }
+        }
+      },
+      "block_order": [
+        "filter_1",
+        "filter_2",
+        "filter_3",
+        "filter_4",
+        "filter_5"
+      ],
+      "settings": {
+        "title": "Filter by Acrylic Type",
+        "show_notes": true,
+        "notes": "*Removable tab can be removed with a standard screwdriver<br>**Orders containing requests for \"Curve W/o Tab\" are subject to be mounted to the \"Curve W/ Tab\" option due to available inventory"
+      }
+    },
+    "display_filters": {
+      "type": "display-type-filters",
+      "blocks": {
+        "pill_1": {
+          "type": "filter_pill",
+          "settings": {
+            "label": "Delta Paneled System",
+            "filter_tag": "delta-paneled"
+          }
+        },
+        "pill_2": {
+          "type": "filter_pill",
+          "settings": {
+            "label": "Delta Cabinet System",
+            "filter_tag": "delta-cabinet"
+          }
+        },
+        "pill_3": {
+          "type": "filter_pill",
+          "settings": {
+            "label": "Brizo Paneled System",
+            "filter_tag": "brizo-paneled"
+          }
+        },
+        "pill_4": {
+          "type": "filter_pill",
+          "settings": {
+            "label": "Brizo Cabinet System",
+            "filter_tag": "brizo-cabinet"
+          }
+        },
+        "pill_5": {
+          "type": "filter_pill",
+          "settings": {
+            "label": "Other",
+            "filter_tag": "other"
+          }
+        }
+      },
+      "block_order": [
+        "pill_1",
+        "pill_2",
+        "pill_3",
+        "pill_4",
+        "pill_5"
+      ],
+      "settings": {
+        "title": "Filter by Display Type"
+      }
+    },
+    "product_grid": {
+      "type": "acrylic-filter-product-grid",
+      "settings": {
+        "products_per_page": 32
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "acrylic_filters",
+    "display_filters",
+    "product_grid"
+  ]
+}
+

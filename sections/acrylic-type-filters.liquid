@@ -1,0 +1,102 @@
+{{ 'section-acrylic-type-filters.css' | asset_url | stylesheet_tag }}
+
+<div class="acrylic-filter-section">
+  <div class="acrylic-filter-container page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="filter-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    <div class="filter-cards" data-filter-type="acrylic">
+      {% for block in section.blocks %}
+        {% if block.type == 'filter_card' %}
+          <div class="filter-card" 
+               data-acrylic="{{ block.settings.filter_tag }}"
+               {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 300 }}" 
+                   alt="{{ block.settings.title }}" 
+                   class="filter-card-image"
+                   loading="lazy">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'filter-card-image' }}
+            {% endif %}
+            
+            <div class="filter-card-title">{{ block.settings.title }}</div>
+            <div class="filter-card-description">{{ block.settings.description }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_notes and section.settings.notes != blank %}
+      <div class="filter-notes">
+        {{ section.settings.notes }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Acrylic Type Filters",
+  "class": "section-acrylic-filters",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Filter by Acrylic Type"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_notes",
+      "label": "Show Notes",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "notes",
+      "label": "Filter Notes",
+      "default": "*Removable tab can be removed with a standard screwdriver<br>**Orders containing requests for \"Curve W/o Tab\" are subject to be mounted to the \"Curve W/ Tab\" option due to available inventory"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter_card",
+      "name": "Filter Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Acrylic Type"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Card Description",
+          "default": "Description of this acrylic type."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "filter_tag",
+          "label": "Filter Tag",
+          "info": "The product tag to filter by (e.g., brizo-rectangle, delta-curve)",
+          "default": "acrylic-type"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Acrylic Type Filters"
+    }
+  ]
+}
+{% endschema %}
+

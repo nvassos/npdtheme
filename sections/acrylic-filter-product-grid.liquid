@@ -1,0 +1,84 @@
+{{ 'section-acrylic-filter-products.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'acrylic-filter.js' | asset_url }}" defer="defer"></script>
+
+{% paginate collection.products by section.settings.products_per_page %}
+  <div class="acrylic-products-container page-width">
+    <div class="product-grid" id="acrylicProductGrid" data-products-container>
+      {% for product in collection.products %}
+        <div class="product-card" 
+             data-product-tags="{{ product.tags | join: ',' }}"
+             data-product-id="{{ product.id }}">
+          <a href="{{ product.url }}" class="product-card-link">
+            <div class="product-image-container">
+              {% if product.featured_image %}
+                <img 
+                  src="{{ product.featured_image | image_url: width: 400 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="product-image"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+              {% endif %}
+            </div>
+            
+            <div class="product-info">
+              {% if product.vendor != blank %}
+                <div class="product-brand">{{ product.vendor | upcase }}</div>
+              {% endif %}
+              
+              <div class="product-name">{{ product.title }}</div>
+              
+              {% if product.selected_or_first_available_variant.sku != blank %}
+                <div class="product-sku-primary">{{ product.selected_or_first_available_variant.sku }}</div>
+              {% endif %}
+              
+              {% comment %}
+                If you have a secondary SKU in metafields, add it here:
+                {% if product.metafields.custom.secondary_sku != blank %}
+                  <div class="product-sku-secondary">{{ product.metafields.custom.secondary_sku }}</div>
+                {% endif %}
+              {% endcomment %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="no-results" id="acrylicNoResults" style="display: none;">
+      <p>No products found matching the selected filters.</p>
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <div class="pagination-wrapper">
+        {% render 'pagination', paginate: paginate %}
+      </div>
+    {% endif %}
+  </div>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Acrylic Filter Product Grid",
+  "class": "section-acrylic-products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "label": "Products per page",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Acrylic Filter Product Grid"
+    }
+  ]
+}
+{% endschema %}
+

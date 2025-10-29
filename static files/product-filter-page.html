@@ -196,6 +196,55 @@
             line-height: 1.6;
         }
 
+        /* Filter Pills Section */
+        .filter-pills-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #D4DCE7;
+        }
+
+        .filter-pills-title {
+            font-size: 28px;
+            color: #18223E;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-pills {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            padding: 12px 32px;
+            background: white;
+            border: 2px solid #8EA2BB;
+            border-radius: 50px;
+            font-family: "Work Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #18223E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .filter-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-pill.active {
+            background: #18223E;
+            color: white;
+            border-color: #18223E;
+        }
+
         /* Main container */
         .page-container {
             max-width: 1440px;
@@ -357,7 +406,7 @@
             }
             
             .filter-container {
-                padding: 0 20px;
+                padding: 20px;
             }
             
             .header-content {
@@ -374,6 +423,15 @@
             
             .filter-title {
                 font-size: 24px;
+            }
+
+            .filter-pills-title {
+                font-size: 22px;
+            }
+
+            .filter-pill {
+                padding: 10px 24px;
+                font-size: 14px;
             }
             
             .product-grid {
@@ -484,13 +542,25 @@
                 *Removable tab can be removed with a standard screwdriver<br>
                 **Orders containing requests for "Curve W/o Tab" are subject to be mounted to the "Curve W/ Tab" option due to available inventory
             </div>
+
+            <!-- Filter by Display Type Pills -->
+            <div class="filter-pills-section">
+                <h2 class="filter-pills-title">Filter by Display Type</h2>
+                <div class="filter-pills">
+                    <div class="filter-pill" data-display-type="delta-paneled">Delta Paneled System</div>
+                    <div class="filter-pill" data-display-type="delta-cabinet">Delta Cabinet System</div>
+                    <div class="filter-pill" data-display-type="brizo-paneled">Brizo Paneled System</div>
+                    <div class="filter-pill" data-display-type="brizo-cabinet">Brizo Cabinet System</div>
+                    <div class="filter-pill" data-display-type="other">Other</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="page-container">
         <div class="product-grid" id="productGrid">
             <!-- Product 1 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -503,7 +573,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -516,7 +586,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -529,7 +599,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -542,7 +612,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -555,7 +625,7 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -568,7 +638,7 @@
             </div>
 
             <!-- Product 7 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -581,7 +651,7 @@
             </div>
 
             <!-- Product 8 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="other">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -594,7 +664,7 @@
             </div>
 
             <!-- Product 9 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -607,7 +677,7 @@
             </div>
 
             <!-- Product 10 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -620,7 +690,7 @@
             </div>
 
             <!-- Product 11 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -633,7 +703,7 @@
             </div>
 
             <!-- Product 12 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -646,7 +716,7 @@
             </div>
 
             <!-- Product 13 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -659,7 +729,7 @@
             </div>
 
             <!-- Product 14 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -672,7 +742,7 @@
             </div>
 
             <!-- Product 15 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="other">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -685,7 +755,7 @@
             </div>
 
             <!-- Product 16 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -698,7 +768,7 @@
             </div>
 
             <!-- Product 17 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -711,7 +781,7 @@
             </div>
 
             <!-- Product 18 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -724,7 +794,7 @@
             </div>
 
             <!-- Product 19 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -737,7 +807,7 @@
             </div>
 
             <!-- Product 20 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="other">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -750,7 +820,7 @@
             </div>
 
             <!-- Product 21 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -763,7 +833,7 @@
             </div>
 
             <!-- Product 22 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -776,7 +846,7 @@
             </div>
 
             <!-- Product 23 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -789,7 +859,7 @@
             </div>
 
             <!-- Product 24 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -802,7 +872,7 @@
             </div>
 
             <!-- Product 25 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="brizo-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -815,7 +885,7 @@
             </div>
 
             <!-- Product 26 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -828,7 +898,7 @@
             </div>
 
             <!-- Product 27 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -841,7 +911,7 @@
             </div>
 
             <!-- Product 28 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -854,7 +924,7 @@
             </div>
 
             <!-- Product 29 -->
-            <div class="product-card" data-acrylic="brizo-rectangle">
+            <div class="product-card" data-acrylic="brizo-rectangle" data-display-type="other">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -867,7 +937,7 @@
             </div>
 
             <!-- Product 30 -->
-            <div class="product-card" data-acrylic="delta-rectangle">
+            <div class="product-card" data-acrylic="delta-rectangle" data-display-type="delta-paneled">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -880,7 +950,7 @@
             </div>
 
             <!-- Product 31 -->
-            <div class="product-card" data-acrylic="delta-curve">
+            <div class="product-card" data-acrylic="delta-curve" data-display-type="delta-cabinet">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -893,7 +963,7 @@
             </div>
 
             <!-- Product 32 -->
-            <div class="product-card" data-acrylic="delta-curve-tab">
+            <div class="product-card" data-acrylic="delta-curve-tab" data-display-type="other">
                 <div class="product-image-container">
                     <img src="sampleacrylic.jpg" alt="Product" class="product-image">
                 </div>
@@ -923,50 +993,69 @@
     </footer>
 
     <script>
-        // Filter functionality with multi-select and deselect support
+        // Filter functionality with multi-select for both acrylic type and display type
         const filterCards = document.querySelectorAll('.filter-card');
+        const filterPills = document.querySelectorAll('.filter-pill');
         const productCards = document.querySelectorAll('.product-card');
         const noResults = document.getElementById('noResults');
         const productGrid = document.getElementById('productGrid');
 
+        function applyFilters() {
+            // Get all selected acrylic filters
+            const selectedAcrylicFilters = Array.from(document.querySelectorAll('.filter-card.active'))
+                .map(card => card.getAttribute('data-acrylic'));
+            
+            // Get all selected display type filters
+            const selectedDisplayFilters = Array.from(document.querySelectorAll('.filter-pill.active'))
+                .map(pill => pill.getAttribute('data-display-type'));
+            
+            // Filter products
+            let visibleCount = 0;
+            productCards.forEach(product => {
+                const productAcrylic = product.getAttribute('data-acrylic');
+                const productDisplay = product.getAttribute('data-display-type');
+                
+                let matchesAcrylic = selectedAcrylicFilters.length === 0 || selectedAcrylicFilters.includes(productAcrylic);
+                let matchesDisplay = selectedDisplayFilters.length === 0 || selectedDisplayFilters.includes(productDisplay);
+                
+                // Product must match both filter types (if they are active)
+                if (matchesAcrylic && matchesDisplay) {
+                    product.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+            
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                noResults.textContent = 'No products found matching the selected filters.';
+                productGrid.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                productGrid.style.display = 'grid';
+            }
+        }
+
+        // Handle acrylic filter card clicks
         filterCards.forEach(card => {
             card.addEventListener('click', function() {
-                // Toggle active class on clicked card
                 this.classList.toggle('active');
-                
-                // Get all selected filters
-                const selectedFilters = Array.from(document.querySelectorAll('.filter-card.active'))
-                    .map(card => card.getAttribute('data-acrylic'));
-                
-                // Filter products
-                let visibleCount = 0;
-                productCards.forEach(product => {
-                    const productAcrylic = product.getAttribute('data-acrylic');
-                    
-                    // If no filters selected, show all products
-                    // If filters selected, show only products matching any selected filter
-                    if (selectedFilters.length === 0 || selectedFilters.includes(productAcrylic)) {
-                        product.classList.remove('hidden');
-                        visibleCount++;
-                    } else {
-                        product.classList.add('hidden');
-                    }
-                });
-                
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = 'block';
-                    productGrid.style.display = 'none';
-                } else {
-                    noResults.style.display = 'none';
-                    productGrid.style.display = 'grid';
-                }
+                applyFilters();
+            });
+        });
+
+        // Handle display type filter pill clicks
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                this.classList.toggle('active');
+                applyFilters();
             });
         });
 
         // Initialize - show all products by default (no filter active)
         document.addEventListener('DOMContentLoaded', function() {
-            // Show all products on initial load
             productCards.forEach(product => {
                 product.classList.remove('hidden');
             });

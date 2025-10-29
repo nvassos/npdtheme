@@ -1,0 +1,107 @@
+.acrylic-filter-section {
+  background-color: transparent;
+  padding: 60px 0;
+}
+
+.acrylic-filter-container {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+}
+
+.filter-title {
+  font-size: 32px;
+  color: #18223E;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.filter-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-card {
+  background: white;
+  border: 2px solid #8EA2BB;
+  border-radius: 12px;
+  padding: 30px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  user-select: none;
+}
+
+.filter-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.filter-card.active {
+  border-color: #18223E;
+  background: #EBF0F9;
+}
+
+.filter-card-image {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.filter-card-title {
+  color: #222;
+  text-align: center;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  margin-bottom: 12px;
+}
+
+.filter-card-description {
+  color: #18223E;
+  text-align: center;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.filter-notes {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  margin-top: 20px;
+  line-height: 1.6;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .filter-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .acrylic-filter-container {
+    padding: 20px;
+  }
+  
+  .filter-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-title {
+    font-size: 24px;
+  }
+}
+

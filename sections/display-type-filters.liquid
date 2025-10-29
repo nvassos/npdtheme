@@ -1,0 +1,63 @@
+{{ 'section-display-type-filters.css' | asset_url | stylesheet_tag }}
+
+<div class="display-filter-section">
+  <div class="display-filter-container page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="filter-pills-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    <div class="filter-pills" data-filter-type="display">
+      {% for block in section.blocks %}
+        {% if block.type == 'filter_pill' %}
+          <div class="filter-pill" 
+               data-display-type="{{ block.settings.filter_tag }}"
+               {{ block.shopify_attributes }}>
+            {{ block.settings.label }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Display Type Filters",
+  "class": "section-display-filters",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Filter by Display Type"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter_pill",
+      "name": "Filter Pill",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Pill Label",
+          "default": "Display Type"
+        },
+        {
+          "type": "text",
+          "id": "filter_tag",
+          "label": "Filter Tag",
+          "info": "The product tag to filter by (e.g., delta-paneled, brizo-cabinet)",
+          "default": "display-type"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Display Type Filters"
+    }
+  ]
+}
+{% endschema %}
+
