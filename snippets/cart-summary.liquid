@@ -12,13 +12,28 @@
       endcomment
       assign item_cost_clean = item_cost_text | remove: '$' | remove: ',' | remove: ' ' | strip
       
-      comment Convert to cents by multiplying by 100 for integer math
+      comment Split by decimal point to get dollars and cents
       endcomment
-      assign item_cost_cents = item_cost_clean | times: 100
+      assign cost_parts = item_cost_clean | split: '.'
+      assign dollars = cost_parts[0] | default: 0 | times: 1
+      assign cents_str = cost_parts[1] | default: '0'
+      
+      comment Pad cents to 2 digits if needed
+      endcomment
+      if cents_str.size == 1
+        assign cents_str = cents_str | append: '0'
+      elsif cents_str.size == 0
+        assign cents_str = '00'
+      endif
+      assign cents = cents_str | times: 1
+      
+      comment Convert total to cents
+      endcomment
+      assign item_cost_in_cents = dollars | times: 100 | plus: cents
       
       comment Calculate total for this line item in cents
       endcomment
-      assign item_total_cents = item_cost_cents | times: item.quantity
+      assign item_total_cents = item_cost_in_cents | times: item.quantity
       
       comment Add to running total
       endcomment
