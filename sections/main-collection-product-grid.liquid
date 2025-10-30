@@ -191,6 +191,32 @@
         </div>
       </div>
 
+      {%- comment -%} Hidden Product Data for Search (includes metafields) {%- endcomment -%}
+      <script type="application/json" id="collection-products-data">
+        [
+          {% for product in collection.products %}
+            {
+              "id": {{ product.id | json }},
+              "title": {{ product.title | json }},
+              "handle": {{ product.handle | json }},
+              "vendor": {{ product.vendor | json }},
+              "tags": {{ product.tags | json }},
+              "image": {% if product.featured_image %}{{ product.featured_image | image_url: width: 200 | json }}{% else %}""{% endif %},
+              "variants": [
+                {% for variant in product.variants %}
+                  {
+                    "id": {{ variant.id | json }},
+                    "title": {{ variant.title | json }},
+                    "sku": {{ variant.sku | json }},
+                    "deposco_id": {{ variant.metafields.custom.deposco_id | json }}
+                  }{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+              ]
+            }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ]
+      </script>
+
       {%- comment -%} PRODUCT GRID {%- endcomment -%}
       <div id="product-grid" class="collection-product-grid" data-collection-handle="{{ collection.handle }}">
         {% paginate collection.products by 24 %}

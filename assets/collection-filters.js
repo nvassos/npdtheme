@@ -363,14 +363,15 @@ class CollectionFilters {
   }
 
   async loadAllProducts() {
-    const collectionHandle = this.productGrid.dataset.collectionHandle;
-    
-    try {
-      const response = await fetch(`/collections/${collectionHandle}/products.json?limit=250`);
-      const data = await response.json();
-      this.allProducts = data.products;
-    } catch (error) {
-      console.error('Error loading products for search:', error);
+    // Load products from embedded JSON (includes metafields)
+    const productsData = document.getElementById('collection-products-data');
+    if (productsData) {
+      try {
+        this.allProducts = JSON.parse(productsData.textContent);
+        console.log('Loaded products with metafields:', this.allProducts.length);
+      } catch (error) {
+        console.error('Error parsing products data:', error);
+      }
     }
   }
 
@@ -382,6 +383,7 @@ class CollectionFilters {
     this.allProducts.forEach(product => {
       let matchScore = 0;
       let matchReasons = [];
+      let matchedVariant = null;
 
       // Search title
       if (product.title.toLowerCase().includes(lowerQuery)) {
@@ -407,17 +409,20 @@ class CollectionFilters {
         if (variant.sku && variant.sku.toLowerCase().includes(lowerQuery)) {
           matchScore += 15;
           matchReasons.push('sku');
+          if (!matchedVariant) matchedVariant = variant;
         }
 
         // Search variant title
         if (variant.title.toLowerCase().includes(lowerQuery)) {
           matchScore += 5;
+          if (!matchedVariant) matchedVariant = variant;
         }
 
         // Search deposco_id metafield (critical - highest priority)
         if (variant.deposco_id && variant.deposco_id.toLowerCase().includes(lowerQuery)) {
           matchScore += 20;
           matchReasons.push('deposco');
+          matchedVariant = variant; // Override with deposco match
         }
       });
 
@@ -426,6 +431,7 @@ class CollectionFilters {
           product,
           matchScore,
           matchReasons,
+          matchedVariant,
           primarySKU: product.variants[0]?.sku || '',
           deposcoId: product.variants.find(v => v.deposco_id)?.deposco_id || ''
         });
@@ -459,12 +465,18 @@ class CollectionFilters {
       
       resultsList.innerHTML = results.map(result => {
         const product = result.product;
-        const imageUrl = product.images[0] || '';
-        const isQuickShip = product.tags.some(tag => tag.toLowerCase().includes('quick ship'));
+        const imageUrl = product.image || '';
+        const isQuickShip = product.tags && product.tags.some(tag => tag.toLowerCase().includes('quick ship'));
+        
+        // Build URL - if matched a specific variant, link to it
+        let productUrl = `/products/${product.handle}`;
+        if (result.matchedVariant && result.matchedVariant.id) {
+          productUrl += `?variant=${result.matchedVariant.id}`;
+        }
 
         return `
-          <a href="/products/${product.handle}" class="search-result-item">
-            <img src="${imageUrl}" alt="${product.title}" class="search-result-image" loading="lazy">
+          <a href="${productUrl}" class="search-result-item">
+            ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" class="search-result-image" loading="lazy">` : '<div class="search-result-image"></div>'}
             <div class="search-result-info">
               ${product.vendor ? `<div class="search-result-brand">${product.vendor}</div>` : ''}
               <div class="search-result-title">${product.title}</div>
