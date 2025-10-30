@@ -131,6 +131,9 @@ if (!customElements.get('product-form')) {
         selectedOptions[index] = selected ? selected.dataset.optionValue : null;
       });
       
+      console.log('Checking availability with selected options:', selectedOptions);
+      console.log('Total variants:', variants.length);
+      
       // Update each option group
       optionGroups.forEach((group, optionIndex) => {
         const buttons = group.querySelectorAll('.option-button');
@@ -156,11 +159,15 @@ if (!customElements.get('product-form')) {
             return true;
           });
           
+          if (!variantExists) {
+            console.log(`Option ${optionIndex + 1}: "${optionValue}" - NO MATCHING VARIANT FOUND with selections:`, selectedOptions);
+          }
+          
           // Update button state - enable all options that exist
           if (variantExists) {
             button.disabled = false;
             button.classList.remove('unavailable');
-          } else {
+        } else {
             button.disabled = true;
             button.classList.add('unavailable');
           }
