@@ -10,6 +10,8 @@ class CustomPredictiveSearch {
     this.resetButton = null;
     this.searchTimeout = null;
     this.isLoading = false;
+    this.observer = null;
+    this.isUpdatingResults = false;
     
     this.init();
   }
@@ -76,16 +78,18 @@ class CustomPredictiveSearch {
     }
     
     // Aggressively observe for any DOM changes that might re-add default content
-    const observer = new MutationObserver((mutations) => {
+    this.observer = new MutationObserver((mutations) => {
+      // Skip if we're currently updating results ourselves
+      if (this.isUpdatingResults) return;
+      
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
           if (node.nodeType === 1) {
-            const isCustom = node.classList?.contains('custom-search-results-wrapper') || 
-                           node.classList?.contains('custom-search-loading') ||
-                           node.classList?.contains('custom-search-no-results') ||
-                           node.classList?.contains('custom-search-error');
+            // Check if this node or any parent is our custom content
+            const isPartOfCustom = node.closest('.custom-search-results-wrapper, .custom-search-loading, .custom-search-no-results, .custom-search-error');
             
-            if (!isCustom) {
+            // Only remove if it's NOT part of our custom content AND it IS default theme content
+            if (!isPartOfCustom) {
               const hasDefaultClasses = node.classList?.contains('predictive-search-results__inner') ||
                                        node.classList?.contains('predictive-search-results__wrapper-products') ||
                                        node.classList?.contains('predictive-search-results__wrapper-queries') ||
@@ -94,6 +98,7 @@ class CustomPredictiveSearch {
                                        node.classList?.contains('predictive-search-results__list');
               
               if (hasDefaultClasses) {
+                console.log('🚫 Blocking default theme search element:', node.className);
                 node.remove();
               }
             }
@@ -102,7 +107,7 @@ class CustomPredictiveSearch {
       });
     });
     
-    observer.observe(this.searchResults, { childList: true, subtree: true });
+    this.observer.observe(this.searchResults, { childList: true, subtree: true });
   }
 
   handleSearch(e) {
@@ -150,6 +155,7 @@ class CustomPredictiveSearch {
   }
 
   showLoadingState() {
+    this.isUpdatingResults = true;
     this.searchResults.innerHTML = `
       <div class="custom-search-loading">
         <div class="loading-spinner"></div>
@@ -157,9 +163,12 @@ class CustomPredictiveSearch {
       </div>
     `;
     this.searchResults.setAttribute('data-search-results', 'true');
+    setTimeout(() => { this.isUpdatingResults = false; }, 100);
   }
 
   displayResults(results, query) {
+    this.isUpdatingResults = true;
+    
     if (results.length === 0) {
       this.searchResults.innerHTML = `
         <div class="custom-search-no-results">
@@ -171,6 +180,7 @@ class CustomPredictiveSearch {
         </div>
       `;
       this.searchResults.setAttribute('data-search-results', 'true');
+      setTimeout(() => { this.isUpdatingResults = false; }, 100);
       return;
     }
 
@@ -216,20 +226,27 @@ class CustomPredictiveSearch {
     `;
     
     this.searchResults.setAttribute('data-search-results', 'true');
+    
+    // Allow observer to resume after DOM settles
+    setTimeout(() => { this.isUpdatingResults = false; }, 100);
   }
 
   displayError(query) {
+    this.isUpdatingResults = true;
     this.searchResults.innerHTML = `
       <div class="custom-search-error">
         <p>Unable to search at this time. Please try again.</p>
       </div>
     `;
     this.searchResults.setAttribute('data-search-results', 'true');
+    setTimeout(() => { this.isUpdatingResults = false; }, 100);
   }
 
   hideResults() {
+    this.isUpdatingResults = true;
     this.searchResults.innerHTML = '';
     this.searchResults.removeAttribute('data-search-results');
+    setTimeout(() => { this.isUpdatingResults = false; }, 100);
   }
 
   resetSearch() {
