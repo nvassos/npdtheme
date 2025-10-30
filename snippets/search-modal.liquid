@@ -3,6 +3,9 @@
   type="module"
 ></script>
 
+{{ 'custom-predictive-search.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-predictive-search.js' | asset_url }}" type="module"></script>
+
 <dialog-component
   id="search-modal"
   class="search-modal"
