@@ -285,10 +285,11 @@
     box-shadow: var(--shadow-drawer);
     visibility: hidden;
     background-color: var(--color-background);
-    position: absolute;
+    position: fixed;
     width: 100%;
     left: 0;
-    top: calc(100% - 1px + var(--border-bottom-width));
+    right: 0;
+    top: var(--header-height);
     z-index: var(--layer-header-menu);
     padding-inline: var(--padding-inline);
     clip-path: rect(0 100% var(--submenu-height) 0); /* stylelint-disable-line */
