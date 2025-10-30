@@ -2,6 +2,31 @@
 
 <footer class="footer-simple">
   <div class="footer-content">
+    {% if section.settings.show_logos %}
+      <div class="footer-logos">
+        {% if section.settings.logo1 != blank %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo1 | image_url: width: 200 }}" alt="Logo 1" loading="lazy">
+          </div>
+        {% endif %}
+        {% if section.settings.logo2 != blank %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo2 | image_url: width: 200 }}" alt="Logo 2" loading="lazy">
+          </div>
+        {% endif %}
+        {% if section.settings.logo3 != blank %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo3 | image_url: width: 200 }}" alt="Logo 3" loading="lazy">
+          </div>
+        {% endif %}
+        {% if section.settings.logo4 != blank %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo4 | image_url: width: 200 }}" alt="Logo 4" loading="lazy">
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+    
     <div class="footer-links">
       {% for block in section.blocks %}
         {% case block.type %}
@@ -25,6 +50,34 @@
   "enabled_on": {
     "groups": ["footer"]
   },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_logos",
+      "label": "Show Brand Logos",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "Logo 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo2",
+      "label": "Logo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo3",
+      "label": "Logo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo4",
+      "label": "Logo 4"
+    }
+  ],
   "blocks": [
     {
       "type": "link",
