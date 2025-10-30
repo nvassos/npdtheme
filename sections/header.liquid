@@ -265,6 +265,10 @@
       {{ navigation_bar }}
     </div>
   {% endif %}
+  
+  <div class="header-wave">
+    {{ 'wave.svg' | asset_url | img_tag: '', loading: 'eager', class: 'header-wave__svg' }}
+  </div>
 </header-component>
 
 <script
@@ -597,6 +601,28 @@
     --padding-block-start: var(--header-padding);
     --padding-block-end: var(--header-padding);
     padding-inline: 40px;
+  }
+  
+  header-component {
+    position: relative;
+  }
+  
+  .header-wave {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .header-wave__svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: fill;
   }
 
   .header:not(.header--compact) .header__row--bottom {
