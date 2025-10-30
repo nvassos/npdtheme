@@ -369,6 +369,17 @@ class CollectionFilters {
       try {
         this.allProducts = JSON.parse(productsData.textContent);
         console.log('Loaded products with metafields:', this.allProducts.length);
+        
+        // Debug: Check if deposco_id is present
+        const productsWithDeposco = this.allProducts.filter(p => 
+          p.variants.some(v => v.deposco_id)
+        );
+        console.log('Products with Deposco ID:', productsWithDeposco.length);
+        
+        // Log first product's variants to verify structure
+        if (this.allProducts.length > 0 && this.allProducts[0].variants.length > 0) {
+          console.log('Sample variant data:', this.allProducts[0].variants[0]);
+        }
       } catch (error) {
         console.error('Error parsing products data:', error);
       }
