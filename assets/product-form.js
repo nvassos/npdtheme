@@ -205,9 +205,9 @@ if (!customElements.get('product-form')) {
       const priceElement = this.querySelector('.price-current');
       if (!priceElement) return;
       
-      const itemCost = variant.metafields?.custom?.item_cost;
+      const itemCost = variant.metafields?.custom?.item_cost_variant;
       if (!itemCost) {
-        // Fallback to variant price if no item_cost metafield
+        // Fallback to variant price if no item_cost_variant metafield
         priceElement.textContent = this.formatMoney(variant.price);
         priceElement.setAttribute('data-base-price', '');
         return;
@@ -216,7 +216,7 @@ if (!customElements.get('product-form')) {
       // Store base price in data attribute
       priceElement.setAttribute('data-base-price', itemCost);
       
-      // Calculate total: item_cost × quantity
+      // Calculate total: item_cost_variant × quantity
       this.updatePriceByQuantity();
     }
     

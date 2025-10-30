@@ -57,7 +57,7 @@
               "metafields": {
                 "custom": {
                   "quickship_inventory": {{ variant.metafields.custom.quickship_inventory | default: 0 | json }},
-                  "item_cost": {{ variant.metafields.custom.item_cost | json }}
+                  "item_cost_variant": {{ variant.metafields.custom.item_cost_variant | json }}
                 }
               }
             }{% unless forloop.last %},{% endunless %}

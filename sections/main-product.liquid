@@ -118,7 +118,7 @@
                   <div class="product-price-section" {{ block.shopify_attributes }}>
                     <div class="product-price">
                       {% liquid
-                        assign item_cost = current_variant.metafields.custom.item_cost
+                        assign item_cost = current_variant.metafields.custom.item_cost_variant
                         if item_cost != blank
                           assign display_price = item_cost
                         else
