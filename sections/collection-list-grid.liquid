@@ -1,0 +1,63 @@
+{{ 'section-collection-list-grid.css' | asset_url | stylesheet_tag }}
+
+<div class="collections-page-wrapper">
+  <div class="collections-page-container">
+    
+    <!-- Page Title Section -->
+    <div class="collections-header">
+      <h1 class="collections-title">Collections</h1>
+    </div>
+
+    <!-- Collections Grid -->
+    <div class="collections-grid">
+      {% for collection in collections %}
+        {% unless collection.handle == 'frontpage' or collection.handle == 'all' %}
+          <a href="{{ collection.url }}" class="collection-card">
+            <div class="collection-image-container">
+              {% if collection.featured_image %}
+                <img 
+                  src="{{ collection.featured_image | image_url: width: 600 }}" 
+                  alt="{{ collection.title | escape }}"
+                  class="collection-image"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="collection-image-placeholder">
+                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                    <rect x="10" y="10" width="60" height="60" rx="4" stroke="#D4DCE7" stroke-width="2"/>
+                    <path d="M25 35L40 50L55 35" stroke="#D4DCE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+            <div class="collection-info">
+              <h2 class="collection-name">{{ collection.title }}</h2>
+              {% if collection.products_count > 0 %}
+                <p class="collection-count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</p>
+              {% endif %}
+            </div>
+          </a>
+        {% endunless %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection List Grid",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Displays all collections in a clean grid layout without filters."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection List Grid"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,181 @@
+/* Collections List Page Wrapper */
+.collections-page-wrapper {
+  background-color: #EBF0F9;
+  padding: 40px 0 80px;
+  min-height: 70vh;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.collections-page-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Page Header */
+.collections-header {
+  margin-bottom: 40px;
+}
+
+.collections-title {
+  font-size: 48px;
+  color: #18223E;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* Collections Grid */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+/* Collection Card */
+.collection-card {
+  background: #EBF0F9;
+  border: 2px solid #8EA2BB;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.collection-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.collection-image-container {
+  position: relative;
+  padding-top: 100%;
+  background: #FFFFFF;
+  overflow: hidden;
+}
+
+.collection-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 20px;
+}
+
+.collection-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.collection-name {
+  color: #222;
+  font-family: "Work Sans";
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  margin: 0 0 8px 0;
+}
+
+.collection-count {
+  color: #222;
+  font-family: "Work Sans";
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .collections-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  
+  .collections-title {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 992px) {
+  .collections-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collections-page-wrapper {
+    padding: 30px 0 60px;
+  }
+  
+  .collections-page-container {
+    padding: 0 20px;
+  }
+  
+  .collections-header {
+    margin-bottom: 30px;
+  }
+  
+  .collections-title {
+    font-size: 36px;
+  }
+  
+  .collections-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .collection-info {
+    padding: 15px;
+  }
+  
+  .collection-name {
+    font-size: 16px;
+  }
+  
+  .collection-count {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .collections-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .collections-title {
+    font-size: 32px;
+  }
+  
+  .collection-info {
+    padding: 24px 20px;
+  }
+  
+  .collection-name {
+    font-size: 24px;
+  }
+}
+
