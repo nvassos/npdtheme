@@ -241,31 +241,24 @@
                   {% endif %}
 
                   <div>
-                    {% if item.original_price != item.final_price %}
-                      <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                      <span>{{ item.final_price | money }}</span>
-                      <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                      <s class="compare-at-price">
-                        {% if item.variant.compare_at_price > item.original_price %}
-                          {{ item.variant.compare_at_price | money }}
-                        {% else %}
-                          {{ item.original_price | money }}
-                        {% endif %}
-                      </s>
-                    {% else %}
-                      {% if item.variant.compare_at_price > item.original_price %}
-                        <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                      {% else %}
-                        <span class="visually-hidden">{{ 'content.price' | t }}</span>
-                      {% endif %}
-
+                    {%- comment -%} Display estimated cost from cost_variant instead of price {%- endcomment -%}
+                    {%- assign line_cost_variant = item.properties._cost_variant -%}
+                    {%- if line_cost_variant != blank -%}
+                      {%- assign line_cost_int = line_cost_variant | times: 1 -%}
+                      {%- assign line_total_amount = line_cost_int | times: item.quantity -%}
+                      {%- assign line_dollars = line_total_amount | divided_by: 100 -%}
+                      {%- assign line_cents = line_total_amount | modulo: 100 -%}
+                      {%- if line_cents < 10 -%}
+                        {%- assign line_cents_display = '0' | append: line_cents -%}
+                      {%- else -%}
+                        {%- assign line_cents_display = line_cents -%}
+                      {%- endif -%}
+                      <span class="visually-hidden">Estimated Cost</span>
+                      <span>${{ line_dollars }}.{{ line_cents_display }}</span>
+                    {%- else -%}
+                      <span class="visually-hidden">{{ 'content.price' | t }}</span>
                       <span>{{ item.original_price | money }}</span>
-
-                      {% if item.variant.compare_at_price > item.original_price %}
-                        <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                        <s class="compare-at-price">{{ item.variant.compare_at_price | money }}</s>
-                      {% endif %}
-                    {% endif %}
+                    {%- endif -%}
                   </div>
                 </td>
                 <td
