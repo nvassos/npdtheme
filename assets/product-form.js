@@ -84,7 +84,7 @@ if (!customElements.get('product-form')) {
     setupOptionButtons() {
       const optionGroups = this.querySelectorAll('.option-buttons:not(.custom-option-buttons)');
       
-      optionGroups.forEach(group => {
+      optionGroups.forEach((group, groupIndex) => {
         group.addEventListener('click', (e) => {
           const button = e.target.closest('.option-button');
           
@@ -97,11 +97,26 @@ if (!customElements.get('product-form')) {
             // Add selected to clicked button
             button.classList.add('selected');
             
-            // Update variant
-            this.updateVariant();
-            
             // Update option availability
             this.updateOptionAvailability();
+            
+            // Auto-select first available option in subsequent groups
+            optionGroups.forEach((nextGroup, nextGroupIndex) => {
+              if (nextGroupIndex > groupIndex) {
+                const selectedBtn = nextGroup.querySelector('.option-button.selected');
+                // If current selection is now disabled, auto-select first available
+                if (selectedBtn && selectedBtn.disabled) {
+                  selectedBtn.classList.remove('selected');
+                  const firstAvailable = nextGroup.querySelector('.option-button:not([disabled])');
+                  if (firstAvailable) {
+                    firstAvailable.classList.add('selected');
+                  }
+                }
+              }
+            });
+            
+            // Update variant
+            this.updateVariant();
             
             // Update shipping notice
             this.updateShippingNotice();
