@@ -2,25 +2,12 @@
   Renders the cart summary totals.
 {%- enddoc -%}
 
-{%- comment -%} Calculate estimated total cost from item_cost_variant {%- endcomment -%}
+{%- comment -%} Calculate estimated total cost from cost_variant (integer in cents) {%- endcomment -%}
 {%- assign total_cents = 0 -%}
 {%- for item in cart.items -%}
-  {%- assign item_cost_text = item.properties._item_cost_variant -%}
-  {%- if item_cost_text != blank -%}
-    {%- assign item_cost_clean = item_cost_text | remove: '$' | remove: ',' | remove: ' ' | strip -%}
-    {%- assign cost_parts = item_cost_clean | split: '.' -%}
-    {%- assign dollars = cost_parts[0] | plus: 0 -%}
-    {%- assign cents_str = cost_parts[1] | default: '00' -%}
-    
-    {%- if cents_str.size == 1 -%}
-      {%- assign cents_str = cents_str | append: '0' -%}
-    {%- elsif cents_str.size == 0 -%}
-      {%- assign cents_str = '00' -%}
-    {%- endif -%}
-    {%- assign cents = cents_str | plus: 0 -%}
-    
-    {%- assign item_cents = dollars | times: 100 | plus: cents -%}
-    {%- assign line_total_cents = item_cents | times: item.quantity -%}
+  {%- assign item_cost_cents = item.properties._cost_variant | default: 0 | plus: 0 -%}
+  {%- if item_cost_cents > 0 -%}
+    {%- assign line_total_cents = item_cost_cents | times: item.quantity -%}
     {%- assign total_cents = total_cents | plus: line_total_cents -%}
   {%- endif -%}
 {%- endfor -%}

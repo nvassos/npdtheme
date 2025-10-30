@@ -118,14 +118,21 @@
                   <div class="product-price-section" {{ block.shopify_attributes }}>
                     <div class="product-price">
                       {% liquid
-                        assign item_cost = current_variant.metafields.custom.item_cost_variant
-                        if item_cost != blank
-                          assign display_price = item_cost
+                        assign cost_cents = current_variant.metafields.custom.cost_variant | default: 0
+                        if cost_cents > 0
+                          assign cost_dollars = cost_cents | divided_by: 100
+                          assign cost_cents_remainder = cost_cents | modulo: 100
+                          if cost_cents_remainder < 10
+                            assign cents_display = '0' | append: cost_cents_remainder
+                          else
+                            assign cents_display = cost_cents_remainder
+                          endif
+                          assign display_price = '$' | append: cost_dollars | append: '.' | append: cents_display
                         else
                           assign display_price = current_variant.price | money
                         endif
                       %}
-                      <span class="price-current" data-base-price="{{ item_cost }}">{{ display_price }}</span>
+                      <span class="price-current" data-base-price-cents="{{ cost_cents }}">{{ display_price }}</span>
                     </div>
                     <div class="price-note">Estimated cost to your no-charge account</div>
                   </div>

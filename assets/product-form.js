@@ -222,18 +222,18 @@ if (!customElements.get('product-form')) {
       const priceElement = this.querySelector('.price-current');
       if (!priceElement) return;
       
-      const itemCost = variant.metafields?.custom?.item_cost_variant;
-      if (!itemCost) {
-        // Fallback to variant price if no item_cost_variant metafield
+      const costCents = variant.metafields?.custom?.cost_variant || 0;
+      if (!costCents || costCents === 0) {
+        // Fallback to variant price if no cost_variant metafield
         priceElement.textContent = this.formatMoney(variant.price);
-        priceElement.setAttribute('data-base-price', '');
+        priceElement.setAttribute('data-base-price-cents', '0');
         return;
       }
       
-      // Store base price in data attribute
-      priceElement.setAttribute('data-base-price', itemCost);
+      // Store base price in cents in data attribute
+      priceElement.setAttribute('data-base-price-cents', costCents);
       
-      // Calculate total: item_cost_variant × quantity
+      // Calculate total: cost_variant (cents) × quantity
       this.updatePriceByQuantity();
     }
     
@@ -241,20 +241,20 @@ if (!customElements.get('product-form')) {
       const priceElement = this.querySelector('.price-current');
       if (!priceElement) return;
       
-      const basePriceStr = priceElement.getAttribute('data-base-price');
-      if (!basePriceStr) return;
+      const basePriceCents = parseInt(priceElement.getAttribute('data-base-price-cents') || 0, 10);
+      if (!basePriceCents) return;
       
       const quantity = parseInt(this.quantityInput?.value || 1, 10);
       
-      // Parse the base price (could be "$10.00" or "10.00" or just "10")
-      const basePriceClean = basePriceStr.replace(/[^0-9.]/g, '');
-      const basePrice = parseFloat(basePriceClean) || 0;
+      // Calculate total in cents
+      const totalCents = basePriceCents * quantity;
       
-      // Calculate total
-      const totalPrice = basePrice * quantity;
+      // Convert to dollars
+      const dollars = Math.floor(totalCents / 100);
+      const cents = totalCents % 100;
       
       // Format and display
-      priceElement.textContent = `$${totalPrice.toFixed(2)}`;
+      priceElement.textContent = `$${dollars}.${cents.toString().padStart(2, '0')}`;
     }
 
 
@@ -347,9 +347,9 @@ if (!customElements.get('product-form')) {
         // Get the form data
         const formData = new FormData(this.form);
         
-        // Add item_cost_variant as a line item property
-        if (this.currentVariant && this.currentVariant.metafields?.custom?.item_cost_variant) {
-          formData.append('properties[_item_cost_variant]', this.currentVariant.metafields.custom.item_cost_variant);
+        // Add cost_variant (in cents) as a line item property
+        if (this.currentVariant && this.currentVariant.metafields?.custom?.cost_variant) {
+          formData.append('properties[_cost_variant]', this.currentVariant.metafields.custom.cost_variant);
         }
         
         const config = {
