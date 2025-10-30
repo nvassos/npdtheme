@@ -240,27 +240,7 @@
                     </ul>
                   {% endif %}
 
-                  <div>
-                    {%- comment -%} Display estimated cost from cost_variant instead of price {%- endcomment -%}
-                    {%- assign line_cost_variant = item.properties._cost_variant -%}
-                    {%- if line_cost_variant != blank -%}
-                      {%- assign line_cost_int = line_cost_variant | times: 1 -%}
-                      {%- assign line_total_amount = line_cost_int | times: item.quantity -%}
-                      {%- assign line_dollars = line_total_amount | divided_by: 100 -%}
-                      {%- assign line_cents = line_total_amount | modulo: 100 -%}
-                      {%- if line_cents < 10 -%}
-                        {%- assign line_cents_display = '0' | append: line_cents -%}
-                      {%- else -%}
-                        {%- assign line_cents_display = line_cents -%}
-                      {%- endif -%}
-                      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
-                        <span style="font-size: 10px; color: #666; font-style: italic;">*ESTIMATED COST*</span>
-                        <span style="font-weight: 600;">${{ line_dollars }}.{{ line_cents_display }}</span>
-                      </div>
-                    {%- else -%}
-                      <span class="visually-hidden">{{ 'content.price' | t }}</span>
-                      <span>{{ item.original_price | money }}</span>
-                    {%- endif -%}
+                  <div style="display: none;">
                   </div>
                 </td>
                 <td
