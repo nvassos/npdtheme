@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.title",
           "settings": {
-            "text": "<h2>{{ closest.page.title }}</h2>",
+            "text": "<p>Repod/RMA Requests</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -54,7 +54,7 @@
       "type": "custom-liquid",
       "name": "t:names.custom_liquid",
       "settings": {
-        "custom_liquid": "<!-- Header Start -->\n<h1 style=\"text-align: center; font-weight: 400;\" class=\"main-header\">Repod/RMA Requests</h1>\n<!-- Header End -->\n<!-- Request Button Start -->\n<form data-sanitized-target=\"_blank\" class=\"align-center\" method=\"get\" action=\"https://app.smartsheet.com/b/form/4a104b0d8c54437493f28229e799e4a5\" style=\"text-align: center;\"><button style=\"background: black; color: #ffffff; border-radius: 10px; border: 1px solid black; font-size: 2rem; padding: 10px 20px;\" type=\"submit\" class=\"hover-btn\">Enter a Request</button></form>\n<!--Request Button End-->",
+        "custom_liquid": "<!-- Header Start -->\n<h1 style=\"text-align: center; font-weight: 400;\" class=\"main-header\"></h1>\n<!-- Header End -->\n<!-- Request Button Start -->\n<form data-sanitized-target=\"_blank\" class=\"align-center\" method=\"get\" action=\"https://app.smartsheet.com/b/form/4a104b0d8c54437493f28229e799e4a5\" style=\"text-align: center;\"><button style=\"background: black; color: #ffffff; border-radius: 10px; border: 1px solid black; font-size: 2rem; padding: 10px 20px;\" type=\"submit\" class=\"hover-btn\">Enter a Request</button></form>\n<!--Request Button End-->",
         "color_scheme": "",
         "section_width": "page-width",
         "padding-block-start": 0,
