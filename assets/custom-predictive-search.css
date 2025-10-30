@@ -4,7 +4,9 @@ predictive-search-component.custom-search-enabled .predictive-search-results__wr
 predictive-search-component.custom-search-enabled .predictive-search-results__wrapper-queries,
 predictive-search-component.custom-search-enabled .predictive-search-results__card,
 predictive-search-component.custom-search-enabled .predictive-search-empty-state,
-predictive-search-component.custom-search-enabled .predictive-search-results__list {
+predictive-search-component.custom-search-enabled .predictive-search-results__list,
+.predictive-search-form__footer,
+.predictive-search__search-button {
   display: none !important;
 }
 
@@ -74,40 +76,43 @@ predictive-search-component.custom-search-enabled .predictive-search-results__li
 }
 
 .custom-search-results-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 20px;
   max-height: 500px;
   overflow-y: auto;
 }
 
 .custom-search-result-item {
   display: flex;
-  align-items: center;
-  padding: 16px 20px;
+  flex-direction: column;
+  padding: 16px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
-  border-bottom: 1px solid #F0F0F0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   text-decoration: none;
   color: inherit;
+  background: white;
 }
 
 .custom-search-result-item:hover {
-  background-color: #F8F9FA;
-}
-
-.custom-search-result-item:last-child {
-  border-bottom: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .custom-search-result-image-wrapper {
-  flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 140px;
   background: white;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
 }
 
 .custom-search-result-image {
@@ -124,9 +129,9 @@ predictive-search-component.custom-search-enabled .predictive-search-results__li
 }
 
 .custom-search-result-info {
-  flex: 1;
-  margin-left: 16px;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .custom-search-result-brand {
@@ -190,9 +195,14 @@ predictive-search-component.custom-search-enabled .predictive-search-results__li
 }
 
 @media (max-width: 749px) {
+  .custom-search-results-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
   .custom-search-result-image-wrapper {
-    width: 60px;
-    height: 60px;
+    height: 120px;
   }
 
   .custom-search-result-title {
@@ -200,7 +210,7 @@ predictive-search-component.custom-search-enabled .predictive-search-results__li
   }
 
   .custom-search-result-item {
-    padding: 12px 16px;
+    padding: 12px;
   }
 }
 

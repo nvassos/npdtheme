@@ -143,8 +143,8 @@ class CustomPredictiveSearch {
       return;
     }
 
-    // Display top 8 results
-    const resultsHTML = results.slice(0, 8).map(item => {
+    // Display top 12 results in grid
+    const resultsHTML = results.slice(0, 12).map(item => {
       const product = item;
       const imageUrl = item.image || '';
       const isQuickShip = item.tags && item.tags.some(tag => tag.toLowerCase().includes('quick ship'));
