@@ -56,15 +56,13 @@
               "inventory_quantity": {{ variant.inventory_quantity | json }},
               "metafields": {
                 "custom": {
-                  "quickship_inventory": {{ variant.metafields.custom.quickship_inventory | default: 0 | json }}
+                  "quickship_inventory": {{ variant.metafields.custom.quickship_inventory | default: 0 | json }},
+                  "item_cost": {{ variant.metafields.custom.item_cost | json }}
                 }
               }
             }{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
-        ],
-        "product_metafields": {
-          "item_cost": {{ product.metafields.custom.item_cost | json }}
-        }
+        ]
       }
     </script>
   </variant-selects>

@@ -14,7 +14,10 @@ if (!customElements.get('product-form')) {
       
       // Initialize shipping notice
       this.updateShippingNotice();
-  }
+      
+      // Initialize price calculation on page load
+      this.updatePriceByQuantity();
+    }
 
     setupQuantityControls() {
       const minusBtn = this.querySelector('.quantity-minus');
@@ -25,7 +28,8 @@ if (!customElements.get('product-form')) {
           const currentValue = parseInt(this.quantityInput.value) || 1;
           if (currentValue > 1) {
             this.quantityInput.value = currentValue - 1;
-  }
+            this.updatePriceByQuantity();
+          }
         });
       }
       
@@ -35,6 +39,7 @@ if (!customElements.get('product-form')) {
           const maxValue = parseInt(this.quantityInput.getAttribute('max')) || 99;
           if (currentValue < maxValue) {
             this.quantityInput.value = currentValue + 1;
+            this.updatePriceByQuantity();
           }
         });
       }
@@ -48,8 +53,15 @@ if (!customElements.get('product-form')) {
           
           if (value < min) this.quantityInput.value = min;
           if (value > max) this.quantityInput.value = max;
+          
+          this.updatePriceByQuantity();
         });
-  }
+        
+        // Also listen for input events (while typing)
+        this.quantityInput.addEventListener('input', () => {
+          this.updatePriceByQuantity();
+        });
+      }
     }
 
     setupOptionButtons() {
@@ -93,11 +105,6 @@ if (!customElements.get('product-form')) {
       
       const data = JSON.parse(variantsJson.textContent);
       const variants = data.variants || data; // Support both new and old format
-      
-      // Debug: Log variant data
-      console.log('Product variants:', variants);
-      console.log('Total variants:', variants.length);
-      
       const optionGroups = variantSelector.querySelectorAll('.option-buttons:not(.custom-option-buttons)');
       
       // Get currently selected options
@@ -177,7 +184,13 @@ if (!customElements.get('product-form')) {
         // Update variant ID
         this.variantIdInput.value = matchingVariant.id;
         
-        // Update availability (price is product-level from metafield, not variant-level)
+        // Store current variant for price calculations
+        this.currentVariant = matchingVariant;
+        
+        // Update price based on variant item_cost × quantity
+        this.updatePrice(matchingVariant);
+        
+        // Update availability
         this.updateAvailability(matchingVariant);
         
         // Update SKU
@@ -186,6 +199,45 @@ if (!customElements.get('product-form')) {
         // Update URL
         this.updateURL(matchingVariant.id);
       }
+    }
+    
+    updatePrice(variant) {
+      const priceElement = this.querySelector('.price-current');
+      if (!priceElement) return;
+      
+      const itemCost = variant.metafields?.custom?.item_cost;
+      if (!itemCost) {
+        // Fallback to variant price if no item_cost metafield
+        priceElement.textContent = this.formatMoney(variant.price);
+        priceElement.setAttribute('data-base-price', '');
+        return;
+      }
+      
+      // Store base price in data attribute
+      priceElement.setAttribute('data-base-price', itemCost);
+      
+      // Calculate total: item_cost × quantity
+      this.updatePriceByQuantity();
+    }
+    
+    updatePriceByQuantity() {
+      const priceElement = this.querySelector('.price-current');
+      if (!priceElement) return;
+      
+      const basePriceStr = priceElement.getAttribute('data-base-price');
+      if (!basePriceStr) return;
+      
+      const quantity = parseInt(this.quantityInput?.value || 1, 10);
+      
+      // Parse the base price (could be "$10.00" or "10.00" or just "10")
+      const basePriceClean = basePriceStr.replace(/[^0-9.]/g, '');
+      const basePrice = parseFloat(basePriceClean) || 0;
+      
+      // Calculate total
+      const totalPrice = basePrice * quantity;
+      
+      // Format and display
+      priceElement.textContent = `$${totalPrice.toFixed(2)}`;
     }
 
 

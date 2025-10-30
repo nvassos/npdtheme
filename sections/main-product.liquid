@@ -118,14 +118,14 @@
                   <div class="product-price-section" {{ block.shopify_attributes }}>
                     <div class="product-price">
                       {% liquid
-                        assign item_cost = product.metafields.custom.item_cost
+                        assign item_cost = current_variant.metafields.custom.item_cost
                         if item_cost != blank
                           assign display_price = item_cost
                         else
                           assign display_price = current_variant.price | money
                         endif
                       %}
-                      <span class="price-current">{{ display_price }}</span>
+                      <span class="price-current" data-base-price="{{ item_cost }}">{{ display_price }}</span>
                     </div>
                     <div class="price-note">Estimated cost to your no-charge account</div>
                   </div>
