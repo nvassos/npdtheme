@@ -83,6 +83,53 @@
   font-style: italic;
 }
 
+/* Dimensions */
+.product-dimensions {
+  font-size: 16px;
+  color: #18223E;
+  margin-bottom: 20px;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #D4DCE7;
+}
+
+/* Custom Input Section */
+.product-custom-input-section {
+  margin-bottom: 30px;
+}
+
+.custom-input-label {
+  display: block;
+  font-size: 14px;
+  color: #18223E;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.custom-input-field {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #D4DCE7;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #18223E;
+  background: white;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.custom-input-field:focus {
+  outline: none;
+  border-color: #5B8DB8;
+}
+
+.custom-input-field::placeholder {
+  color: #999;
+}
+
 /* Shipping Notice */
 .product-shipping-notice {
   background: #8B7355;

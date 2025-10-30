@@ -6,7 +6,75 @@
     },
     "main": {
       "type": "main-product-acrylic",
-      "settings": {}
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "sku": {
+          "type": "sku",
+          "settings": {}
+        },
+        "dimensions": {
+          "type": "dimensions",
+          "settings": {}
+        },
+        "custom_input": {
+          "type": "custom_input",
+          "settings": {
+            "label": "ENTER PRODUCT MODEL NUMBER FOR CUSTOMIZATION",
+            "property_name": "Model Number",
+            "placeholder": "Enter Model Number"
+          }
+        },
+        "shipping_notice": {
+          "type": "shipping_notice",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "sku",
+        "dimensions",
+        "custom_input",
+        "shipping_notice",
+        "variant_picker",
+        "quantity",
+        "price",
+        "buy_buttons",
+        "description"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "gallery_layout": "stacked"
+      }
     }
   },
   "order": [
