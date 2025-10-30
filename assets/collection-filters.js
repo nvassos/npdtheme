@@ -427,13 +427,16 @@ class CollectionFilters {
       });
 
       if (matchScore > 0) {
+        // Use matched variant's info if available, otherwise use first variant
+        const displayVariant = matchedVariant || product.variants[0];
+        
         results.push({
           product,
           matchScore,
           matchReasons,
           matchedVariant,
-          primarySKU: product.variants[0]?.sku || '',
-          deposcoId: product.variants.find(v => v.deposco_id)?.deposco_id || ''
+          primarySKU: displayVariant?.sku || '',
+          deposcoId: displayVariant?.deposco_id || ''
         });
       }
     });
@@ -472,17 +475,17 @@ class CollectionFilters {
         let productUrl = `/products/${product.handle}`;
         if (result.matchedVariant && result.matchedVariant.id) {
           productUrl += `?variant=${result.matchedVariant.id}`;
+          console.log('Linking to variant:', result.matchedVariant.id, 'SKU:', result.primarySKU, 'Deposco:', result.deposcoId);
         }
 
         return `
-          <a href="${productUrl}" class="search-result-item">
+          <a href="${productUrl}" class="search-result-item" data-deposco="${result.deposcoId || ''}">
             ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" class="search-result-image" loading="lazy">` : '<div class="search-result-image"></div>'}
             <div class="search-result-info">
               ${product.vendor ? `<div class="search-result-brand">${product.vendor}</div>` : ''}
               <div class="search-result-title">${product.title}</div>
               <div class="search-result-meta">
                 ${result.primarySKU ? `<span class="search-result-sku">SKU: ${result.primarySKU}</span>` : ''}
-                ${result.deposcoId ? `<span class="search-result-deposco">Deposco: ${result.deposcoId}</span>` : ''}
                 ${isQuickShip ? '<span class="search-result-badge">Quick Ship</span>' : ''}
               </div>
             </div>
