@@ -11,111 +11,48 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "footer_simple_mh3i7F": {
+      "type": "footer-simple",
       "blocks": {
-        "divider_hFm3am": {
-          "type": "_divider",
-          "name": "t:names.divider",
+        "link_Cdf7L6": {
+          "type": "link",
           "settings": {
-            "thickness": 1,
-            "corner_radius": "square",
-            "width_percent": 100,
-            "padding-block-start": 0,
-            "padding-block-end": 0
-          },
-          "blocks": {}
+            "link_text": "Terms & Conditions",
+            "link": "/pages/terms"
+          }
         },
-        "footer_utilities_KRaGcH": {
-          "type": "footer-utilities",
-          "name": "t:names.footer_utilities",
+        "link_jRhQbi": {
+          "type": "link",
           "settings": {
-            "divider_thickness": 0,
-            "padding-block-start": 12,
-            "padding-block-end": 0
-          },
-          "blocks": {
-            "copyright": {
-              "type": "_footer-copyright",
-              "static": true,
-              "settings": {
-                "show_powered_by": true,
-                "font_size": "0.75rem",
-                "case": "none"
-              },
-              "blocks": {}
-            },
-            "policy_list": {
-              "type": "_footer-policy-list",
-              "static": true,
-              "settings": {
-                "font_size": "0.75rem",
-                "case": "none"
-              },
-              "blocks": {}
-            },
-            "social_icons": {
-              "type": "_footer-social-icons",
-              "static": true,
-              "settings": {},
-              "blocks": {
-                "social_link_JnLXB6": {
-                  "type": "_social-link",
-                  "name": "Facebook",
-                  "settings": {
-                    "link": "https://www.facebook.com/"
-                  },
-                  "blocks": {}
-                },
-                "social_link_9i9EqD": {
-                  "type": "_social-link",
-                  "name": "Instagram ",
-                  "settings": {
-                    "link": "https://www.instagram.com/"
-                  },
-                  "blocks": {}
-                },
-                "social_link_kd8UUt": {
-                  "type": "_social-link",
-                  "name": "TikTok",
-                  "settings": {
-                    "link": "https://www.tiktok.com/"
-                  },
-                  "blocks": {}
-                },
-                "social_link_Qw9AXL": {
-                  "type": "_social-link",
-                  "name": "X / Twitter",
-                  "settings": {
-                    "link": "https://x.com/"
-                  },
-                  "blocks": {}
-                },
-                "social_link_aAH768": {
-                  "type": "_social-link",
-                  "name": "YouTube",
-                  "settings": {
-                    "link": "https://www.youtube.com/"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "social_link_JnLXB6",
-                "social_link_9i9EqD",
-                "social_link_kd8UUt",
-                "social_link_Qw9AXL",
-                "social_link_aAH768"
-              ]
-            }
-          },
-          "block_order": []
+            "link_text": "Privacy Statement",
+            "link": "/pages/privacy"
+          }
+        },
+        "link_KNJKdm": {
+          "type": "link",
+          "settings": {
+            "link_text": "Masco Brands",
+            "link": "https://www.masco.com"
+          }
+        },
+        "text_KbUCCx": {
+          "type": "text",
+          "settings": {
+            "text": "© 2025 Displays by MPS"
+          }
         }
       },
       "block_order": [
-        "divider_hFm3am",
-        "footer_utilities_KRaGcH"
+        "link_Cdf7L6",
+        "link_jRhQbi",
+        "link_KNJKdm",
+        "text_KbUCCx"
       ],
+      "name": "Simple Footer",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
       "name": "Footer",
       "settings": {
         "content_direction": "column",
@@ -125,7 +62,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 48,
+        "gap": 0,
         "section_width": "page-width",
         "section_height": "",
         "color_scheme": "scheme-1",
@@ -133,11 +70,12 @@
         "video_position": "cover",
         "background_image_position": "cover",
         "padding-block-start": 0,
-        "padding-block-end": 30
+        "padding-block-end": 0
       }
     }
   },
   "order": [
+    "footer_simple_mh3i7F",
     "footer"
   ]
 }
