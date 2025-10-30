@@ -105,13 +105,15 @@ if (!customElements.get('product-form')) {
             optionGroups.forEach((nextGroup, nextGroupIndex) => {
               if (nextGroupIndex > groupIndex) {
                 const selectedBtn = nextGroup.querySelector('.option-button.selected');
-                // If current selection is now hidden, auto-select first available
-                if (selectedBtn && selectedBtn.style.display === 'none') {
-                  selectedBtn.classList.remove('selected');
+                // If current selection is now hidden or no selection exists, auto-select first available
+                if ((selectedBtn && selectedBtn.style.display === 'none') || !selectedBtn) {
+                  if (selectedBtn) {
+                    selectedBtn.classList.remove('selected');
+                  }
                   // Find first visible button
                   const allButtons = nextGroup.querySelectorAll('.option-button');
                   const firstAvailable = Array.from(allButtons).find(btn => btn.style.display !== 'none');
-                  if (firstAvailable) {
+                  if (firstAvailable && !firstAvailable.classList.contains('selected')) {
                     firstAvailable.classList.add('selected');
                     selectionChanged = true;
                   }
