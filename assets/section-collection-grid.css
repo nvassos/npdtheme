@@ -15,14 +15,13 @@
   display: grid;
   grid-template-columns: 400px 1fr;
   gap: 60px;
-  align-items: start;
+  align-items: center;
 }
 
 .collection-grid-left {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  align-self: start;
 }
 
 .collection-grid-eyebrow {
