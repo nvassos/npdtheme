@@ -197,7 +197,7 @@
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
+@media (max-width: 1240px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
