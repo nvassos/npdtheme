@@ -66,8 +66,9 @@
   {% else %}
     <header-menu
       ref="headerMenu"
-      class="header-menu mobile:hidden"
+      class="header-menu mobile:hidden{% if block_settings.menu_style == 'text' %} header-menu--text-only{% endif %}"
       data-animation-delay="{{ animation_speed }}"
+      data-menu-style="{{ block_settings.menu_style }}"
       {{ block.shopify_attributes }}
       style="--submenu-animation-speed: {{ animation_speed }}ms;{{ title_case_style }}"
     >
@@ -285,15 +286,89 @@
     box-shadow: var(--shadow-drawer);
     visibility: hidden;
     background-color: var(--color-background);
-    position: fixed;
+    position: absolute;
     width: 100%;
     left: 0;
-    right: 0;
-    top: var(--header-height);
+    top: calc(100% - 1px + var(--border-bottom-width));
     z-index: var(--layer-header-menu);
     padding-inline: var(--padding-inline);
     clip-path: rect(0 100% var(--submenu-height) 0); /* stylelint-disable-line */
     transition: clip-path var(--submenu-animation-speed) var(--ease-out-cubic);
+  }
+
+  /* Simple dropdown for Text Only style - override all the complex Horizon stuff */
+  .header-menu--text-only .menu-list__list-item {
+    position: relative;
+  }
+
+  .header-menu--text-only .menu-list__list-item > .menu-list__submenu {
+    position: absolute !important;
+    width: auto !important;
+    min-width: 280px !important;
+    max-width: 400px !important;
+    left: 0 !important;
+    top: calc(100% + 5px) !important;
+    padding: 16px 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+    border-radius: 8px !important;
+    clip-path: none !important;
+    transform: none !important;
+    transition: opacity 0.2s ease, visibility 0.2s ease !important;
+    margin: 0 !important;
+  }
+
+  .header-menu--text-only .menu-list__submenu-inner {
+    padding: 0 !important;
+    max-height: 500px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    grid-column: unset !important;
+    display: block !important;
+  }
+
+  .header-menu--text-only .mega-menu {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .header-menu--text-only .section {
+    grid-template-columns: 1fr !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .header-menu--text-only .mega-menu__grid {
+    display: block !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .header-menu--text-only .mega-menu__column {
+    grid-column: unset !important;
+    display: block !important;
+  }
+
+  .header-menu--text-only .mega-menu__link {
+    padding: 10px 24px !important;
+    white-space: nowrap !important;
+    display: block !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .header-menu--text-only .mega-menu__link:hover {
+    background-color: rgba(0,0,0,0.05) !important;
+  }
+
+  .header-menu--text-only .mega-menu__link--parent {
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Disable the complex background animation for text-only */
+  .header-menu--text-only .overflow-menu::after {
+    display: none !important;
   }
 
   /* Show the submenus on hover */
