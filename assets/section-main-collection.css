@@ -405,16 +405,25 @@
   flex-wrap: wrap;
 }
 
-.search-result-sku,
-.search-result-deposco {
-  font-size: 11px;
-  color: #999;
-  font-style: italic;
+.search-result-sku {
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+  background: #F0F0F0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
 }
 
 .search-result-deposco {
+  font-size: 12px;
   color: #5B8DB8;
-  font-weight: 500;
+  font-family: monospace;
+  background: #EBF0F9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+  font-weight: 600;
 }
 
 .search-result-badge {

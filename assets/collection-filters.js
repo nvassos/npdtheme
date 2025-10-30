@@ -441,6 +441,7 @@ class CollectionFilters {
               <div class="search-result-title">${product.title}</div>
               <div class="search-result-meta">
                 ${result.primarySKU ? `<span class="search-result-sku">SKU: ${result.primarySKU}</span>` : ''}
+                ${result.deposcoId ? `<span class="search-result-deposco">ID: ${result.deposcoId}</span>` : ''}
                 ${isQuickShip ? '<span class="search-result-badge">Quick Ship</span>' : ''}
               </div>
             </div>
