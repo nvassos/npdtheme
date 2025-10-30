@@ -147,18 +147,21 @@
   border-color: #18223E;
 }
 
-.option-button:disabled {
+.option-button:disabled,
+.option-button.unavailable {
   opacity: 0.4;
   cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.option-button.selected:disabled,
+.option-button.selected.unavailable {
+  opacity: 1;
+  text-decoration: none;
 }
 
 .option-name {
   font-weight: 500;
-}
-
-.option-stock {
-  font-size: 12px;
-  opacity: 0.8;
 }
 
 /* Quantity Section */

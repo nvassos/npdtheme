@@ -71,8 +71,70 @@ if (!customElements.get('product-form')) {
             // Update variant
             this.updateVariant();
             
+            // Update option availability
+            this.updateOptionAvailability();
+            
             // Update shipping notice
             this.updateShippingNotice();
+          }
+        });
+      });
+      
+      // Initialize option availability on load
+      this.updateOptionAvailability();
+    }
+    
+    updateOptionAvailability() {
+      const variantSelector = this.querySelector('variant-selects');
+      if (!variantSelector) return;
+      
+      const variantsJson = variantSelector.querySelector('.product-variants-json');
+      if (!variantsJson) return;
+      
+      const variants = JSON.parse(variantsJson.textContent);
+      const optionGroups = variantSelector.querySelectorAll('.option-buttons:not(.custom-option-buttons)');
+      
+      // Get currently selected options
+      const selectedOptions = [];
+      optionGroups.forEach((group, index) => {
+        const selected = group.querySelector('.option-button.selected');
+        selectedOptions[index] = selected ? selected.dataset.optionValue : null;
+      });
+      
+      // Update each option group
+      optionGroups.forEach((group, optionIndex) => {
+        const buttons = group.querySelectorAll('.option-button');
+        
+        buttons.forEach(button => {
+          const optionValue = button.dataset.optionValue;
+          
+          // Check if this option value is available with current selections
+          const isAvailable = variants.some(variant => {
+            if (!variant.available) return false;
+            
+            // Check if variant matches this option value
+            const variantOptionValue = variant[`option${optionIndex + 1}`];
+            if (variantOptionValue !== optionValue) return false;
+            
+            // Check if variant matches other selected options
+            for (let i = 0; i < selectedOptions.length; i++) {
+              if (i !== optionIndex && selectedOptions[i]) {
+                if (variant[`option${i + 1}`] !== selectedOptions[i]) {
+                  return false;
+                }
+              }
+            }
+            
+            return true;
+          });
+          
+          // Update button state
+          if (isAvailable || button.classList.contains('selected')) {
+            button.disabled = false;
+            button.classList.remove('unavailable');
+          } else {
+            button.disabled = true;
+            button.classList.add('unavailable');
           }
         });
       });
@@ -151,6 +213,22 @@ if (!customElements.get('product-form')) {
           this.addButton.disabled = true;
           this.addButton.textContent = 'Sold Out';
         }
+      }
+      
+      // Update quantity note with variant inventory
+      this.updateQuantityNote(variant);
+    }
+    
+    updateQuantityNote(variant) {
+      const quantityNote = document.getElementById('quantity-note');
+      if (!quantityNote) return;
+      
+      const inventory = variant.inventory_quantity || 0;
+      
+      if (inventory > 0) {
+        quantityNote.innerHTML = `<span class="quick-ship-available" data-inventory="${inventory}">${inventory} quick ship available</span><br>Quantities beyond this are made to order and billed to your no-charge account.`;
+      } else {
+        quantityNote.innerHTML = 'Quantities are made to order and billed to your no-charge account.';
       }
     }
 

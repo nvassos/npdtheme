@@ -103,16 +103,14 @@
                         >
                         <button type="button" class="quantity-btn quantity-plus" aria-label="Increase quantity">+</button>
                       </div>
-                      {% if current_variant.inventory_quantity > 0 %}
-                        <div class="quantity-note">
-                          <span class="quick-ship-available">{{ current_variant.inventory_quantity }} quick ship available</span><br>
+                      <div class="quantity-note" id="quantity-note">
+                        {% if current_variant.inventory_quantity > 0 %}
+                          <span class="quick-ship-available" data-inventory="{{ current_variant.inventory_quantity }}">{{ current_variant.inventory_quantity }} quick ship available</span><br>
                           Quantities beyond this are made to order and billed to your no-charge account.
-                        </div>
-                      {% else %}
-                        <div class="quantity-note">
+                        {% else %}
                           Quantities are made to order and billed to your no-charge account.
-                        </div>
-                      {% endif %}
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
 
