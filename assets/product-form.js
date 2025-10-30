@@ -155,7 +155,31 @@ if (!customElements.get('product-form')) {
             const variantOptionValue = variant[`option${optionIndex + 1}`];
             if (variantOptionValue !== optionValue) return false;
             
-            // Check if variant matches other selected options
+            // For option 1 (COLOR), allow if ANY variant exists with this color
+            if (optionIndex === 0) {
+              return true;
+            }
+            
+            // For option 2 (STYLE), check if variant matches option 1 selection (if any)
+            if (optionIndex === 1) {
+              if (selectedOptions[0] && variant.option1 !== selectedOptions[0]) {
+                return false;
+              }
+              return true;
+            }
+            
+            // For option 3 (ACRYLIC), check if variant matches option 1 and 2 selections
+            if (optionIndex === 2) {
+              if (selectedOptions[0] && variant.option1 !== selectedOptions[0]) {
+                return false;
+              }
+              if (selectedOptions[1] && variant.option2 !== selectedOptions[1]) {
+                return false;
+              }
+              return true;
+            }
+            
+            // Fallback for any additional options
             for (let i = 0; i < selectedOptions.length; i++) {
               if (i !== optionIndex && selectedOptions[i]) {
                 if (variant[`option${i + 1}`] !== selectedOptions[i]) {
@@ -175,7 +199,7 @@ if (!customElements.get('product-form')) {
           if (variantExists) {
             button.disabled = false;
             button.classList.remove('unavailable');
-        } else {
+          } else {
             button.disabled = true;
             button.classList.add('unavailable');
           }
