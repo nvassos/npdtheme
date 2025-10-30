@@ -777,14 +777,19 @@
     padding: 15px;
   }
 
+  .collection-page-wrapper .product-brand,
+  .product-grid .product-brand {
+    font-size: 11px;
+  }
+
   .collection-page-wrapper .product-name,
   .product-grid .product-name {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .collection-page-wrapper .product-sku,
   .product-grid .product-sku {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .pagination-list {
@@ -806,7 +811,7 @@
 
 @media (max-width: 480px) {
   .product-grid-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .collection-page-container {

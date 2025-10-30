@@ -141,19 +141,23 @@
     gap: 15px;
   }
 
+  .product-brand {
+    font-size: 11px;
+  }
+
   .product-name {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .product-sku-primary,
   .product-sku-secondary {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 
 @media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
