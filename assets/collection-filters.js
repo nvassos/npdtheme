@@ -363,12 +363,12 @@ class CollectionFilters {
   }
 
   async loadAllProducts() {
-    // Load products from embedded JSON (includes metafields and deposco_id)
+    // Load ALL products from embedded JSON (includes metafields)
     const productsData = document.getElementById('collection-products-data');
     if (productsData) {
       try {
         this.allProducts = JSON.parse(productsData.textContent);
-        console.log('Loaded products with metafields:', this.allProducts.length);
+        console.log('✅ Loaded ALL products:', this.allProducts.length);
         
         // Debug: Check if deposco_id is present
         const productsWithDeposco = this.allProducts.filter(p => 
@@ -390,7 +390,7 @@ class CollectionFilters {
     const lowerQuery = query.toLowerCase();
     const results = [];
 
-    // Search through all products
+    // Search through all products (front-end search with metafields)
     this.allProducts.forEach(product => {
       let matchScore = 0;
       let matchReasons = [];
