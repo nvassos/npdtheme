@@ -8,7 +8,9 @@
   {%- assign item_cost_value = item.properties._cost_variant -%}
   {%- if item_cost_value != blank -%}
     {%- assign item_cost_int = item_cost_value | times: 1 -%}
-    {%- assign line_total = item_cost_int | times: item.quantity -%}
+    {%- comment -%} Apply 60% discount (multiply by 40, divide by 100) {%- endcomment -%}
+    {%- assign discounted_item_cost = item_cost_int | times: 40 | divided_by: 100 -%}
+    {%- assign line_total = discounted_item_cost | times: item.quantity -%}
     {%- assign total_amount = total_amount | plus: line_total -%}
   {%- endif -%}
 {%- endfor -%}

@@ -40,13 +40,15 @@
       id="cart-form"
       method="post"
     >
-      {%- comment -%} Calculate and store estimated total cost as cart attribute {%- endcomment -%}
+      {%- comment -%} Calculate and store estimated total cost as cart attribute (with 60% discount) {%- endcomment -%}
       {%- assign total_amount_attr = 0 -%}
       {%- for item in cart.items -%}
         {%- assign item_cost_value_attr = item.properties._cost_variant -%}
         {%- if item_cost_value_attr != blank -%}
           {%- assign item_cost_int_attr = item_cost_value_attr | times: 1 -%}
-          {%- assign line_total_attr = item_cost_int_attr | times: item.quantity -%}
+          {%- comment -%} Apply 60% discount (multiply by 40, divide by 100) {%- endcomment -%}
+          {%- assign discounted_item_attr = item_cost_int_attr | times: 40 | divided_by: 100 -%}
+          {%- assign line_total_attr = discounted_item_attr | times: item.quantity -%}
           {%- assign total_amount_attr = total_amount_attr | plus: line_total_attr -%}
         {%- endif -%}
       {%- endfor -%}
@@ -245,7 +247,9 @@
                     {%- assign line_cost_variant = item.properties._cost_variant -%}
                     {%- if line_cost_variant != blank -%}
                       {%- assign line_cost_int = line_cost_variant | times: 1 -%}
-                      {%- assign line_total_amount = line_cost_int | times: item.quantity -%}
+                      {%- comment -%} Apply 60% discount (multiply by 40, divide by 100) {%- endcomment -%}
+                      {%- assign discounted_line_cost = line_cost_int | times: 40 | divided_by: 100 -%}
+                      {%- assign line_total_amount = discounted_line_cost | times: item.quantity -%}
                       {%- assign line_dollars = line_total_amount | divided_by: 100 -%}
                       {%- assign line_cents = line_total_amount | modulo: 100 -%}
                       {%- if line_cents < 10 -%}
