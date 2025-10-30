@@ -1,0 +1,204 @@
+{% comment %}
+  Custom Search Results Section
+  Uses external API and matches collection grid design
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'section-main-collection.css' | asset_url }}">
+<script src="{{ 'custom-search-api.js' | asset_url }}" defer></script>
+
+<div class="collection-page-wrapper">
+  <div class="collection-page-container" style="display: block;">
+    
+    <!-- Search Header -->
+    <div class="search-header" style="margin-bottom: 30px;">
+      <h1 class="search-title" style="color: #18223E; font-size: 32px; font-weight: 600; margin-bottom: 20px;">
+        Search Results
+      </h1>
+      
+      <!-- Search Input -->
+      <div class="search-bar-container">
+        <div class="search-bar">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input 
+            type="text" 
+            id="custom-search-input"
+            class="search-input" 
+            placeholder="Search by product name, SKU, or Deposco ID..."
+            value="{{ search.terms | escape }}"
+            autocomplete="off"
+          >
+          <button class="search-clear" id="custom-search-clear" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="search-loading" class="search-loading" style="display: none; text-align: center; padding: 40px; color: #6B7280;">
+      <div class="spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #5B8DB8; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+      Searching...
+    </div>
+
+    <!-- Results Count -->
+    <div id="search-results-count" class="search-results-count" style="margin-bottom: 20px; color: #6B7280; font-size: 14px;">
+    </div>
+
+    <!-- Search Results Grid -->
+    <div id="custom-search-results-grid" class="product-grid-wrapper" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;">
+      <!-- Results will be inserted here by JS -->
+    </div>
+
+    <!-- No Results Message -->
+    <div id="no-results-message" class="no-results" style="display: none; text-align: center; padding: 60px 20px;">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style="margin: 0 auto 20px; opacity: 0.3;">
+        <circle cx="32" cy="32" r="28" stroke="#5B8DB8" stroke-width="4"/>
+        <path d="M54 54l20 20" stroke="#5B8DB8" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <h2 style="color: #18223E; font-size: 24px; margin-bottom: 10px;">No results found</h2>
+      <p style="color: #6B7280; font-size: 16px;">Try searching with different keywords</p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.search-header {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.search-bar-container {
+  position: relative;
+  max-width: 800px;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #D4DCE7;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.search-bar:focus-within {
+  border-color: #5B8DB8;
+  box-shadow: 0 0 0 3px rgba(91, 141, 184, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: #6B7280;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 45px 14px 50px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #18223E;
+  outline: none;
+  font-family: "Work Sans", sans-serif;
+}
+
+.search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.search-clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: #9CA3AF;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear:hover {
+  color: #18223E;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+  #custom-search-results-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 992px) {
+  #custom-search-results-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #custom-search-results-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .search-header {
+    padding: 20px;
+  }
+  
+  .collection-page-container {
+    padding: 0 20px !important;
+  }
+}
+</style>
+
+<script>
+  // Initialize search with query from URL
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    
+    if (query) {
+      document.getElementById('custom-search-input').value = query;
+      document.getElementById('custom-search-clear').style.display = 'flex';
+      
+      // Trigger search
+      if (window.CustomSearchAPI) {
+        window.CustomSearchAPI.performSearch(query);
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Search Results",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This section uses the external search API and matches the collection grid design."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Search Results"
+    }
+  ]
+}
+{% endschema %}
+
