@@ -91,7 +91,13 @@ if (!customElements.get('product-form')) {
       const variantsJson = variantSelector.querySelector('.product-variants-json');
       if (!variantsJson) return;
       
-      const variants = JSON.parse(variantsJson.textContent);
+      const data = JSON.parse(variantsJson.textContent);
+      const variants = data.variants || data; // Support both new and old format
+      
+      // Debug: Log variant data
+      console.log('Product variants:', variants);
+      console.log('Total variants:', variants.length);
+      
       const optionGroups = variantSelector.querySelectorAll('.option-buttons:not(.custom-option-buttons)');
       
       // Get currently selected options
@@ -146,7 +152,8 @@ if (!customElements.get('product-form')) {
       const variantsJson = variantSelector.querySelector('.product-variants-json');
       if (!variantsJson) return;
       
-      const variants = JSON.parse(variantsJson.textContent);
+      const data = JSON.parse(variantsJson.textContent);
+      const variants = data.variants || data; // Support both new and old format
 
       // Get selected options
       const selectedOptions = [];
@@ -170,10 +177,7 @@ if (!customElements.get('product-form')) {
         // Update variant ID
         this.variantIdInput.value = matchingVariant.id;
         
-        // Update price
-        this.updatePrice(matchingVariant);
-
-        // Update availability
+        // Update availability (price is product-level from metafield, not variant-level)
         this.updateAvailability(matchingVariant);
         
         // Update SKU
@@ -184,23 +188,6 @@ if (!customElements.get('product-form')) {
       }
     }
 
-    updatePrice(variant) {
-      const priceElement = this.querySelector('.price-current');
-      const compareElement = this.querySelector('.price-compare');
-      
-      if (priceElement && variant.price !== undefined) {
-        priceElement.textContent = this.formatMoney(variant.price);
-      }
-      
-      if (compareElement && variant.compare_at_price) {
-        if (variant.compare_at_price > variant.price) {
-          compareElement.textContent = this.formatMoney(variant.compare_at_price);
-          compareElement.style.display = 'inline';
-        } else {
-          compareElement.style.display = 'none';
-        }
-      }
-    }
 
     updateAvailability(variant) {
       if (this.addButton) {
@@ -260,7 +247,8 @@ if (!customElements.get('product-form')) {
       const variantsJson = variantSelector.querySelector('.product-variants-json');
       if (!variantsJson) return;
       
-      const variants = JSON.parse(variantsJson.textContent);
+      const data = JSON.parse(variantsJson.textContent);
+      const variants = data.variants || data; // Support both new and old format
       const currentVariantId = this.variantIdInput.value;
       const currentVariant = variants.find(v => v.id == currentVariantId);
       

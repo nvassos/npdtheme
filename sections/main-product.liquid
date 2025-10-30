@@ -117,10 +117,15 @@
                 {%- when 'price' -%}
                   <div class="product-price-section" {{ block.shopify_attributes }}>
                     <div class="product-price">
-                      {% if current_variant.compare_at_price > current_variant.price %}
-                        <span class="price-compare">{{ current_variant.compare_at_price | money }}</span>
-                      {% endif %}
-                      <span class="price-current">{{ current_variant.price | money }}</span>
+                      {% liquid
+                        assign item_cost = product.metafields.custom.item_cost
+                        if item_cost != blank
+                          assign display_price = item_cost
+                        else
+                          assign display_price = current_variant.price | money
+                        endif
+                      %}
+                      <span class="price-current">{{ display_price }}</span>
                     </div>
                     <div class="price-note">Estimated cost to your no-charge account</div>
                   </div>
