@@ -56,8 +56,8 @@
       "settings": {
         "eyebrow": "Featured Collection",
         "title": "Essa for Everything",
-        "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
-        "button_text": "Browse Acrylics",
+        "description": "Essa for everything content goes here to showcase how amazing Essa is",
+        "button_text": "Browse Essa Collection",
         "button_link": "/collections/acrylics",
         "collection": "essa",
         "products_to_show": 4,
