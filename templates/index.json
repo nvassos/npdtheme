@@ -16,12 +16,12 @@
         "description": "Displays by MPS provides everything you need to maintain your Brizo, Delta, or Peerless displays. Order custom displays or request drilled acrylics to mount faucets, fulfilled quickly by MPS.",
         "button_text": "Shop Custom Displays",
         "button_link": "/collections/custom-displays",
-        "card_1_title": "New Product Display Launches",
+        "card_1_title": "New Product Display Launches - Not active yet",
         "card_1_description": "Order bucket displays for your agency's showroom locations.",
-        "card_1_link": "/pages/npd-site",
+        "card_1_link": "",
         "card_2_title": "Showroom Display Fixtures",
         "card_2_description": "Order new or refurbished displays, replacement parts, or request service.",
-        "card_2_link": "/collections/showroom-fixtures"
+        "card_2_link": "https://displaysystemsbymps.myshopify.com/"
       }
     },
     "quick_ship": {
@@ -45,7 +45,7 @@
         "title": "Fresh on Display.",
         "description": "The latest additions to our lineup. Keep your displays current with fresh styles and finishes.",
         "button_text": "Browse New Products",
-        "button_link": "/collections/new-products",
+        "button_link": "shopify://collections",
         "collection": "",
         "products_to_show": 4,
         "show_border_top": true
@@ -56,8 +56,8 @@
       "settings": {
         "eyebrow": "Featured Collection",
         "title": "Essa for Everything",
-        "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
-        "button_text": "Browse Acrylics",
+        "description": "Essa for everything content goes here to showcase how amazing Essa is",
+        "button_text": "Browse Essa Collection",
         "button_link": "/collections/acrylics",
         "collection": "essa",
         "products_to_show": 4,

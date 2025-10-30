@@ -21,7 +21,7 @@
           "settings": {
             "title": "Brizo Rectangle",
             "description": "For Brizo products; available in 5.5, 6, 11, and 15 inch predrilled slabs.",
-            "image": "",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_3c32027c-665a-4a6b-aba8-1b942eb98394_1.png",
             "filter_tag": "brizo-rectangle"
           }
         },
@@ -30,7 +30,7 @@
           "settings": {
             "title": "Delta Rectangle",
             "description": "For Delta products; available in 6, 11, and 15 inch predrilled slabs.",
-            "image": "",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_1_2b73316f-03d7-4a42-9886-5fcdea8dd69a.png",
             "filter_tag": "delta-rectangle"
           }
         },
@@ -39,7 +39,7 @@
           "settings": {
             "title": "Delta Curve",
             "description": "For Delta products; available in 7 and 11 inch predrilled slabs; includes removable tab*.",
-            "image": "",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
             "filter_tag": "delta-curve"
           }
         },
@@ -48,7 +48,7 @@
           "settings": {
             "title": "Delta Curve with Tab",
             "description": "For Delta products; available in 5, 6, 7, 11**, and 15 inch predrilled slabs.**",
-            "image": "",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_3c32027c-665a-4a6b-aba8-1b942eb98394_2.png",
             "filter_tag": "delta-curve-tab"
           }
         },
@@ -57,7 +57,7 @@
           "settings": {
             "title": "Specialty Acrylics",
             "description": "A description would go here describing what these acrylics are used for.",
-            "image": "",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
             "filter_tag": "specialty-acrylics"
           }
         }
@@ -105,21 +105,13 @@
             "label": "Brizo Cabinet System",
             "filter_tag": "brizo-cabinet"
           }
-        },
-        "pill_5": {
-          "type": "filter_pill",
-          "settings": {
-            "label": "Other",
-            "filter_tag": "other"
-          }
         }
       },
       "block_order": [
         "pill_1",
         "pill_2",
         "pill_3",
-        "pill_4",
-        "pill_5"
+        "pill_4"
       ],
       "settings": {
         "title": "Filter by Display Type"
@@ -139,4 +131,3 @@
     "product_grid"
   ]
 }
-
