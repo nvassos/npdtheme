@@ -1,6 +1,6 @@
 .acrylic-filter-section {
   background-color: #EBF0F9;
-  padding: 60px 0 0;
+  padding: 60px 20px 0;
 }
 
 .acrylic-filter-container {
@@ -73,7 +73,8 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 18px;
+  line-height: 20px;
+  min-height: 40px;
 }
 
 .filter-notes {
