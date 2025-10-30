@@ -253,7 +253,7 @@
                       {%- else -%}
                         {%- assign line_cents_display = line_cents -%}
                       {%- endif -%}
-                      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
                         <span style="font-size: 10px; color: #666; font-style: italic;">*ESTIMATED COST*</span>
                         <span style="font-weight: 600;">${{ line_dollars }}.{{ line_cents_display }}</span>
                       </div>
@@ -319,20 +319,24 @@
                   role="cell"
                   headers="productTotal"
                 >
-                  {%- liquid
-                    if settings.currency_code_enabled_cart_items
-                      assign price = item.final_line_price | money_with_currency
-                      assign unit_price = item.unit_price | money_with_currency
-                    else
-                      assign price = item.final_line_price | money
-                      assign unit_price = item.unit_price | money
-                    endif
-                  -%}
-                  <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
-                  {%- if item.unit_price_measurement -%}
-                    <div class="cart-items__price-unit cart-secondary-typography">
-                      {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
+                  {%- comment -%} Display estimated cost total for this line item {%- endcomment -%}
+                  {%- assign line_cost_total = item.properties._cost_variant -%}
+                  {%- if line_cost_total != blank -%}
+                    {%- assign line_cost_total_int = line_cost_total | times: 1 -%}
+                    {%- assign line_total_cents = line_cost_total_int | times: item.quantity -%}
+                    {%- assign line_total_dollars = line_total_cents | divided_by: 100 -%}
+                    {%- assign line_total_cents_remainder = line_total_cents | modulo: 100 -%}
+                    {%- if line_total_cents_remainder < 10 -%}
+                      {%- assign line_total_cents_display = '0' | append: line_total_cents_remainder -%}
+                    {%- else -%}
+                      {%- assign line_total_cents_display = line_total_cents_remainder -%}
+                    {%- endif -%}
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+                      <span style="font-size: 10px; color: #666; font-style: italic;">*ESTIMATED COST*</span>
+                      <span style="font-weight: 600;">${{ line_total_dollars }}.{{ line_total_cents_display }}</span>
                     </div>
+                  {%- else -%}
+                    <text-component value="{{ item.final_line_price | money | strip_html }}">{{ item.final_line_price | money }}</text-component>
                   {%- endif -%}
                 </td>
               </tr>
