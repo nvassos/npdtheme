@@ -784,7 +784,8 @@
 
   .collection-page-wrapper .product-name,
   .product-grid .product-name {
-    font-size: 17px;
+    font-size: 15px;
+    line-height: 18px;
   }
 
   .collection-page-wrapper .product-sku,
