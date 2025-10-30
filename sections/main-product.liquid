@@ -120,8 +120,8 @@
                       {% liquid
                         assign cost_cents = current_variant.metafields.custom.cost_variant | default: 0
                         if cost_cents > 0
-                          # Apply 60% discount (multiply by 40, divide by 100)
-                          assign discounted_cents = cost_cents | times: 40 | divided_by: 100
+                          # Apply 70% discount (multiply by 30, divide by 100)
+                          assign discounted_cents = cost_cents | times: 30 | divided_by: 100
                           assign cost_dollars = discounted_cents | divided_by: 100
                           assign cost_cents_remainder = discounted_cents | modulo: 100
                           if cost_cents_remainder < 10
@@ -136,7 +136,7 @@
                       %}
                       <span class="price-current" data-base-price-cents="{{ cost_cents }}">{{ display_price }}</span>
                     </div>
-                    <div class="price-note">Estimated cost to your no-charge account (60% discount applied)</div>
+                    <div class="price-note">Estimated cost to your no-charge account (70% discount applied)</div>
                   </div>
 
                 {%- when 'buy_buttons' -%}

@@ -319,8 +319,8 @@ if (!customElements.get('product-form')) {
       
       const quantity = parseInt(this.quantityInput?.value || 1, 10);
       
-      // Apply 60% discount (multiply by 0.4 to get 40% of original)
-      const discountedPriceCents = Math.round(basePriceCents * 0.4);
+      // Apply 70% discount (multiply by 0.3 to get 30% of original)
+      const discountedPriceCents = Math.round(basePriceCents * 0.3);
       
       // Calculate total in cents
       const totalCents = discountedPriceCents * quantity;
