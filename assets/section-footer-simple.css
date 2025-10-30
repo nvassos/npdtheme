@@ -1,0 +1,51 @@
+.footer-simple {
+  background-color: #18223E;
+  color: white;
+  padding: 40px 0;
+  margin-top: auto;
+  text-align: center;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.footer-simple .footer-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.footer-simple .footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-simple .footer-links a,
+.footer-simple .footer-links span {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.footer-simple .footer-links a:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .footer-simple {
+    padding: 30px 0;
+  }
+
+  .footer-simple .footer-content {
+    padding: 0 20px;
+  }
+
+  .footer-simple .footer-links {
+    gap: 20px;
+    font-size: 13px;
+  }
+}
+

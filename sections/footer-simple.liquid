@@ -1,0 +1,95 @@
+{{ 'section-footer-simple.css' | asset_url | stylesheet_tag }}
+
+<footer class="footer-simple">
+  <div class="footer-content">
+    <div class="footer-links">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'link' %}
+            <a href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+              {{ block.settings.link_text }}
+            </a>
+          {% when 'text' %}
+            <span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Simple Footer",
+  "tag": "section",
+  "class": "section-footer-simple",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Link"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "© 2025 Displays by MPS"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Simple Footer",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Terms & Conditions",
+            "link": "/pages/terms"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Privacy Statement",
+            "link": "/pages/privacy"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "link_text": "Masco Brands",
+            "link": "https://www.masco.com"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "© 2025 Displays by MPS"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
