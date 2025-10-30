@@ -101,6 +101,7 @@ if (!customElements.get('product-form')) {
             this.updateOptionAvailability();
             
             // Auto-select first available option in subsequent groups
+            let selectionChanged = false;
             optionGroups.forEach((nextGroup, nextGroupIndex) => {
               if (nextGroupIndex > groupIndex) {
                 const selectedBtn = nextGroup.querySelector('.option-button.selected');
@@ -110,10 +111,16 @@ if (!customElements.get('product-form')) {
                   const firstAvailable = nextGroup.querySelector('.option-button:not([disabled])');
                   if (firstAvailable) {
                     firstAvailable.classList.add('selected');
+                    selectionChanged = true;
                   }
                 }
               }
             });
+            
+            // If we auto-selected something, recalculate availability again
+            if (selectionChanged) {
+              this.updateOptionAvailability();
+            }
             
             // Update variant
             this.updateVariant();
