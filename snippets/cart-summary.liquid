@@ -76,12 +76,12 @@
   -%}
 
   {%- comment -%} Display Estimated Cost to No-Charge Account {%- endcomment -%}
-  {%- if estimated_total_cost > 0 -%}
+  {%- if total_amount > 0 -%}
     <div class="cart__estimated-cost-container">
       <span class="cart__summary-item cart__estimated-cost">
         <span class="cart__estimated-cost-label cart-primary-typography">Estimated Cost to Your No-Charge Account</span>
         <span class="cart__estimated-cost-value cart-secondary-typography" style="font-weight: 600; font-size: 1.2em;">
-          ${{ estimated_total_cost | money_without_currency }}
+          ${{ estimated_total_cost }}
         </span>
       </span>
     </div>
