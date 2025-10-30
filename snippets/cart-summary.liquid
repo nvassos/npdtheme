@@ -2,17 +2,18 @@
   Renders the cart summary totals.
 {%- enddoc -%}
 
-{%- comment -%} Calculate estimated total cost from cost_variant (integer in cents) {%- endcomment -%}
-{%- assign total_cents = 0 -%}
+{%- comment -%} Calculate estimated total cost from cost_variant (represents dollars*100, e.g., 1450 = $14.50) {%- endcomment -%}
+{%- assign total_amount = 0 -%}
 {%- for item in cart.items -%}
-  {%- assign item_cost_cents = item.properties._cost_variant | default: 0 | plus: 0 -%}
-  {%- if item_cost_cents > 0 -%}
-    {%- assign line_total_cents = item_cost_cents | times: item.quantity -%}
-    {%- assign total_cents = total_cents | plus: line_total_cents -%}
+  {%- assign item_cost_value = item.properties._cost_variant -%}
+  {%- if item_cost_value != blank -%}
+    {%- assign item_cost_int = item_cost_value | times: 1 -%}
+    {%- assign line_total = item_cost_int | times: item.quantity -%}
+    {%- assign total_amount = total_amount | plus: line_total -%}
   {%- endif -%}
 {%- endfor -%}
-{%- assign estimated_total_dollars = total_cents | divided_by: 100 -%}
-{%- assign estimated_total_cents_remainder = total_cents | modulo: 100 -%}
+{%- assign estimated_total_dollars = total_amount | divided_by: 100 -%}
+{%- assign estimated_total_cents_remainder = total_amount | modulo: 100 -%}
 {%- if estimated_total_cents_remainder < 10 -%}
   {%- assign cents_display = '0' | append: estimated_total_cents_remainder -%}
 {%- else -%}

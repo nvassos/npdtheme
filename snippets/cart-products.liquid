@@ -41,16 +41,17 @@
       method="post"
     >
       {%- comment -%} Calculate and store estimated total cost as cart attribute {%- endcomment -%}
-      {%- assign total_cents_attr = 0 -%}
+      {%- assign total_amount_attr = 0 -%}
       {%- for item in cart.items -%}
-        {%- assign item_cost_cents_attr = item.properties._cost_variant | default: 0 | plus: 0 -%}
-        {%- if item_cost_cents_attr > 0 -%}
-          {%- assign line_total_cents_attr = item_cost_cents_attr | times: item.quantity -%}
-          {%- assign total_cents_attr = total_cents_attr | plus: line_total_cents_attr -%}
+        {%- assign item_cost_value_attr = item.properties._cost_variant -%}
+        {%- if item_cost_value_attr != blank -%}
+          {%- assign item_cost_int_attr = item_cost_value_attr | times: 1 -%}
+          {%- assign line_total_attr = item_cost_int_attr | times: item.quantity -%}
+          {%- assign total_amount_attr = total_amount_attr | plus: line_total_attr -%}
         {%- endif -%}
       {%- endfor -%}
-      {%- assign est_dollars = total_cents_attr | divided_by: 100 -%}
-      {%- assign est_cents_remainder = total_cents_attr | modulo: 100 -%}
+      {%- assign est_dollars = total_amount_attr | divided_by: 100 -%}
+      {%- assign est_cents_remainder = total_amount_attr | modulo: 100 -%}
       {%- if est_cents_remainder < 10 -%}
         {%- assign est_cents_display = '0' | append: est_cents_remainder -%}
       {%- else -%}
