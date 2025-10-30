@@ -61,7 +61,7 @@
         "logo_position": "left",
         "menu_position": "right",
         "menu_row": "bottom",
-        "show_search": true,
+        "show_search": false,
         "search_position": "right",
         "search_row": "top",
         "show_country": false,
