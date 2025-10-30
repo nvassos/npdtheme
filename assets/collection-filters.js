@@ -21,7 +21,6 @@ class CollectionFilters {
     this.currentPage = 1;
     this.hasMorePages = false;
     this.searchTimeout = null;
-    this.allProducts = [];
     
     if (this.form) {
       this.init();
@@ -57,9 +56,6 @@ class CollectionFilters {
 
     // Setup infinite scroll
     this.setupInfiniteScroll();
-
-    // Load all products for search
-    this.loadAllProducts();
 
     // Initialize from URL params
     this.loadFiltersFromURL();
@@ -362,101 +358,47 @@ class CollectionFilters {
     });
   }
 
-  async loadAllProducts() {
-    // Load ALL products from embedded JSON (includes metafields)
-    const productsData = document.getElementById('collection-products-data');
-    if (productsData) {
-      try {
-        this.allProducts = JSON.parse(productsData.textContent);
-        console.log('✅ Loaded ALL products:', this.allProducts.length);
-        
-        // Debug: Check if deposco_id is present
-        const productsWithDeposco = this.allProducts.filter(p => 
-          p.variants.some(v => v.deposco_id)
-        );
-        console.log('Products with Deposco ID:', productsWithDeposco.length);
-        
-        // Log first product's variants to verify structure
-        if (this.allProducts.length > 0 && this.allProducts[0].variants.length > 0) {
-          console.log('Sample variant data:', this.allProducts[0].variants[0]);
-        }
-      } catch (error) {
-        console.error('Error parsing products data:', error);
+  async performSearch(query) {
+    try {
+      // Use external API for search - searches across all 11k+ products
+      const apiUrl = `https://phpstack-1318127-5961230.cloudwaysapps.com/api/products/search?q=${encodeURIComponent(query)}`;
+      
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('Search API request failed');
       }
+      
+      const data = await response.json();
+      console.log('✅ Search API returned:', data.results.length, 'results');
+      
+      // Transform API results to match our display format
+      const results = data.results.map(item => ({
+        product: {
+          id: item.id,
+          title: item.title,
+          handle: item.handle,
+          vendor: item.vendor,
+          tags: item.tags,
+          image: item.image
+        },
+        matchedVariant: item.matched_variant ? {
+          id: item.matched_variant.id,
+          title: item.matched_variant.title,
+          sku: item.matched_variant.sku
+        } : null,
+        primarySKU: item.matched_variant?.sku || '',
+        deposcoId: item.matched_variant?.deposco_id || '',
+        productUrl: item.url
+      }));
+      
+      // Display results (top 8)
+      this.displaySearchResults(results.slice(0, 8), query);
+      
+    } catch (error) {
+      console.error('❌ Search API error:', error);
+      // Show error in search results
+      this.displaySearchResults([], query);
     }
-  }
-
-  performSearch(query) {
-    const lowerQuery = query.toLowerCase();
-    const results = [];
-
-    // Search through all products (front-end search with metafields)
-    this.allProducts.forEach(product => {
-      let matchScore = 0;
-      let matchReasons = [];
-      let matchedVariant = null;
-
-      // Search title
-      if (product.title.toLowerCase().includes(lowerQuery)) {
-        matchScore += 10;
-        matchReasons.push('title');
-      }
-
-      // Search vendor
-      if (product.vendor && product.vendor.toLowerCase().includes(lowerQuery)) {
-        matchScore += 8;
-        matchReasons.push('brand');
-      }
-
-      // Search product tags
-      if (product.tags && product.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) {
-        matchScore += 5;
-        matchReasons.push('tags');
-      }
-
-      // Search variants
-      product.variants.forEach(variant => {
-        // Search variant SKU
-        if (variant.sku && variant.sku.toLowerCase().includes(lowerQuery)) {
-          matchScore += 15;
-          matchReasons.push('sku');
-          if (!matchedVariant) matchedVariant = variant;
-        }
-
-        // Search variant title
-        if (variant.title.toLowerCase().includes(lowerQuery)) {
-          matchScore += 5;
-          if (!matchedVariant) matchedVariant = variant;
-        }
-
-        // Search deposco_id metafield (critical - highest priority)
-        if (variant.deposco_id && variant.deposco_id.toLowerCase().includes(lowerQuery)) {
-          matchScore += 20;
-          matchReasons.push('deposco');
-          matchedVariant = variant; // Override with deposco match
-        }
-      });
-
-      if (matchScore > 0) {
-        // Use matched variant's info if available, otherwise use first variant
-        const displayVariant = matchedVariant || product.variants[0];
-        
-        results.push({
-          product,
-          matchScore,
-          matchReasons,
-          matchedVariant,
-          primarySKU: displayVariant?.sku || '',
-          deposcoId: displayVariant?.deposco_id || ''
-        });
-      }
-    });
-
-    // Sort by match score
-    results.sort((a, b) => b.matchScore - a.matchScore);
-
-    // Display results
-    this.displaySearchResults(results.slice(0, 8), query); // Show top 8 results
   }
 
   displaySearchResults(results, query) {
@@ -482,10 +424,12 @@ class CollectionFilters {
         const imageUrl = product.image || '';
         const isQuickShip = product.tags && product.tags.some(tag => tag.toLowerCase().includes('quick ship'));
         
-        // Build URL - if matched a specific variant, link to it
-        let productUrl = `/products/${product.handle}`;
-        if (result.matchedVariant && result.matchedVariant.id) {
-          productUrl += `?variant=${result.matchedVariant.id}`;
+        // Use the URL from API response or build it
+        let productUrl = result.productUrl || `/products/${product.handle}`;
+        
+        // If API didn't provide a full URL with variant, add it
+        if (!result.productUrl && result.matchedVariant && result.matchedVariant.id) {
+          productUrl = `/products/${product.handle}?variant=${result.matchedVariant.id}`;
           console.log('Linking to variant:', result.matchedVariant.id, 'SKU:', result.primarySKU, 'Deposco:', result.deposcoId);
         }
 
