@@ -41,13 +41,13 @@
       method="post"
     >
       {%- comment -%} Calculate and store estimated total cost as cart attribute {%- endcomment -%}
-      {%- assign estimated_total_cost_attr = 0.0 -%}
+      {%- assign total_cents_attr = 0 -%}
       {%- for item in cart.items -%}
         {%- assign item_cost_text_attr = item.properties._item_cost_variant -%}
         {%- if item_cost_text_attr != blank -%}
           {%- assign item_cost_clean_attr = item_cost_text_attr | remove: '$' | remove: ',' | remove: ' ' | strip -%}
           {%- assign cost_parts_attr = item_cost_clean_attr | split: '.' -%}
-          {%- assign dollars_attr = cost_parts_attr[0] | default: 0 | plus: 0 -%}
+          {%- assign dollars_attr = cost_parts_attr[0] | plus: 0 -%}
           {%- assign cents_str_attr = cost_parts_attr[1] | default: '00' -%}
           
           {%- if cents_str_attr.size == 1 -%}
@@ -57,18 +57,20 @@
           {%- endif -%}
           {%- assign cents_attr = cents_str_attr | plus: 0 -%}
           
-          {%- assign dollars_total_attr = dollars_attr | times: item.quantity -%}
-          {%- assign cents_total_attr = cents_attr | times: item.quantity -%}
-          {%- assign extra_dollars_attr = cents_total_attr | divided_by: 100 -%}
-          {%- assign remaining_cents_attr = cents_total_attr | modulo: 100 -%}
-          {%- assign final_dollars_attr = dollars_total_attr | plus: extra_dollars_attr -%}
-          
-          {%- assign item_total_attr = final_dollars_attr | append: '.' | append: remaining_cents_attr -%}
-          {%- assign item_total_num_attr = item_total_attr | plus: 0.0 -%}
-          {%- assign estimated_total_cost_attr = estimated_total_cost_attr | plus: item_total_num_attr -%}
+          {%- assign item_cents_attr = dollars_attr | times: 100 | plus: cents_attr -%}
+          {%- assign line_total_cents_attr = item_cents_attr | times: item.quantity -%}
+          {%- assign total_cents_attr = total_cents_attr | plus: line_total_cents_attr -%}
         {%- endif -%}
       {%- endfor -%}
-      <input type="hidden" name="attributes[estimated_total_cost]" value="${{ estimated_total_cost_attr | round: 2 }}">
+      {%- assign est_dollars = total_cents_attr | divided_by: 100 -%}
+      {%- assign est_cents_remainder = total_cents_attr | modulo: 100 -%}
+      {%- if est_cents_remainder < 10 -%}
+        {%- assign est_cents_display = '0' | append: est_cents_remainder -%}
+      {%- else -%}
+        {%- assign est_cents_display = est_cents_remainder -%}
+      {%- endif -%}
+      {%- assign estimated_total_cost_attr = est_dollars | append: '.' | append: est_cents_display -%}
+      <input type="hidden" name="attributes[estimated_total_cost]" value="${{ estimated_total_cost_attr }}">
       
       <div
         class="cart-items spacing-style{% if block_settings.dividers %} cart-items--dividers{% endif %}"

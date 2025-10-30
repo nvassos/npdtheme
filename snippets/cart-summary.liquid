@@ -3,19 +3,15 @@
 {%- enddoc -%}
 
 {%- comment -%} Calculate estimated total cost from item_cost_variant {%- endcomment -%}
-{%- assign estimated_total_cost = 0.0 -%}
+{%- assign total_cents = 0 -%}
 {%- for item in cart.items -%}
   {%- assign item_cost_text = item.properties._item_cost_variant -%}
   {%- if item_cost_text != blank -%}
-    {%- comment -%} Remove currency symbols and spaces {%- endcomment -%}
     {%- assign item_cost_clean = item_cost_text | remove: '$' | remove: ',' | remove: ' ' | strip -%}
-    
-    {%- comment -%} Split by decimal to work with dollars and cents separately {%- endcomment -%}
     {%- assign cost_parts = item_cost_clean | split: '.' -%}
-    {%- assign dollars = cost_parts[0] | default: 0 | plus: 0 -%}
+    {%- assign dollars = cost_parts[0] | plus: 0 -%}
     {%- assign cents_str = cost_parts[1] | default: '00' -%}
     
-    {%- comment -%} Ensure cents is 2 digits {%- endcomment -%}
     {%- if cents_str.size == 1 -%}
       {%- assign cents_str = cents_str | append: '0' -%}
     {%- elsif cents_str.size == 0 -%}
@@ -23,21 +19,19 @@
     {%- endif -%}
     {%- assign cents = cents_str | plus: 0 -%}
     
-    {%- comment -%} Rebuild as string: "DOLLARS.CENTS" then multiply by quantity {%- endcomment -%}
-    {%- assign dollars_total = dollars | times: item.quantity -%}
-    {%- assign cents_total = cents | times: item.quantity -%}
-    
-    {%- comment -%} Handle cent overflow (e.g., 76 cents * 5 = 380 cents = 3 dollars + 80 cents) {%- endcomment -%}
-    {%- assign extra_dollars = cents_total | divided_by: 100 -%}
-    {%- assign remaining_cents = cents_total | modulo: 100 -%}
-    {%- assign final_dollars = dollars_total | plus: extra_dollars -%}
-    
-    {%- comment -%} Convert to decimal for addition {%- endcomment -%}
-    {%- assign item_total = final_dollars | append: '.' | append: remaining_cents -%}
-    {%- assign item_total_num = item_total | plus: 0.0 -%}
-    {%- assign estimated_total_cost = estimated_total_cost | plus: item_total_num -%}
+    {%- assign item_cents = dollars | times: 100 | plus: cents -%}
+    {%- assign line_total_cents = item_cents | times: item.quantity -%}
+    {%- assign total_cents = total_cents | plus: line_total_cents -%}
   {%- endif -%}
 {%- endfor -%}
+{%- assign estimated_total_dollars = total_cents | divided_by: 100 -%}
+{%- assign estimated_total_cents_remainder = total_cents | modulo: 100 -%}
+{%- if estimated_total_cents_remainder < 10 -%}
+  {%- assign cents_display = '0' | append: estimated_total_cents_remainder -%}
+{%- else -%}
+  {%- assign cents_display = estimated_total_cents_remainder -%}
+{%- endif -%}
+{%- assign estimated_total_cost = estimated_total_dollars | append: '.' | append: cents_display -%}
 
 <div class="cart__summary-totals">
   {% # We need to keep this node in place to allow morphing to work properly # %}
