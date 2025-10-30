@@ -54,7 +54,7 @@
     "standard_acrylics": {
       "type": "collection-grid",
       "settings": {
-        "eyebrow": "Standard Acrylics",
+        "eyebrow": "Featured Collection",
         "title": "Essa for Everything",
         "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
         "button_text": "Browse Acrylics",
@@ -67,12 +67,12 @@
     "collection_grid_KwKdcd": {
       "type": "collection-grid",
       "settings": {
-        "eyebrow": "Standard Acrylics",
+        "eyebrow": "Acrylics",
         "title": "Choose, Drill, Deliver.",
         "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
         "button_text": "Browse Acrylics",
         "button_link": "/collections/acrylics",
-        "collection": "essa",
+        "collection": "dryden",
         "products_to_show": 4,
         "show_border_top": true
       }
