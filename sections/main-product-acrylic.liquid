@@ -1,0 +1,178 @@
+{{ 'section-main-product-acrylic.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form-acrylic.js' | asset_url }}" defer></script>
+
+<div class="product-page-wrapper">
+  <div class="product-page-container">
+    
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+    
+    <!-- Product Image -->
+    <div class="product-image-section">
+      <div class="product-image-wrapper">
+        {% if current_variant.featured_image %}
+          <img 
+            src="{{ current_variant.featured_image | image_url: width: 800 }}" 
+            alt="{{ current_variant.featured_image.alt | escape }}"
+            class="product-main-image"
+            id="product-featured-image"
+          >
+        {% elsif product.featured_image %}
+          <img 
+            src="{{ product.featured_image | image_url: width: 800 }}" 
+            alt="{{ product.featured_image.alt | escape }}"
+            class="product-main-image"
+            id="product-featured-image"
+          >
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="product-details-section">
+      
+      <!-- Brand -->
+      <div class="product-brand">{{ product.vendor }}</div>
+      
+      <!-- Title -->
+      <h1 class="product-title">{{ product.title }}</h1>
+      
+      <!-- Description -->
+      {% if product.description != blank %}
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+      {% endif %}
+      
+      <!-- SKU and Dimensions -->
+      <div class="product-meta-info">
+        {% if current_variant.sku != blank %}
+          <div class="product-sku-display">{{ current_variant.sku }}</div>
+        {% endif %}
+        
+        {% if product.metafields.custom.dimensions != blank %}
+          <div class="product-dimensions">{{ product.metafields.custom.dimensions }}</div>
+        {% endif %}
+      </div>
+      
+      <!-- Made to Order Notice -->
+      {% if product.metafields.custom.made_to_order %}
+        <div class="made-to-order-notice">
+          <strong>Made to order product:</strong> This item is not quick ship. Made to order product typically takes 7-10 days to produce upon receiving product from Delta.
+        </div>
+      {% endif %}
+      
+      <!-- Product Form -->
+      <form method="post" action="/cart/add" id="product-form-acrylic" class="product-form">
+        <input type="hidden" name="id" value="{{ current_variant.id }}" id="product-variant-id">
+        
+        <!-- Variant Options (if any) -->
+        {% unless product.has_only_default_variant %}
+          <div class="product-options">
+            {% for option in product.options_with_values %}
+              <div class="product-option-group">
+                <label class="option-label">{{ option.name }}</label>
+                <div class="option-buttons" data-option-index="{{ forloop.index0 }}">
+                  {% for value in option.values %}
+                    <button 
+                      type="button" 
+                      class="option-button{% if option.selected_value == value %} selected{% endif %}"
+                      data-option-value="{{ value | escape }}"
+                    >
+                      {{ value }}
+                    </button>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+        
+        <!-- Custom Model Number Input -->
+        <div class="custom-input-section">
+          <label for="model-number-input" class="custom-input-label">
+            ENTER PRODUCT MODEL NUMBER FOR CUSTOMIZATION
+          </label>
+          <input 
+            type="text" 
+            id="model-number-input" 
+            name="properties[Model Number]"
+            class="custom-input-field"
+            placeholder="Enter Model Number"
+          >
+        </div>
+        
+        <!-- Quantity -->
+        <div class="product-quantity-section">
+          <label class="quantity-label">QUANTITY</label>
+          <div class="quantity-selector">
+            <button type="button" class="quantity-btn" id="decrease-qty">−</button>
+            <input type="number" name="quantity" value="1" min="1" class="quantity-input" id="quantity-input">
+            <button type="button" class="quantity-btn" id="increase-qty">+</button>
+          </div>
+        </div>
+        
+        <!-- Price -->
+        <div class="product-price-section">
+          {% liquid
+            assign cost_cents = current_variant.metafields.custom.cost_variant | default: 0
+            if cost_cents > 0
+              # Apply 70% discount (multiply by 30, divide by 100)
+              assign discounted_cents = cost_cents | times: 30 | divided_by: 100
+              assign cost_dollars = discounted_cents | divided_by: 100
+              assign cost_cents_remainder = discounted_cents | modulo: 100
+              if cost_cents_remainder < 10
+                assign cents_display = '0' | append: cost_cents_remainder
+              else
+                assign cents_display = cost_cents_remainder
+              endif
+              assign display_price = '$' | append: cost_dollars | append: '.' | append: cents_display | append: ' USD'
+            else
+              assign display_price = current_variant.price | money
+            endif
+          %}
+          <div class="price-amount" data-base-price-cents="{{ cost_cents }}">{{ display_price }}</div>
+          <div class="price-note">Estimated cost to your no-charge account (70% discount applied)</div>
+        </div>
+        
+        <!-- Add to Cart -->
+        <button type="submit" class="add-to-cart-btn" id="add-to-cart-btn">
+          <span class="btn-text">Add to Cart</span>
+        </button>
+        
+      </form>
+      
+    </div>
+
+  </div>
+</div>
+
+<!-- Variant Data for JavaScript -->
+<script type="application/json" id="product-variants-data">
+{
+  "variants": [
+    {% for variant in product.variants %}
+      {
+        "id": {{ variant.id | json }},
+        "title": {{ variant.title | json }},
+        "available": {{ variant.available | json }},
+        "price": {{ variant.price | json }},
+        "sku": {{ variant.sku | json }},
+        "featured_image": {% if variant.featured_image %}{{ variant.featured_image | image_url: width: 800 | json }}{% else %}null{% endif %},
+        "options": {{ variant.options | json }},
+        "metafields": {
+          "cost_variant": {{ variant.metafields.custom.cost_variant | json }},
+          "quickship_inventory": {{ variant.metafields.custom.quickship_inventory | json }}
+        }
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Acrylic Product",
+  "settings": []
+}
+{% endschema %}
+

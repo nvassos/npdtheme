@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "product-breadcrumb",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-product-acrylic",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main"
+  ]
+}
+
