@@ -6,6 +6,11 @@
   font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
+/* Hide second option (STYLE) as it auto-selects */
+.product-option-section:nth-child(2) {
+  display: none;
+}
+
 .product-page-container {
   max-width: 1440px;
   margin: 0 auto;
