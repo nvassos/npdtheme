@@ -217,13 +217,13 @@ if (!customElements.get('product-form')) {
             console.log(`Option ${optionIndex + 1}: "${optionValue}" - NO MATCHING VARIANT FOUND with selections:`, selectedOptions);
           }
           
-          // Update button state - enable all options that exist
+          // Update button state - hide unavailable options
           if (variantExists) {
             button.disabled = false;
             button.classList.remove('unavailable');
+            button.style.display = '';
           } else {
-            button.disabled = true;
-            button.classList.add('unavailable');
+            button.style.display = 'none';
           }
         });
       });
