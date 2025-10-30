@@ -4,15 +4,31 @@
 
 {%- comment -%} Calculate estimated total cost from item_cost_variant {%- endcomment -%}
 {%- liquid
-  assign estimated_total_cost = 0
+  assign estimated_total_cost_cents = 0
   for item in cart.items
-    assign item_cost = item.properties._item_cost_variant
-    if item_cost != blank
-      assign item_cost_clean = item_cost | replace: '$', '' | replace: ',', '' | times: 1
-      assign item_total = item_cost_clean | times: item.quantity
-      assign estimated_total_cost = estimated_total_cost | plus: item_total
+    assign item_cost_text = item.properties._item_cost_variant
+    if item_cost_text != blank
+      comment Remove currency symbols and spaces
+      endcomment
+      assign item_cost_clean = item_cost_text | remove: '$' | remove: ',' | remove: ' ' | strip
+      
+      comment Convert to cents by multiplying by 100 for integer math
+      endcomment
+      assign item_cost_cents = item_cost_clean | times: 100
+      
+      comment Calculate total for this line item in cents
+      endcomment
+      assign item_total_cents = item_cost_cents | times: item.quantity
+      
+      comment Add to running total
+      endcomment
+      assign estimated_total_cost_cents = estimated_total_cost_cents | plus: item_total_cents
     endif
   endfor
+  
+  comment Convert back to dollars
+  endcomment
+  assign estimated_total_cost = estimated_total_cost_cents | divided_by: 100.0
 -%}
 
 <div class="cart__summary-totals">
