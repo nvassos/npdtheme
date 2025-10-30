@@ -388,11 +388,39 @@
 
 /* No Results */
 .no-results {
-  grid-column: 1 / -1;
   text-align: center;
   padding: 60px 20px;
   color: #666;
   font-size: 18px;
+}
+
+.no-results button {
+  margin-top: 20px;
+}
+
+/* Infinite Scroll Loading */
+.infinite-scroll-loading {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 40px;
+}
+
+.loading-spinner {
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Filter Group Subtitle */
+.filter-group-subtitle {
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  font-size: 13px;
+  color: #18223E;
+}
+
+.filter-group-subtitle:first-of-type {
+  margin-top: 0;
 }
 
 /* Pagination */
