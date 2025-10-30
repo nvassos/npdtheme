@@ -363,7 +363,7 @@ class CollectionFilters {
   }
 
   async loadAllProducts() {
-    // Load products from embedded JSON (includes metafields)
+    // Load products from embedded JSON (includes metafields and deposco_id)
     const productsData = document.getElementById('collection-products-data');
     if (productsData) {
       try {
