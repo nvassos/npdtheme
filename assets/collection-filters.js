@@ -10,12 +10,18 @@ class CollectionFilters {
     this.clearAllBtn = document.getElementById('clear-all-filters');
     this.sortSelect = document.getElementById('collection-sort');
     this.noResults = document.getElementById('no-results');
+    this.searchInput = document.getElementById('collection-search');
+    this.searchResults = document.getElementById('search-results');
+    this.searchClearBtn = document.getElementById('search-clear');
     
     this.activeTags = [];
     this.currentSort = 'manual';
+    this.searchQuery = '';
     this.isLoading = false;
     this.currentPage = 1;
     this.hasMorePages = false;
+    this.searchTimeout = null;
+    this.allProducts = [];
     
     if (this.form) {
       this.init();
@@ -46,8 +52,14 @@ class CollectionFilters {
       this.clearAllBtn.addEventListener('click', () => this.clearAllFilters());
     }
 
+    // Setup search handlers
+    this.setupSearch();
+
     // Setup infinite scroll
     this.setupInfiniteScroll();
+
+    // Load all products for search
+    this.loadAllProducts();
 
     // Initialize from URL params
     this.loadFiltersFromURL();
@@ -296,6 +308,183 @@ class CollectionFilters {
         }
       });
       this.updateActiveFilterTags();
+    }
+  }
+
+  setupSearch() {
+    if (!this.searchInput) return;
+
+    // Search input handler with debounce
+    this.searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+      this.searchQuery = query;
+
+      // Show/hide clear button
+      if (this.searchClearBtn) {
+        this.searchClearBtn.style.display = query ? 'flex' : 'none';
+      }
+
+      // Debounce search
+      clearTimeout(this.searchTimeout);
+      if (query.length >= 2) {
+        this.searchTimeout = setTimeout(() => this.performSearch(query), 300);
+      } else {
+        this.hideSearchResults();
+        if (query.length === 0) {
+          this.applyFilters();
+        }
+      }
+    });
+
+    // Clear button handler
+    if (this.searchClearBtn) {
+      this.searchClearBtn.addEventListener('click', () => {
+        this.searchInput.value = '';
+        this.searchQuery = '';
+        this.searchClearBtn.style.display = 'none';
+        this.hideSearchResults();
+        this.applyFilters();
+      });
+    }
+
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!this.searchInput.contains(e.target) && !this.searchResults.contains(e.target)) {
+        this.hideSearchResults();
+      }
+    });
+
+    // Show results again when focusing input
+    this.searchInput.addEventListener('focus', () => {
+      if (this.searchQuery && this.searchResults.querySelector('.search-result-item')) {
+        this.searchResults.style.display = 'block';
+      }
+    });
+  }
+
+  async loadAllProducts() {
+    const collectionHandle = this.productGrid.dataset.collectionHandle;
+    
+    try {
+      const response = await fetch(`/collections/${collectionHandle}/products.json?limit=250`);
+      const data = await response.json();
+      this.allProducts = data.products;
+    } catch (error) {
+      console.error('Error loading products for search:', error);
+    }
+  }
+
+  performSearch(query) {
+    const lowerQuery = query.toLowerCase();
+    const results = [];
+
+    // Search through all products
+    this.allProducts.forEach(product => {
+      let matchScore = 0;
+      let matchReasons = [];
+
+      // Search title
+      if (product.title.toLowerCase().includes(lowerQuery)) {
+        matchScore += 10;
+        matchReasons.push('title');
+      }
+
+      // Search vendor
+      if (product.vendor && product.vendor.toLowerCase().includes(lowerQuery)) {
+        matchScore += 8;
+        matchReasons.push('brand');
+      }
+
+      // Search product tags
+      if (product.tags && product.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) {
+        matchScore += 5;
+        matchReasons.push('tags');
+      }
+
+      // Search variants
+      product.variants.forEach(variant => {
+        // Search variant SKU
+        if (variant.sku && variant.sku.toLowerCase().includes(lowerQuery)) {
+          matchScore += 15;
+          matchReasons.push('sku');
+        }
+
+        // Search variant title
+        if (variant.title.toLowerCase().includes(lowerQuery)) {
+          matchScore += 5;
+        }
+
+        // Search deposco_id metafield (critical - highest priority)
+        if (variant.deposco_id && variant.deposco_id.toLowerCase().includes(lowerQuery)) {
+          matchScore += 20;
+          matchReasons.push('deposco');
+        }
+      });
+
+      if (matchScore > 0) {
+        results.push({
+          product,
+          matchScore,
+          matchReasons,
+          primarySKU: product.variants[0]?.sku || '',
+          deposcoId: product.variants.find(v => v.deposco_id)?.deposco_id || ''
+        });
+      }
+    });
+
+    // Sort by match score
+    results.sort((a, b) => b.matchScore - a.matchScore);
+
+    // Display results
+    this.displaySearchResults(results.slice(0, 8), query); // Show top 8 results
+  }
+
+  displaySearchResults(results, query) {
+    const resultsList = this.searchResults.querySelector('.search-results-list');
+    const resultsCount = this.searchResults.querySelector('.search-results-count');
+
+    if (results.length === 0) {
+      resultsList.innerHTML = `
+        <div class="search-no-results">
+          <svg class="search-no-results-icon" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+            <path d="M24 16v12M24 32h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          No products found for "${query}"
+        </div>
+      `;
+      resultsCount.textContent = 'No Results';
+    } else {
+      resultsCount.textContent = `${results.length} Result${results.length !== 1 ? 's' : ''}`;
+      
+      resultsList.innerHTML = results.map(result => {
+        const product = result.product;
+        const imageUrl = product.images[0] || '';
+        const isQuickShip = product.tags.some(tag => tag.toLowerCase().includes('quick ship'));
+
+        return `
+          <a href="/products/${product.handle}" class="search-result-item">
+            <img src="${imageUrl}" alt="${product.title}" class="search-result-image" loading="lazy">
+            <div class="search-result-info">
+              ${product.vendor ? `<div class="search-result-brand">${product.vendor}</div>` : ''}
+              <div class="search-result-title">${product.title}</div>
+              <div class="search-result-meta">
+                ${result.primarySKU ? `<span class="search-result-sku">SKU: ${result.primarySKU}</span>` : ''}
+                ${result.deposcoId ? `<span class="search-result-deposco">Deposco: ${result.deposcoId}</span>` : ''}
+                ${isQuickShip ? '<span class="search-result-badge">Quick Ship</span>' : ''}
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    this.searchResults.style.display = 'block';
+  }
+
+  hideSearchResults() {
+    if (this.searchResults) {
+      this.searchResults.style.display = 'none';
     }
   }
 }

@@ -144,19 +144,51 @@
     {%- comment -%} MAIN CONTENT {%- endcomment -%}
     <div class="main-content">
       
-      {%- comment -%} SORT SECTION {%- endcomment -%}
-      <div class="sort-section">
-        <span class="sort-label">Sort by:</span>
-        <select class="sort-select" id="collection-sort">
-          <option value="manual">Featured</option>
-          <option value="best-selling">Best Selling</option>
-          <option value="title-ascending">Alphabetically, A-Z</option>
-          <option value="title-descending">Alphabetically, Z-A</option>
-          <option value="price-ascending">Price, low to high</option>
-          <option value="price-descending">Price, high to low</option>
-          <option value="created-descending">Date, new to old</option>
-          <option value="created-ascending">Date, old to new</option>
-        </select>
+      {%- comment -%} SEARCH & SORT SECTION {%- endcomment -%}
+      <div class="collection-header-controls">
+        {%- comment -%} Search Bar {%- endcomment -%}
+        <div class="collection-search-wrapper">
+          <div class="search-input-container">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input 
+              type="text" 
+              id="collection-search" 
+              class="collection-search-input" 
+              placeholder="Search products, SKU, Deposco ID..."
+              autocomplete="off"
+            >
+            <button type="button" class="search-clear-btn" id="search-clear" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          
+          {%- comment -%} Autocomplete Results {%- endcomment -%}
+          <div class="search-autocomplete-results" id="search-results" style="display: none;">
+            <div class="search-results-header">
+              <span class="search-results-count"></span>
+            </div>
+            <div class="search-results-list"></div>
+          </div>
+        </div>
+
+        {%- comment -%} Sort Dropdown {%- endcomment -%}
+        <div class="sort-section">
+          <span class="sort-label">Sort:</span>
+          <select class="sort-select" id="collection-sort">
+            <option value="manual">Featured</option>
+            <option value="best-selling">Best Selling</option>
+            <option value="title-ascending">A-Z</option>
+            <option value="title-descending">Z-A</option>
+            <option value="price-ascending">Price: Low</option>
+            <option value="price-descending">Price: High</option>
+            <option value="created-descending">Newest</option>
+            <option value="created-ascending">Oldest</option>
+          </select>
+        </div>
       </div>
 
       {%- comment -%} PRODUCT GRID {%- endcomment -%}
