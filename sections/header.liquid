@@ -266,9 +266,7 @@
     </div>
   {% endif %}
   
-  <div class="header-wave">
-    {{ 'wave.svg' | asset_url | img_tag: '', loading: 'eager', class: 'header-wave__svg' }}
-  </div>
+  <div class="header-wave"></div>
 </header-component>
 
 <script
@@ -615,13 +613,10 @@
     height: 30px;
     pointer-events: none;
     z-index: 1;
-  }
-  
-  .header-wave__svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: fill;
+    background-image: url('https://cdn.shopify.com/s/files/1/0941/4429/9323/files/Vector.png?v=1761851666');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .header:not(.header--compact) .header__row--bottom {
