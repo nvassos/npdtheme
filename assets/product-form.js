@@ -14,7 +14,7 @@ if (!customElements.get('product-form')) {
       
       // Initialize shipping notice
       this.updateShippingNotice();
-    }
+  }
 
     setupQuantityControls() {
       const minusBtn = this.querySelector('.quantity-minus');
@@ -25,7 +25,7 @@ if (!customElements.get('product-form')) {
           const currentValue = parseInt(this.quantityInput.value) || 1;
           if (currentValue > 1) {
             this.quantityInput.value = currentValue - 1;
-          }
+  }
         });
       }
       
@@ -49,7 +49,7 @@ if (!customElements.get('product-form')) {
           if (value < min) this.quantityInput.value = min;
           if (value > max) this.quantityInput.value = max;
         });
-      }
+  }
     }
 
     setupOptionButtons() {
@@ -108,10 +108,8 @@ if (!customElements.get('product-form')) {
         buttons.forEach(button => {
           const optionValue = button.dataset.optionValue;
           
-          // Check if this option value is available with current selections
-          const isAvailable = variants.some(variant => {
-            if (!variant.available) return false;
-            
+          // Check if this option value exists in any variant combination
+          const variantExists = variants.some(variant => {
             // Check if variant matches this option value
             const variantOptionValue = variant[`option${optionIndex + 1}`];
             if (variantOptionValue !== optionValue) return false;
@@ -128,8 +126,8 @@ if (!customElements.get('product-form')) {
             return true;
           });
           
-          // Update button state
-          if (isAvailable || button.classList.contains('selected')) {
+          // Update button state - enable all options that exist
+          if (variantExists) {
             button.disabled = false;
             button.classList.remove('unavailable');
           } else {
@@ -149,7 +147,7 @@ if (!customElements.get('product-form')) {
       if (!variantsJson) return;
       
       const variants = JSON.parse(variantsJson.textContent);
-      
+
       // Get selected options
       const selectedOptions = [];
       const optionGroups = variantSelector.querySelectorAll('.option-buttons:not(.custom-option-buttons)');
@@ -167,14 +165,14 @@ if (!customElements.get('product-form')) {
           return variant[`option${index + 1}`] === option;
         });
       });
-      
+
       if (matchingVariant) {
         // Update variant ID
         this.variantIdInput.value = matchingVariant.id;
         
         // Update price
         this.updatePrice(matchingVariant);
-        
+
         // Update availability
         this.updateAvailability(matchingVariant);
         
@@ -212,7 +210,7 @@ if (!customElements.get('product-form')) {
         } else {
           this.addButton.disabled = true;
           this.addButton.textContent = 'Sold Out';
-        }
+  }
       }
       
       // Update quantity note with variant inventory
@@ -224,12 +222,12 @@ if (!customElements.get('product-form')) {
       if (!quantityNote) return;
       
       const inventory = variant.inventory_quantity || 0;
-      
+
       if (inventory > 0) {
         quantityNote.innerHTML = `<span class="quick-ship-available" data-inventory="${inventory}">${inventory} quick ship available</span><br>Quantities beyond this are made to order and billed to your no-charge account.`;
-      } else {
+    } else {
         quantityNote.innerHTML = 'Quantities are made to order and billed to your no-charge account.';
-      }
+    }
     }
 
     updateSku(variant) {
@@ -267,10 +265,10 @@ if (!customElements.get('product-form')) {
       const currentVariant = variants.find(v => v.id == currentVariantId);
       
       if (!currentVariant) return;
-      
+
       // Check if variant has quickship-inventory metafield
       const quickshipInventory = currentVariant.metafields?.custom?.quickship_inventory || 0;
-      
+
       // Update notice based on quickship inventory
       if (quickshipInventory > 0) {
         notice.classList.remove('made-to-order');
@@ -288,7 +286,7 @@ if (!customElements.get('product-form')) {
         e.preventDefault();
         
         if (this.addButton.disabled) return;
-        
+
         // Get the form data
         const formData = new FormData(this.form);
         const config = {
