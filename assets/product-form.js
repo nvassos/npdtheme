@@ -100,30 +100,35 @@ if (!customElements.get('product-form')) {
             // Update option availability
             this.updateOptionAvailability();
             
-            // Auto-select first available option in subsequent groups
-            let selectionChanged = false;
-            optionGroups.forEach((nextGroup, nextGroupIndex) => {
-              if (nextGroupIndex > groupIndex) {
-                const selectedBtn = nextGroup.querySelector('.option-button.selected');
-                // If current selection is now hidden or no selection exists, auto-select first available
-                if ((selectedBtn && selectedBtn.style.display === 'none') || !selectedBtn) {
-                  if (selectedBtn) {
-                    selectedBtn.classList.remove('selected');
-                  }
-                  // Find first visible button
-                  const allButtons = nextGroup.querySelectorAll('.option-button');
-                  const firstAvailable = Array.from(allButtons).find(btn => btn.style.display !== 'none');
-                  if (firstAvailable && !firstAvailable.classList.contains('selected')) {
-                    firstAvailable.classList.add('selected');
-                    selectionChanged = true;
+            // Auto-select first available option in subsequent groups (run twice to handle cascading)
+            for (let iteration = 0; iteration < 2; iteration++) {
+              let selectionChanged = false;
+              optionGroups.forEach((nextGroup, nextGroupIndex) => {
+                if (nextGroupIndex > groupIndex) {
+                  const selectedBtn = nextGroup.querySelector('.option-button.selected');
+                  // If current selection is now hidden or no selection exists, auto-select first available
+                  if ((selectedBtn && selectedBtn.style.display === 'none') || !selectedBtn) {
+                    if (selectedBtn) {
+                      selectedBtn.classList.remove('selected');
+                    }
+                    // Find first visible button
+                    const allButtons = nextGroup.querySelectorAll('.option-button');
+                    const firstAvailable = Array.from(allButtons).find(btn => btn.style.display !== 'none');
+                    if (firstAvailable && !firstAvailable.classList.contains('selected')) {
+                      firstAvailable.classList.add('selected');
+                      selectionChanged = true;
+                    }
                   }
                 }
+              });
+              
+              // If we auto-selected something, recalculate availability for next iteration
+              if (selectionChanged) {
+                this.updateOptionAvailability();
+              } else {
+                // No changes, break early
+                break;
               }
-            });
-            
-            // If we auto-selected something, recalculate availability again
-            if (selectionChanged) {
-              this.updateOptionAvailability();
             }
             
             // Update variant
