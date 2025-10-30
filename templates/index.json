@@ -55,6 +55,19 @@
       "type": "collection-grid",
       "settings": {
         "eyebrow": "Standard Acrylics",
+        "title": "Essa for Everything",
+        "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
+        "button_text": "Browse Acrylics",
+        "button_link": "/collections/acrylics",
+        "collection": "essa",
+        "products_to_show": 4,
+        "show_border_top": true
+      }
+    },
+    "collection_grid_KwKdcd": {
+      "type": "collection-grid",
+      "settings": {
+        "eyebrow": "Standard Acrylics",
         "title": "Choose, Drill, Deliver.",
         "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
         "button_text": "Browse Acrylics",
@@ -80,6 +93,7 @@
     "quick_ship",
     "new_products",
     "standard_acrylics",
+    "collection_grid_KwKdcd",
     "help_section"
   ]
 }
