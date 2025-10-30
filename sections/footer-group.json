@@ -49,7 +49,13 @@
         "text_KbUCCx"
       ],
       "name": "Simple Footer",
-      "settings": {}
+      "settings": {
+        "show_logos": true,
+        "logo1": "shopify://shop_images/DeltaLogo_White_1.png",
+        "logo2": "shopify://shop_images/logo2.svg",
+        "logo3": "shopify://shop_images/logo3.svg",
+        "logo4": "shopify://shop_images/logo4.svg"
+      }
     },
     "footer": {
       "type": "footer",
