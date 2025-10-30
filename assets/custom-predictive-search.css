@@ -1,3 +1,13 @@
+/* Hide default theme search elements when custom search is active */
+predictive-search-component.custom-search-enabled .predictive-search-results__inner,
+predictive-search-component.custom-search-enabled .predictive-search-results__wrapper-products,
+predictive-search-component.custom-search-enabled .predictive-search-results__wrapper-queries,
+predictive-search-component.custom-search-enabled .predictive-search-results__card,
+predictive-search-component.custom-search-enabled .predictive-search-empty-state,
+predictive-search-component.custom-search-enabled .predictive-search-results__list {
+  display: none !important;
+}
+
 /* Custom Predictive Search Styles */
 .custom-search-loading {
   padding: 60px 20px;

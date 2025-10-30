@@ -39,6 +39,15 @@ class CustomPredictiveSearch {
     
     if (!this.searchInput || !this.searchResults) return;
 
+    // Hide all default search UI elements
+    const defaultElements = component.querySelectorAll('.predictive-search-results__inner, .predictive-search-results__wrapper-products, .predictive-search-results__wrapper-queries, .predictive-search-results__card, .predictive-search-empty-state');
+    defaultElements.forEach(el => {
+      if (el) el.style.display = 'none';
+    });
+
+    // Disable the default predictive search component
+    component.classList.add('custom-search-enabled');
+    
     // Remove the default search handler
     const newInput = this.searchInput.cloneNode(true);
     this.searchInput.parentNode.replaceChild(newInput, this.searchInput);
@@ -51,6 +60,18 @@ class CustomPredictiveSearch {
     if (this.resetButton) {
       this.resetButton.addEventListener('click', () => this.resetSearch());
     }
+    
+    // Observe for any DOM changes that might re-add default content
+    const observer = new MutationObserver(() => {
+      const defaultEls = this.searchResults.querySelectorAll('.predictive-search-results__inner, .predictive-search-results__wrapper-products, .predictive-search-results__wrapper-queries, .predictive-search-results__card, .predictive-search-empty-state');
+      defaultEls.forEach(el => {
+        if (el && !el.classList.contains('custom-search-results-wrapper')) {
+          el.style.display = 'none';
+        }
+      });
+    });
+    
+    observer.observe(this.searchResults, { childList: true, subtree: true });
   }
 
   handleSearch(e) {
