@@ -1,0 +1,115 @@
+{{ 'section-iframe-content.css' | asset_url | stylesheet_tag }}
+
+<div class="iframe-section section--{{ section.settings.section_width }}">
+  <div class="iframe-container" style="--iframe-height: {{ section.settings.iframe_height }}px;">
+    {% if section.settings.iframe_url != blank %}
+      <iframe
+        src="{{ section.settings.iframe_url }}"
+        title="{{ section.settings.iframe_title | default: 'Embedded Content' }}"
+        frameborder="0"
+        allowfullscreen
+        {% if section.settings.allow_scripts %}
+          allow="autoplay; encrypted-media; picture-in-picture"
+        {% endif %}
+        loading="lazy"
+      ></iframe>
+    {% else %}
+      <div class="iframe-placeholder">
+        <p>Enter an iframe URL in the theme editor to display content here.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Iframe Content",
+  "tag": "section",
+  "class": "section-iframe",
+  "settings": [
+    {
+      "type": "text",
+      "id": "iframe_url",
+      "label": "Iframe URL",
+      "info": "Enter the full URL you want to embed (e.g., https://example.com)"
+    },
+    {
+      "type": "text",
+      "id": "iframe_title",
+      "label": "Iframe Title",
+      "default": "Embedded Content",
+      "info": "Descriptive title for accessibility"
+    },
+    {
+      "type": "range",
+      "id": "iframe_height",
+      "label": "Height (px)",
+      "min": 300,
+      "max": 2000,
+      "step": 50,
+      "default": 800,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        },
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_scripts",
+      "label": "Allow autoplay and media",
+      "default": true,
+      "info": "Enables autoplay, encrypted media, and picture-in-picture features"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Iframe Content"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #shopify-section-{{ section.id }} .iframe-section {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+</style>
+

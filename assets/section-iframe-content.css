@@ -1,0 +1,64 @@
+.iframe-section {
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: white;
+}
+
+.iframe-section.section--page-width {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.iframe-section.section--full-width {
+  width: 100%;
+}
+
+.iframe-container {
+  position: relative;
+  width: 100%;
+  height: var(--iframe-height, 800px);
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.iframe-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #F8F9FA;
+  border: 2px dashed #D4DCE7;
+  border-radius: 8px;
+}
+
+.iframe-placeholder p {
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .iframe-section.section--page-width {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .iframe-container {
+    border-radius: 4px;
+  }
+}
+
