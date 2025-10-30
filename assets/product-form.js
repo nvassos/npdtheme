@@ -133,6 +133,14 @@ if (!customElements.get('product-form')) {
       
       console.log('Checking availability with selected options:', selectedOptions);
       console.log('Total variants:', variants.length);
+      console.log('All variants:', variants.map(v => ({
+        id: v.id,
+        option1: v.option1,
+        option2: v.option2,
+        option3: v.option3,
+        available: v.available,
+        inventory: v.inventory_quantity
+      })));
       
       // Update each option group
       optionGroups.forEach((group, optionIndex) => {
@@ -220,6 +228,9 @@ if (!customElements.get('product-form')) {
         // Update SKU
         this.updateSku(matchingVariant);
         
+        // Update featured image if variant has one
+        this.updateFeaturedImage(matchingVariant);
+        
         // Update URL
         this.updateURL(matchingVariant.id);
       }
@@ -300,6 +311,23 @@ if (!customElements.get('product-form')) {
       }
     }
 
+    updateFeaturedImage(variant) {
+      if (!variant.featured_image) return;
+      
+      const mainImage = document.querySelector('.product-main-image');
+      if (!mainImage) return;
+      
+      // Update the image src
+      const imageUrl = variant.featured_image.src || variant.featured_image;
+      mainImage.src = imageUrl;
+      mainImage.srcset = imageUrl;
+      
+      // Update alt text if available
+      if (variant.featured_image.alt) {
+        mainImage.alt = variant.featured_image.alt;
+      }
+    }
+    
     updateURL(variantId) {
       if (!window.history.replaceState) return;
       

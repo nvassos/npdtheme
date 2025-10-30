@@ -54,6 +54,7 @@
               "price": {{ variant.price | json }},
               "compare_at_price": {{ variant.compare_at_price | json }},
               "inventory_quantity": {{ variant.inventory_quantity | json }},
+              "featured_image": {% if variant.featured_image %}{{ variant.featured_image | json }}{% else %}null{% endif %},
               "metafields": {
                 "custom": {
                   "quickship_inventory": {{ variant.metafields.custom.quickship_inventory | default: 0 | json }},
