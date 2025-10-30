@@ -2,6 +2,19 @@
   Renders the cart summary totals.
 {%- enddoc -%}
 
+{%- comment -%} Calculate estimated total cost from item_cost_variant {%- endcomment -%}
+{%- liquid
+  assign estimated_total_cost = 0
+  for item in cart.items
+    assign item_cost = item.properties._item_cost_variant
+    if item_cost != blank
+      assign item_cost_clean = item_cost | replace: '$', '' | replace: ',', '' | times: 1
+      assign item_total = item_cost_clean | times: item.quantity
+      assign estimated_total_cost = estimated_total_cost | plus: item_total
+    endif
+  endfor
+-%}
+
 <div class="cart__summary-totals">
   {% # We need to keep this node in place to allow morphing to work properly # %}
   <div class="cart__original-total-container cart-primary-typography">
@@ -55,6 +68,18 @@
       assign total_price = cart.total_price | money
     endif
   -%}
+
+  {%- comment -%} Display Estimated Cost to No-Charge Account {%- endcomment -%}
+  {%- if estimated_total_cost > 0 -%}
+    <div class="cart__estimated-cost-container">
+      <span class="cart__summary-item cart__estimated-cost">
+        <span class="cart__estimated-cost-label cart-primary-typography">Estimated Cost to Your No-Charge Account</span>
+        <span class="cart__estimated-cost-value cart-secondary-typography" style="font-weight: 600; font-size: 1.2em;">
+          ${{ estimated_total_cost | money_without_currency }}
+        </span>
+      </span>
+    </div>
+  {%- endif -%}
 
   <div class="cart__total-container">
     <span
@@ -128,5 +153,31 @@
 
   .cart__installments {
     color: var(--color-foreground);
+  }
+  
+  .cart__estimated-cost-container {
+    margin-block-start: var(--margin-md);
+    padding-block: var(--padding-md);
+    border-block: 2px solid var(--color-foreground);
+    background-color: rgba(139, 115, 85, 0.1);
+  }
+  
+  .cart__estimated-cost {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs);
+    align-items: center;
+    text-align: center;
+  }
+  
+  .cart__estimated-cost-label {
+    font-size: var(--cart-font-size--sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .cart__estimated-cost-value {
+    color: #8B7355;
   }
 {% endstylesheet %}

@@ -17,6 +17,23 @@ if (!customElements.get('product-form')) {
       
       // Initialize price calculation on page load
       this.updatePriceByQuantity();
+      
+      // Initialize currentVariant from the initial variant ID
+      this.initializeCurrentVariant();
+    }
+    
+    initializeCurrentVariant() {
+      const variantSelector = this.querySelector('variant-selects');
+      if (!variantSelector) return;
+      
+      const variantsJson = variantSelector.querySelector('.product-variants-json');
+      if (!variantsJson) return;
+      
+      const data = JSON.parse(variantsJson.textContent);
+      const variants = data.variants || data;
+      
+      const currentVariantId = this.variantIdInput.value;
+      this.currentVariant = variants.find(v => v.id == currentVariantId);
     }
 
     setupQuantityControls() {
@@ -326,9 +343,15 @@ if (!customElements.get('product-form')) {
         e.preventDefault();
         
         if (this.addButton.disabled) return;
-
+        
         // Get the form data
         const formData = new FormData(this.form);
+        
+        // Add item_cost_variant as a line item property
+        if (this.currentVariant && this.currentVariant.metafields?.custom?.item_cost_variant) {
+          formData.append('properties[_item_cost_variant]', this.currentVariant.metafields.custom.item_cost_variant);
+        }
+        
         const config = {
           method: 'POST',
           headers: {

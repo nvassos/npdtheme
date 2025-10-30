@@ -40,6 +40,20 @@
       id="cart-form"
       method="post"
     >
+      {%- comment -%} Calculate and store estimated total cost as cart attribute {%- endcomment -%}
+      {%- liquid
+        assign estimated_total_cost_attr = 0
+        for item in cart.items
+          assign item_cost = item.properties._item_cost_variant
+          if item_cost != blank
+            assign item_cost_clean = item_cost | replace: '$', '' | replace: ',', '' | times: 1
+            assign item_total = item_cost_clean | times: item.quantity
+            assign estimated_total_cost_attr = estimated_total_cost_attr | plus: item_total
+          endif
+        endfor
+      -%}
+      <input type="hidden" name="attributes[estimated_total_cost]" value="${{ estimated_total_cost_attr | money_without_currency }}">
+      
       <div
         class="cart-items spacing-style{% if block_settings.dividers %} cart-items--dividers{% endif %}"
         style="{%  render 'spacing-style', settings: block_settings %} --cart-items-gap:{{ block_settings.gap | append: "px" }};"
