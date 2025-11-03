@@ -17,6 +17,22 @@
   padding: 30px;
   margin-bottom: 30px;
   border: 1px solid #D4DCE7;
+  max-width: 800px;
+}
+
+/* Make cart summary sticky */
+.cart__summary {
+  position: sticky !important;
+  top: 120px !important;
+  align-self: flex-start !important;
+}
+
+/* Disable checkout button style */
+button[name="checkout"]:disabled,
+.cart__checkout-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 768px) {
