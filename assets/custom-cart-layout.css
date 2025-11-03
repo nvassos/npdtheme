@@ -1,0 +1,164 @@
+/* Custom Cart Layout Improvements */
+
+/* Compact cart items grid */
+.cart-items {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 16px !important;
+}
+
+.cart-item {
+  display: grid !important;
+  grid-template-columns: 80px 1fr auto !important;
+  gap: 16px !important;
+  align-items: center !important;
+  padding: 16px !important;
+  background: white !important;
+  border-radius: 8px !important;
+  border: 1px solid #E5E5E5 !important;
+}
+
+/* Smaller product images */
+.cart-item__image,
+.cart-item__media {
+  width: 80px !important;
+  height: 80px !important;
+  min-width: 80px !important;
+  object-fit: contain !important;
+  padding: 8px !important;
+  background: #F8F9FA !important;
+  border-radius: 6px !important;
+}
+
+/* Compact product info */
+.cart-item__details,
+.cart-item__info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+}
+
+.cart-item__name,
+.cart-item__title {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
+.cart-item__vendor,
+.cart-item__brand {
+  font-size: 11px !important;
+  color: #666 !important;
+  text-transform: uppercase !important;
+}
+
+.cart-item__variant,
+.cart-item__options {
+  font-size: 12px !important;
+  color: #666 !important;
+}
+
+/* Compact quantity controls */
+.cart-item__quantity,
+.quantity-selector {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.cart-item__quantity-input,
+.quantity-input {
+  width: 50px !important;
+  height: 36px !important;
+  text-align: center !important;
+  font-size: 14px !important;
+}
+
+.cart-item__quantity-button,
+.quantity-button {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+}
+
+/* Compact prices */
+.cart-item__price,
+.cart-item__total {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+/* Remove button */
+.cart-item__remove {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+}
+
+/* Make cart summary sticky - with higher specificity */
+.cart__columns,
+.main-cart {
+  display: grid !important;
+  grid-template-columns: 1fr 400px !important;
+  gap: 40px !important;
+  align-items: start !important;
+}
+
+.cart__summary-wrapper,
+.cart__footer {
+  position: sticky !important;
+  top: 120px !important;
+  align-self: flex-start !important;
+  z-index: 10 !important;
+}
+
+/* Ensure summary stays in place */
+.cart__summary {
+  position: relative !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .cart__columns,
+  .main-cart {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .cart__summary-wrapper,
+  .cart__footer {
+    position: static !important;
+    top: auto !important;
+  }
+  
+  .cart-item {
+    grid-template-columns: 70px 1fr auto !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+  
+  .cart-item__image,
+  .cart-item__media {
+    width: 70px !important;
+    height: 70px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-item {
+    grid-template-columns: 60px 1fr !important;
+  }
+  
+  .cart-item__image,
+  .cart-item__media {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .cart-item__quantity {
+    margin-top: 8px !important;
+  }
+}
+

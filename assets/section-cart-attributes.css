@@ -20,11 +20,19 @@
   max-width: 800px;
 }
 
-/* Make cart summary sticky */
+/* Make cart summary sticky - additional specificity */
+.cart-page__summary {
+  position: sticky !important;
+  top: 120px !important;
+  align-self: flex-start !important;
+  z-index: 10 !important;
+}
+
 .cart__summary {
   position: sticky !important;
   top: 120px !important;
   align-self: flex-start !important;
+  z-index: 10 !important;
 }
 
 /* Disable checkout button style */
