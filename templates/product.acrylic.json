@@ -23,22 +23,18 @@
           "type": "dimensions",
           "settings": {}
         },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
         "custom_input": {
           "type": "custom_input",
           "settings": {
             "label": "ENTER PRODUCT MODEL NUMBER FOR CUSTOMIZATION",
             "property_name": "Model Number",
             "placeholder": "Enter Model Number"
-          }
-        },
-        "shipping_notice": {
-          "type": "shipping_notice",
-          "settings": {}
-        },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button"
           }
         },
         "quantity": {
@@ -63,9 +59,8 @@
         "title",
         "sku",
         "dimensions",
-        "custom_input",
-        "shipping_notice",
         "variant_picker",
+        "custom_input",
         "quantity",
         "price",
         "buy_buttons",
