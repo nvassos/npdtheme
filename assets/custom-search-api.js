@@ -121,7 +121,15 @@ class CustomSearchAPI {
     
     // Determine which variant to display
     const displayVariant = result.matched_variant || null;
-    const productUrl = result.url || `/products/${result.handle}`;
+    let productUrl = result.url || `/products/${result.handle}`;
+    
+    // If the URL doesn't include a variant parameter but we have a matched_variant, add it
+    if (displayVariant && displayVariant.id && !productUrl.includes('variant=')) {
+      const separator = productUrl.includes('?') ? '&' : '?';
+      productUrl = `${productUrl}${separator}variant=${displayVariant.id}`;
+      console.log('✅ Search results page linking to variant:', displayVariant.id);
+    }
+    
     const sku = displayVariant ? displayVariant.sku : '';
     const deposcoId = displayVariant ? displayVariant.deposco_id : '';
     const quickShip = displayVariant ? displayVariant.quick_ship : false;

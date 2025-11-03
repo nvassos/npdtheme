@@ -427,10 +427,11 @@ class CollectionFilters {
         // Use the URL from API response or build it
         let productUrl = result.productUrl || `/products/${product.handle}`;
         
-        // If API didn't provide a full URL with variant, add it
-        if (!result.productUrl && result.matchedVariant && result.matchedVariant.id) {
-          productUrl = `/products/${product.handle}?variant=${result.matchedVariant.id}`;
-          console.log('Linking to variant:', result.matchedVariant.id, 'SKU:', result.primarySKU, 'Deposco:', result.deposcoId);
+        // If the URL doesn't include a variant parameter but we have a matchedVariant, add it
+        if (result.matchedVariant && result.matchedVariant.id && !productUrl.includes('variant=')) {
+          const separator = productUrl.includes('?') ? '&' : '?';
+          productUrl = `${productUrl}${separator}variant=${result.matchedVariant.id}`;
+          console.log('✅ Collection search linking to variant:', result.matchedVariant.id, 'SKU:', result.primarySKU, 'Deposco:', result.deposcoId);
         }
 
         return `

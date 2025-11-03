@@ -190,8 +190,15 @@ class CustomPredictiveSearch {
       const imageUrl = item.image || '';
       const isQuickShip = item.tags && item.tags.some(tag => tag.toLowerCase().includes('quick ship'));
       
-      // Use URL from API
+      // Use URL from API, or construct with variant if available
       let productUrl = item.url || `/products/${item.handle}`;
+      
+      // If the API URL doesn't include a variant parameter but we have a matched_variant, add it
+      if (item.matched_variant && item.matched_variant.id && !productUrl.includes('variant=')) {
+        const separator = productUrl.includes('?') ? '&' : '?';
+        productUrl = `${productUrl}${separator}variant=${item.matched_variant.id}`;
+        console.log('✅ Header search linking to variant:', item.matched_variant.id);
+      }
       
       const sku = item.matched_variant?.sku || '';
       const deposcoId = item.matched_variant?.deposco_id || '';
