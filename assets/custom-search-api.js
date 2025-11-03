@@ -99,8 +99,16 @@ class CustomSearchAPI {
       return;
     }
 
+    // Filter out products without valid URL or handle
+    const validResults = results.filter(result => result.url && result.handle);
+
+    if (validResults.length === 0) {
+      this.showNoResults();
+      return;
+    }
+
     // Update results count
-    this.resultsCount.textContent = `Found ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
+    this.resultsCount.textContent = `Found ${validResults.length} result${validResults.length !== 1 ? 's' : ''} for "${query}"`;
     this.resultsCount.style.display = 'block';
     this.noResultsMessage.style.display = 'none';
     this.resultsGrid.style.display = 'grid';
@@ -109,7 +117,7 @@ class CustomSearchAPI {
     this.resultsGrid.innerHTML = '';
 
     // Display each result
-    results.forEach(result => {
+    validResults.forEach(result => {
       const productCard = this.createProductCard(result);
       this.resultsGrid.appendChild(productCard);
     });

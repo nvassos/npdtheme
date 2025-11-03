@@ -372,24 +372,27 @@ class CollectionFilters {
       console.log('✅ Search API returned:', data.results.length, 'results');
       
       // Transform API results to match our display format
-      const results = data.results.map(item => ({
-        product: {
-          id: item.id,
-          title: item.title,
-          handle: item.handle,
-          vendor: item.vendor,
-          tags: item.tags,
-          image: item.image
-        },
-        matchedVariant: item.matched_variant ? {
-          id: item.matched_variant.id,
-          title: item.matched_variant.title,
-          sku: item.matched_variant.sku
-        } : null,
-        primarySKU: item.matched_variant?.sku || '',
-        deposcoId: item.matched_variant?.deposco_id || '',
-        productUrl: item.url
-      }));
+      // Filter out products without valid URL or handle
+      const results = data.results
+        .filter(item => item.url && item.handle)
+        .map(item => ({
+          product: {
+            id: item.id,
+            title: item.title,
+            handle: item.handle,
+            vendor: item.vendor,
+            tags: item.tags,
+            image: item.image
+          },
+          matchedVariant: item.matched_variant ? {
+            id: item.matched_variant.id,
+            title: item.matched_variant.title,
+            sku: item.matched_variant.sku
+          } : null,
+          primarySKU: item.matched_variant?.sku || '',
+          deposcoId: item.matched_variant?.deposco_id || '',
+          productUrl: item.url
+        }));
       
       // Display results (top 8)
       this.displaySearchResults(results.slice(0, 8), query);
