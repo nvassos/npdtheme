@@ -12,14 +12,10 @@
     {% render 'account-drawer' %}
   {% endif %}
 
-  {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
-    {% render 'cart-drawer' %}
-  {% endif %}
-  
-  {%- comment -%} Always show cart link for mobile {%- endcomment -%}
+  {%- comment -%} Always link to cart page instead of drawer {%- endcomment -%}
   <a
     href="{{ routes.cart_url }}"
-    class="header-actions__action action__cart action__cart--mobile-link"
+    class="header-actions__action action__cart"
     aria-label="{{ 'accessibility.cart' | t }} {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}"
   >
     {% render 'cart-icon-component' %}
@@ -267,23 +263,5 @@
 
   .cart-bubble--animating .cart-bubble__text {
     animation: cartBubbleSlideIn var(--animation-speed) var(--animation-easing);
-  }
-
-  /* Mobile: hide drawer trigger, show cart link */
-  @media screen and (max-width: 749px) {
-    cart-drawer-component {
-      display: none !important;
-    }
-    
-    .action__cart--mobile-link {
-      display: flex !important;
-    }
-  }
-
-  /* Desktop: show drawer trigger, hide mobile cart link */
-  @media screen and (min-width: 750px) {
-    .action__cart--mobile-link {
-      display: none !important;
-    }
   }
 {% endstylesheet %}
