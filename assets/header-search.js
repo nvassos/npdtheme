@@ -6,24 +6,24 @@
 if (!window.HeaderSearch) {
   window.HeaderSearch = class HeaderSearch {
   constructor() {
-    this.toggleBtn = document.getElementById('header-search-toggle');
-    this.dropdown = document.getElementById('header-search-dropdown');
-    this.searchInput = document.getElementById('header-search-input');
-    this.searchClearBtn = document.getElementById('header-search-clear');
-    this.searchResults = document.getElementById('header-search-results');
-    this.searchTimeout = null;
-    this.searchQuery = '';
+    // Get ALL toggle buttons (might be multiple for mobile/desktop)
+    this.toggleBtns = document.querySelectorAll('#header-search-toggle');
+    this.dropdowns = document.querySelectorAll('#header-search-dropdown');
+    this.searchInputs = document.querySelectorAll('#header-search-input');
     
     console.log('🔍 Header Search Init:', {
-      toggleBtn: this.toggleBtn,
-      dropdown: this.dropdown,
-      searchInput: this.searchInput
+      toggleBtns: this.toggleBtns.length,
+      dropdowns: this.dropdowns.length,
+      searchInputs: this.searchInputs.length
     });
     
-    if (!this.toggleBtn || !this.dropdown || !this.searchInput) {
+    if (this.toggleBtns.length === 0 || this.dropdowns.length === 0 || this.searchInputs.length === 0) {
       console.warn('❌ Header search elements not found');
       return;
     }
+    
+    this.searchTimeout = null;
+    this.searchQuery = '';
     
     this.init();
   }
@@ -31,86 +31,114 @@ if (!window.HeaderSearch) {
   init() {
     console.log('✅ Header Search initialized');
     
-    // Toggle dropdown
-    this.toggleBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('🖱️ Search icon clicked');
+    // Attach listeners to ALL toggle buttons
+    this.toggleBtns.forEach((btn, index) => {
+      const dropdown = this.dropdowns[index];
+      const searchInput = this.searchInputs[index];
       
-      const isVisible = this.dropdown.style.display === 'block';
-      console.log('Dropdown visible?', isVisible);
+      if (!dropdown || !searchInput) return;
       
-      if (isVisible) {
-        this.hideDropdown();
-      } else {
-        this.showDropdown();
-      }
-    });
-
-    // Search input handler with debounce
-    this.searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.trim();
-      this.searchQuery = query;
-
-      // Show/hide clear button
-      if (this.searchClearBtn) {
-        this.searchClearBtn.style.display = query ? 'flex' : 'none';
-      }
-
-      // Debounce search
-      clearTimeout(this.searchTimeout);
-      if (query.length >= 2) {
-        this.searchTimeout = setTimeout(() => this.performSearch(query), 300);
-      } else {
-        this.hideSearchResults();
-      }
-    });
-
-    // Clear button handler
-    if (this.searchClearBtn) {
-      this.searchClearBtn.addEventListener('click', () => {
-        this.searchInput.value = '';
-        this.searchQuery = '';
-        this.searchClearBtn.style.display = 'none';
-        this.hideSearchResults();
-        this.searchInput.focus();
+      console.log(`🔘 Attaching listener to button ${index}`);
+      
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log(`🖱️ Search icon ${index} clicked`);
+        
+        const isVisible = dropdown.style.display === 'block';
+        console.log('Dropdown visible?', isVisible);
+        
+        if (isVisible) {
+          this.hideDropdown(index);
+        } else {
+          this.showDropdown(index);
+        }
       });
-    }
+      
+      // Search input handler
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        this.searchQuery = query;
+        
+        const clearBtn = dropdown.querySelector('.header-search-clear-btn');
+        if (clearBtn) {
+          clearBtn.style.display = query ? 'flex' : 'none';
+        }
+        
+        clearTimeout(this.searchTimeout);
+        if (query.length >= 2) {
+          this.searchTimeout = setTimeout(() => this.performSearch(query, index), 300);
+        } else {
+          this.hideSearchResults(index);
+        }
+      });
+      
+      // Clear button handler
+      const clearBtn = dropdown.querySelector('.header-search-clear-btn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          this.searchQuery = '';
+          clearBtn.style.display = 'none';
+          this.hideSearchResults(index);
+          searchInput.focus();
+        });
+      }
+      
+      // Show results again when focusing input
+      searchInput.addEventListener('focus', () => {
+        const results = dropdown.querySelector('.header-search-results');
+        if (this.searchQuery && results && results.querySelector('.search-result-item')) {
+          results.style.display = 'block';
+        }
+      });
+    });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.header-search-action')) {
-        this.hideDropdown();
-      }
-    });
-
-    // Show results again when focusing input
-    this.searchInput.addEventListener('focus', () => {
-      if (this.searchQuery && this.searchResults.querySelector('.search-result-item')) {
-        this.searchResults.style.display = 'block';
+        this.hideAllDropdowns();
       }
     });
   }
 
-  showDropdown() {
-    console.log('📖 Showing dropdown');
-    this.dropdown.style.display = 'block';
-    this.toggleBtn.setAttribute('aria-expanded', 'true');
-    setTimeout(() => this.searchInput.focus(), 100);
+  showDropdown(index) {
+    console.log(`📖 Showing dropdown ${index}`);
+    const dropdown = this.dropdowns[index];
+    const btn = this.toggleBtns[index];
+    const searchInput = this.searchInputs[index];
+    
+    dropdown.style.display = 'block';
+    btn.setAttribute('aria-expanded', 'true');
+    setTimeout(() => searchInput.focus(), 100);
   }
 
-  hideDropdown() {
-    this.dropdown.style.display = 'none';
-    this.toggleBtn.setAttribute('aria-expanded', 'false');
-    this.searchInput.value = '';
+  hideDropdown(index) {
+    const dropdown = this.dropdowns[index];
+    const btn = this.toggleBtns[index];
+    const searchInput = this.searchInputs[index];
+    
+    dropdown.style.display = 'none';
+    btn.setAttribute('aria-expanded', 'false');
+    searchInput.value = '';
     this.searchQuery = '';
-    if (this.searchClearBtn) {
-      this.searchClearBtn.style.display = 'none';
+    
+    const clearBtn = dropdown.querySelector('.header-search-clear-btn');
+    if (clearBtn) {
+      clearBtn.style.display = 'none';
     }
-    this.hideSearchResults();
+    this.hideSearchResults(index);
+  }
+  
+  hideAllDropdowns() {
+    this.dropdowns.forEach((dropdown, index) => {
+      if (dropdown.style.display === 'block') {
+        this.hideDropdown(index);
+      }
+    });
   }
 
-  async performSearch(query) {
+  async performSearch(query, index) {
     try {
       // Use external API for search - searches across all 11k+ products
       const apiUrl = `https://phpstack-1318127-5961230.cloudwaysapps.com/api/products/search?q=${encodeURIComponent(query)}`;
@@ -147,18 +175,20 @@ if (!window.HeaderSearch) {
         }));
       
       // Display results (top 8)
-      this.displaySearchResults(results.slice(0, 8), query);
+      this.displaySearchResults(results.slice(0, 8), query, index);
       
     } catch (error) {
       console.error('❌ Header search API error:', error);
       // Show error in search results
-      this.displaySearchResults([], query);
+      this.displaySearchResults([], query, index);
     }
   }
 
-  displaySearchResults(results, query) {
-    const resultsList = this.searchResults.querySelector('.search-results-list');
-    const resultsCount = this.searchResults.querySelector('.search-results-count');
+  displaySearchResults(results, query, index) {
+    const dropdown = this.dropdowns[index];
+    const searchResults = dropdown.querySelector('.header-search-results');
+    const resultsList = searchResults.querySelector('.search-results-list');
+    const resultsCount = searchResults.querySelector('.search-results-count');
 
     if (results.length === 0) {
       resultsList.innerHTML = `
@@ -206,12 +236,14 @@ if (!window.HeaderSearch) {
       }).join('');
     }
 
-    this.searchResults.style.display = 'block';
+    searchResults.style.display = 'block';
   }
 
-  hideSearchResults() {
-    if (this.searchResults) {
-      this.searchResults.style.display = 'none';
+  hideSearchResults(index) {
+    const dropdown = this.dropdowns[index];
+    const searchResults = dropdown.querySelector('.header-search-results');
+    if (searchResults) {
+      searchResults.style.display = 'none';
     }
   }
   };
