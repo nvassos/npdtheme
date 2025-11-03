@@ -9,11 +9,13 @@
 {%- enddoc -%}
 
 {% unless style == 'none' %}
-  <search-button class="search-action{% if class != blank %} {{ class | strip }}{% endif %}">
+  <div class="header-search-action{% if class != blank %} {{ class | strip }}{% endif %}">
     <button
-      on:click="#search-modal/showDialog"
-      class="button button-unstyled search-modal__button header-actions__action"
-      aria-label="{{ 'accessibility.open_search_modal' | t }}"
+      type="button"
+      id="header-search-toggle"
+      class="button button-unstyled header-actions__action"
+      aria-label="Toggle search"
+      aria-expanded="false"
     >
       <span
         aria-hidden="true"
@@ -22,31 +24,199 @@
         {{ 'icon-search.svg' | inline_asset_content }}
       </span>
     </button>
-  </search-button>
+    
+    <div class="header-search-dropdown" id="header-search-dropdown" style="display: none;">
+      <div class="header-search-input-container">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input 
+          type="text" 
+          id="header-search-input" 
+          class="header-search-input" 
+          placeholder="Search products, SKU, Deposco ID..."
+          autocomplete="off"
+        >
+        <button type="button" class="header-search-clear-btn" id="header-search-clear" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="header-search-results" id="header-search-results" style="display: none;">
+        <div class="search-results-count"></div>
+        <div class="search-results-list"></div>
+      </div>
+    </div>
+  </div>
 {% endunless %}
 
 {% stylesheet %}
-  .search-action {
-    --search-border-radius: var(--style-border-radius-inputs);
-    --search-border-width: var(--style-border-width-inputs);
-
+  .header-search-action {
+    position: relative;
     display: flex;
   }
 
-  .header__column--center .search-action {
-    width: auto;
-    flex-grow: 1;
+  .header-search-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 400px;
+    max-width: 90vw;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 600px;
+    overflow-y: auto;
   }
 
-  :is(.header__column--left, .header__column--center) .search-action {
-    @media screen and (min-width: 750px) {
-      margin-inline: calc(var(--padding-lg) * -1);
-    }
+  .header-search-input-container {
+    position: relative;
+    padding: 20px;
+    border-bottom: 1px solid #E5E5E5;
   }
 
-  .header__column--right .search-action {
-    @media screen and (min-width: 750px) {
-      margin-inline: calc(var(--gap-md) * -1) calc(var(--gap-xs) * -1);
+  .header-search-input-container .search-icon {
+    position: absolute;
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+  }
+
+  .header-search-input {
+    width: 100%;
+    padding: 12px 40px 12px 40px;
+    border: 1px solid #D4DCE7;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+
+  .header-search-input:focus {
+    outline: none;
+    border-color: #5B8DB8;
+  }
+
+  .header-search-clear-btn {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-search-results {
+    padding: 20px;
+  }
+
+  .header-search-results .search-results-count {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .header-search-results .search-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .header-search-results .search-result-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #18223E;
+    transition: background 0.2s ease;
+  }
+
+  .header-search-results .search-result-item:hover {
+    background: #F8F9FA;
+  }
+
+  .header-search-results .search-result-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background: white;
+    border-radius: 6px;
+    padding: 4px;
+  }
+
+  .header-search-results .search-result-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header-search-results .search-result-brand {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .header-search-results .search-result-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .header-search-results .search-result-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .header-search-results .search-result-sku,
+  .header-search-results .search-result-deposco {
+    font-size: 11px;
+    color: #666;
+  }
+
+  .header-search-results .search-result-deposco {
+    color: #5B8DB8;
+    font-family: monospace;
+    background: #EBF0F9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .header-search-results .search-result-badge {
+    background: #8B7355;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .header-search-results .search-no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .header-search-dropdown {
+      width: 350px;
     }
   }
 {% endstylesheet %}
+
+<script src="{{ 'header-search.js' | asset_url }}" defer></script>

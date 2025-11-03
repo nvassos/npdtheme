@@ -3,8 +3,11 @@
   type="module"
 ></script>
 
+{%- comment -%}
+  Custom predictive search removed - now using inline header search
 {{ 'custom-predictive-search.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-predictive-search.js' | asset_url }}" type="module"></script>
+{%- endcomment -%}
 
 <dialog-component
   id="search-modal"
