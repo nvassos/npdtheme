@@ -186,18 +186,16 @@ class CustomPredictiveSearch {
 
     // Display top 12 results in grid
     const resultsHTML = results.slice(0, 12).map(item => {
-      const product = item;
       const imageUrl = item.image || '';
       const isQuickShip = item.tags && item.tags.some(tag => tag.toLowerCase().includes('quick ship'));
       
-      // Use URL from API, or construct with variant if available
+      // Use URL from API - it should include variant if there's a matched_variant
       let productUrl = item.url || `/products/${item.handle}`;
       
-      // If the API URL doesn't include a variant parameter but we have a matched_variant, add it
+      // Fallback: if API didn't include variant in URL but we have matched_variant, add it manually
       if (item.matched_variant && item.matched_variant.id && !productUrl.includes('variant=')) {
-        const separator = productUrl.includes('?') ? '&' : '?';
-        productUrl = `${productUrl}${separator}variant=${item.matched_variant.id}`;
-        console.log('✅ Header search linking to variant:', item.matched_variant.id);
+        productUrl = `/products/${item.handle}?variant=${item.matched_variant.id}`;
+        console.log('✅ Header search adding variant:', item.matched_variant.id, 'to', item.handle);
       }
       
       const sku = item.matched_variant?.sku || '';
@@ -206,11 +204,11 @@ class CustomPredictiveSearch {
       return `
         <a href="${productUrl}" class="custom-search-result-item">
           <div class="custom-search-result-image-wrapper">
-            ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" class="custom-search-result-image" loading="lazy">` : '<div class="custom-search-result-image-placeholder"></div>'}
+            ${imageUrl ? `<img src="${imageUrl}" alt="${item.title || ''}" class="custom-search-result-image" loading="lazy">` : '<div class="custom-search-result-image-placeholder"></div>'}
           </div>
           <div class="custom-search-result-info">
-            ${product.vendor ? `<div class="custom-search-result-brand">${product.vendor}</div>` : ''}
-            <div class="custom-search-result-title">${product.title}</div>
+            ${item.vendor ? `<div class="custom-search-result-brand">${item.vendor}</div>` : ''}
+            <div class="custom-search-result-title">${item.title}</div>
             <div class="custom-search-result-meta">
               ${sku ? `<span class="custom-search-result-sku">SKU: ${sku}</span>` : ''}
               ${deposcoId ? `<span class="custom-search-result-deposco">Deposco ID: ${deposcoId}</span>` : ''}
