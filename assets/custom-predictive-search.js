@@ -5,6 +5,7 @@
 
 class CustomPredictiveSearch {
   constructor() {
+    this.component = null;
     this.searchInput = null;
     this.searchResults = null;
     this.resetButton = null;
@@ -12,6 +13,8 @@ class CustomPredictiveSearch {
     this.isLoading = false;
     this.observer = null;
     this.isUpdatingResults = false;
+    this.searchQuery = '';
+    this.allowClose = false;
     
     this.init();
   }
@@ -35,9 +38,11 @@ class CustomPredictiveSearch {
   }
 
   setupCustomSearch(component) {
+    this.component = component;
     this.searchInput = component.querySelector('.search-input');
     this.searchResults = component.querySelector('.predictive-search-form__content');
     this.resetButton = component.querySelector('.predictive-search__reset-button');
+    this.searchQuery = '';
     
     if (!this.searchInput || !this.searchResults) return;
 
@@ -47,6 +52,17 @@ class CustomPredictiveSearch {
     // Block the default search function on the component
     if (component.search) {
       component.search = () => {};
+    }
+    
+    // Block the close function to prevent modal from auto-closing
+    if (component.close) {
+      const originalClose = component.close.bind(component);
+      component.close = (clearSearchTerm = false) => {
+        // Only allow close if we explicitly want it
+        if (this.allowClose) {
+          originalClose(clearSearchTerm);
+        }
+      };
     }
     
     // Hide all default search UI elements
@@ -76,6 +92,25 @@ class CustomPredictiveSearch {
     if (this.resetButton) {
       this.resetButton.addEventListener('click', () => this.resetSearch());
     }
+    
+    // Close search results when clicking outside (like collection search)
+    document.addEventListener('click', (e) => {
+      if (this.component && this.component.contains && !this.component.contains(e.target)) {
+        this.allowClose = true;
+        if (this.component.close) {
+          this.component.close();
+        }
+        this.hideResults();
+        this.allowClose = false;
+      }
+    });
+    
+    // Show results again when focusing input (like collection search)
+    this.searchInput.addEventListener('focus', () => {
+      if (this.searchQuery && this.searchResults.querySelector('.custom-search-result-item')) {
+        this.searchResults.setAttribute('data-search-results', 'true');
+      }
+    });
     
     // Aggressively observe for any DOM changes that might re-add default content
     this.observer = new MutationObserver((mutations) => {
@@ -112,6 +147,7 @@ class CustomPredictiveSearch {
 
   handleSearch(e) {
     const query = e.target.value.trim();
+    this.searchQuery = query;
     
     // Show/hide reset button
     if (this.resetButton) {
@@ -136,6 +172,7 @@ class CustomPredictiveSearch {
     this.showLoadingState();
 
     try {
+      // Use external API for search - searches across all 11k+ products
       const apiUrl = `https://phpstack-1318127-5961230.cloudwaysapps.com/api/products/search?q=${encodeURIComponent(query)}`;
       
       const response = await fetch(apiUrl);
@@ -144,7 +181,27 @@ class CustomPredictiveSearch {
       const data = await response.json();
       console.log('✅ Header search returned:', data.results.length, 'results');
       
-      this.displayResults(data.results, query);
+      // Transform API results to match our display format (same as collection search)
+      const results = data.results.map(item => ({
+        product: {
+          id: item.id,
+          title: item.title,
+          handle: item.handle,
+          vendor: item.vendor,
+          tags: item.tags,
+          image: item.image
+        },
+        matchedVariant: item.matched_variant ? {
+          id: item.matched_variant.id,
+          title: item.matched_variant.title,
+          sku: item.matched_variant.sku
+        } : null,
+        primarySKU: item.matched_variant?.sku || '',
+        deposcoId: item.matched_variant?.deposco_id || '',
+        productUrl: item.url
+      }));
+      
+      this.displayResults(results, query);
       
     } catch (error) {
       console.error('❌ Header search error:', error);
@@ -184,34 +241,33 @@ class CustomPredictiveSearch {
       return;
     }
 
-    // Display top 12 results in grid
-    const resultsHTML = results.slice(0, 12).map(item => {
-      const imageUrl = item.image || '';
-      const isQuickShip = item.tags && item.tags.some(tag => tag.toLowerCase().includes('quick ship'));
+    // Display top 12 results in grid (using same logic as collection search)
+    const resultsHTML = results.slice(0, 12).map(result => {
+      const product = result.product;
+      const imageUrl = product.image || '';
+      const isQuickShip = product.tags && product.tags.some(tag => tag.toLowerCase().includes('quick ship'));
       
-      // Use URL from API - it should include variant if there's a matched_variant
-      let productUrl = item.url || `/products/${item.handle}`;
+      // Use the URL from API response or build it
+      let productUrl = result.productUrl || `/products/${product.handle}`;
       
-      // Fallback: if API didn't include variant in URL but we have matched_variant, add it manually
-      if (item.matched_variant && item.matched_variant.id && !productUrl.includes('variant=')) {
-        productUrl = `/products/${item.handle}?variant=${item.matched_variant.id}`;
-        console.log('✅ Header search adding variant:', item.matched_variant.id, 'to', item.handle);
+      // If the URL doesn't include a variant parameter but we have a matchedVariant, add it
+      if (result.matchedVariant && result.matchedVariant.id && !productUrl.includes('variant=')) {
+        const separator = productUrl.includes('?') ? '&' : '?';
+        productUrl = `${productUrl}${separator}variant=${result.matchedVariant.id}`;
+        console.log('✅ Header search linking to variant:', result.matchedVariant.id, 'SKU:', result.primarySKU, 'Deposco:', result.deposcoId);
       }
       
-      const sku = item.matched_variant?.sku || '';
-      const deposcoId = item.matched_variant?.deposco_id || '';
-      
       return `
-        <a href="${productUrl}" class="custom-search-result-item">
+        <a href="${productUrl}" class="custom-search-result-item" data-deposco="${result.deposcoId || ''}">
           <div class="custom-search-result-image-wrapper">
-            ${imageUrl ? `<img src="${imageUrl}" alt="${item.title || ''}" class="custom-search-result-image" loading="lazy">` : '<div class="custom-search-result-image-placeholder"></div>'}
+            ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" class="custom-search-result-image" loading="lazy">` : '<div class="custom-search-result-image-placeholder"></div>'}
           </div>
           <div class="custom-search-result-info">
-            ${item.vendor ? `<div class="custom-search-result-brand">${item.vendor}</div>` : ''}
-            <div class="custom-search-result-title">${item.title}</div>
+            ${product.vendor ? `<div class="custom-search-result-brand">${product.vendor}</div>` : ''}
+            <div class="custom-search-result-title">${product.title}</div>
             <div class="custom-search-result-meta">
-              ${sku ? `<span class="custom-search-result-sku">SKU: ${sku}</span>` : ''}
-              ${deposcoId ? `<span class="custom-search-result-deposco">Deposco ID: ${deposcoId}</span>` : ''}
+              ${result.primarySKU ? `<span class="custom-search-result-sku">SKU: ${result.primarySKU}</span>` : ''}
+              ${result.deposcoId ? `<span class="custom-search-result-deposco">Deposco ID: ${result.deposcoId}</span>` : ''}
               ${isQuickShip ? '<span class="custom-search-result-badge">Quick Ship</span>' : ''}
             </div>
           </div>
@@ -259,6 +315,7 @@ class CustomPredictiveSearch {
       this.searchInput.value = '';
       this.searchInput.focus();
     }
+    this.searchQuery = '';
     this.hideResults();
     if (this.resetButton) {
       this.resetButton.hidden = true;
