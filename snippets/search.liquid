@@ -213,10 +213,15 @@
   }
 
   @media (max-width: 768px) {
+    .header-search-action {
+      position: static;
+    }
+    
     .header-search-dropdown {
       width: 350px;
       right: unset;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
     
     .header-search-input-container {
