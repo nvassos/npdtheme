@@ -81,8 +81,8 @@
   {%- if total_amount > 0 -%}
     <div class="cart__estimated-cost-container">
       <span class="cart__summary-item cart__estimated-cost">
-        <span class="cart__estimated-cost-label cart-primary-typography">Estimated Cost to Your No-Charge Account</span>
-        <span class="cart__estimated-cost-value cart-secondary-typography" style="font-weight: 600; font-size: 1.2em;">
+        <span class="cart__estimated-cost-label">Estimated Cost to Your No-Charge Account</span>
+        <span class="cart__estimated-cost-value">
           ${{ estimated_total_cost }}
         </span>
       </span>
@@ -164,28 +164,62 @@
   }
   
   .cart__estimated-cost-container {
-    margin-block-start: var(--margin-md);
-    padding-block: var(--padding-md);
-    border-block: 2px solid var(--color-foreground);
-    background-color: rgba(139, 115, 85, 0.1);
+    margin-block-start: 20px;
+    padding: 20px;
+    border: 2px solid #5B8DB8;
+    background-color: #FFFFFF;
+    border-radius: 8px;
   }
   
   .cart__estimated-cost {
     display: flex;
     flex-direction: column;
-    gap: var(--gap-2xs);
+    gap: 8px;
     align-items: center;
     text-align: center;
   }
   
   .cart__estimated-cost-label {
-    font-size: var(--cart-font-size--sm);
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: #18223E;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   }
   
   .cart__estimated-cost-value {
-    color: #8B7355;
+    color: #5B8DB8;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+
+  .cart__ctas {
+    margin-top: 20px;
+  }
+
+  .cart__checkout-button {
+    background-color: #5B8DB8 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 16px 32px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  }
+
+  .cart__checkout-button:hover:not(:disabled) {
+    background-color: #4A7BA0 !important;
+  }
+
+  .cart__checkout-button:disabled {
+    background-color: #D4DCE7 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
   }
 {% endstylesheet %}
