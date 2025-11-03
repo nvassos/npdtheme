@@ -42,6 +42,32 @@
           },
           "blocks": {}
         },
+        "cart-page-attributes": {
+          "type": "_cart-attributes",
+          "static": true,
+          "settings": {
+            "show_tip": true,
+            "tip_text": "Please enter the required information so that the checkout button will be enabled for further checkout.",
+            "builder_label": "Builder (Please choose one)",
+            "builder_required": true,
+            "builder_name_label": "If You Answered 'YES' Please Enter the Builders Name (Enter N/A, if you answered 'NO')",
+            "builder_name_required": true,
+            "notes_label": "Notes:",
+            "notes_required": false,
+            "order_reason_label": "Order Reason/Type:",
+            "order_reason_required": true,
+            "order_reason_options": "Billable - WD WINSUPPLY PROMOTION\nBillable - Full Price\nBillable - SC SHOWROOMS 70% OFF DISCOUNT LIST\nN04-NC: Marketing Services\nN08-NC: Agency Services\nN09-NC: Agency General\nN10-NC: Builder Conversion\nN11-NC: Builder 1-100\nN12-NC: Builder 100+\nN14-NC: Wholesale - Rebath\nN16-NC: Trade Agency - Showroom\nN15-NC: Urban\nN17-NC: Trade Agency - Commercial\nN18-NC: Agency - Goodwill\nN19-NC: Builder - Other\nN20-NC: Trade Agency: Plumber\nN21-NC: International - HW\nN22-NC: Commercial\nN23-NC: Wholesale - National Account\nN24-NC: Trade Agency - Counter\nN25-NC: Retail",
+            "sap_label": "SAP Number to be billed (Ship-To Account Number) To Be Applied to Standard Lead Time Items:",
+            "sap_required": true,
+            "email_label": "Order Contact E-mail Address",
+            "email_required": false,
+            "reference_label": "Reference # (for Agency use only) MPS does not use this information for order fulfillment",
+            "reference_required": true,
+            "padding-block-start": 50,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        },
         "cart-page-summary": {
           "type": "_cart-summary",
           "static": true,
@@ -63,31 +89,9 @@
         "padding-block-start": 24,
         "padding-block-end": 0
       }
-    },
-    "cart-attributes": {
-      "type": "cart-attributes",
-      "settings": {
-        "show_tip": true,
-        "tip_text": "Please enter the required information so that the checkout button will be enabled for further checkout.",
-        "builder_label": "Builder (Please choose one)",
-        "builder_required": true,
-        "builder_name_label": "If You Answered 'YES' Please Enter the Builders Name (Enter N/A, if you answered 'NO')",
-        "builder_name_required": true,
-        "notes_label": "Notes:",
-        "notes_required": false,
-        "order_reason_label": "Order Reason/Type:",
-        "order_reason_required": true,
-        "sap_label": "SAP Number to be billed (Ship-To Account Number) To Be Applied to Standard Lead Time Items:",
-        "sap_required": true,
-        "email_label": "Order Contact E-mail Address",
-        "email_required": false,
-        "reference_label": "Reference # (for Agency use only) MPS does not use this information for order fulfillment",
-        "reference_required": true
-      }
     }
   },
   "order": [
-    "cart-section",
-    "cart-attributes"
+    "cart-section"
   ]
 }

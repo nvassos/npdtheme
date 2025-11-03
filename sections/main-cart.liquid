@@ -21,6 +21,10 @@
       </div>
 
       {%- unless cart.empty? -%}
+        <div class="cart-page__attributes">
+          {%- content_for 'block', id: 'cart-page-attributes', type: '_cart-attributes' %}
+        </div>
+        
         <div class="cart-page__summary">
           {%- content_for 'block', id: 'cart-page-summary', type: '_cart-summary' -%}
         </div>
@@ -68,6 +72,10 @@
 
   .cart-page__main {
     grid-column: 1;
+  }
+
+  .cart-page__attributes {
+    width: 100%;
   }
 
   .cart-page__summary {

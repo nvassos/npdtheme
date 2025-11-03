@@ -1,13 +1,12 @@
 /* Cart Attributes Wrapper */
 .cart-attributes-wrapper {
-  padding-top: 50px;
+  width: 100%;
   background: transparent;
 }
 
 .cart-attributes-container {
-  max-width: 1440px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 40px;
 }
 
 /* Cart Attributes Section */
@@ -17,7 +16,6 @@
   padding: 30px;
   margin-bottom: 30px;
   border: 1px solid #D4DCE7;
-  max-width: 800px;
 }
 
 
