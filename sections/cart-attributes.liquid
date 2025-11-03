@@ -1,0 +1,290 @@
+{{ 'section-cart-attributes.css' | asset_url | stylesheet_tag }}
+
+<div class="cart-attributes-section">
+  {% if section.settings.show_tip %}
+    <div class="cart-attributes-tip">
+      <p>{{ section.settings.tip_text }}</p>
+    </div>
+  {% endif %}
+
+  <div class="cart-attributes-wrap">
+    
+    {%- comment -%} Builder Radio {%- endcomment -%}
+    <div class="cart-attribute attribute-radio">
+      <label class="attr-title">
+        {{ section.settings.builder_label }}
+        {% if section.settings.builder_required %} *{% endif %}
+      </label>
+      <div class="radio-options">
+        <div class="radio-item">
+          <input 
+            id="builder_yes" 
+            type="radio" 
+            class="cart-form-control" 
+            name="attributes[{{ section.settings.builder_label }}]" 
+            value="Yes"
+            {% if section.settings.builder_required %}required{% endif %}
+          >
+          <label for="builder_yes" class="attr-option">Yes</label>
+        </div>
+        <div class="radio-item">
+          <input 
+            id="builder_no" 
+            type="radio" 
+            class="cart-form-control" 
+            name="attributes[{{ section.settings.builder_label }}]" 
+            value="No"
+            {% if section.settings.builder_required %}required{% endif %}
+          >
+          <label for="builder_no" class="attr-option">No</label>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Builder Name (conditional) {%- endcomment -%}
+    <div class="cart-attribute attribute-text" id="builder-name-field" style="display: none;">
+      <label for="builder_name" class="attr-title">
+        {{ section.settings.builder_name_label }}
+        {% if section.settings.builder_name_required %} *{% endif %}
+      </label>
+      <input 
+        id="builder_name" 
+        type="text" 
+        class="cart-form-control" 
+        name="attributes[{{ section.settings.builder_name_label }}]"
+        {% if section.settings.builder_name_required %}required{% endif %}
+      >
+    </div>
+
+    {%- comment -%} Notes Textarea {%- endcomment -%}
+    <div class="cart-attribute attribute-textarea">
+      <label for="order_notes" class="attr-title">
+        {{ section.settings.notes_label }}
+        {% if section.settings.notes_required %} *{% endif %}
+      </label>
+      <textarea 
+        id="order_notes" 
+        class="cart-form-control" 
+        name="attributes[{{ section.settings.notes_label }}]"
+        {% if section.settings.notes_required %}required{% endif %}
+      ></textarea>
+    </div>
+
+    {%- comment -%} Order Reason/Type Dropdown {%- endcomment -%}
+    <div class="cart-attribute attribute-select">
+      <label for="order_reason" class="attr-title">
+        {{ section.settings.order_reason_label }}
+        {% if section.settings.order_reason_required %} *{% endif %}
+      </label>
+      <select 
+        id="order_reason" 
+        class="cart-form-control" 
+        name="attributes[{{ section.settings.order_reason_label }}]"
+        {% if section.settings.order_reason_required %}required{% endif %}
+      >
+        <option value="">------------------</option>
+        {% assign options = section.settings.order_reason_options | newline_to_br | strip_newlines | split: '<br />' %}
+        {% for option in options %}
+          {% assign option_text = option | strip %}
+          {% if option_text != blank %}
+            <option value="{{ option_text }}">{{ option_text }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
+    {%- comment -%} SAP Number {%- endcomment -%}
+    <div class="cart-attribute attribute-text">
+      <label for="sap_number" class="attr-title">
+        {{ section.settings.sap_label }}
+        {% if section.settings.sap_required %} *{% endif %}
+      </label>
+      <input 
+        id="sap_number" 
+        type="text" 
+        class="cart-form-control" 
+        name="attributes[Ship To:]"
+        {% if section.settings.sap_required %}required{% endif %}
+      >
+    </div>
+
+    {%- comment -%} Contact Email {%- endcomment -%}
+    <div class="cart-attribute attribute-text">
+      <label for="contact_email" class="attr-title">
+        {{ section.settings.email_label }}
+        {% if section.settings.email_required %} *{% endif %}
+      </label>
+      <input 
+        id="contact_email" 
+        type="email" 
+        class="cart-form-control" 
+        name="attributes[{{ section.settings.email_label }}]"
+        {% if section.settings.email_required %}required{% endif %}
+      >
+    </div>
+
+    {%- comment -%} Reference Number {%- endcomment -%}
+    <div class="cart-attribute attribute-text">
+      <label for="reference_number" class="attr-title">
+        {{ section.settings.reference_label }}
+        {% if section.settings.reference_required %} *{% endif %}
+      </label>
+      <input 
+        id="reference_number" 
+        type="text" 
+        class="cart-form-control" 
+        name="attributes[{{ section.settings.reference_label }}]"
+        {% if section.settings.reference_required %}required{% endif %}
+      >
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ 'cart-attributes.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Cart Attributes",
+  "tag": "section",
+  "class": "section-cart-attributes",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tip Message"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tip",
+      "label": "Show tip message",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tip_text",
+      "label": "Tip Text",
+      "default": "Please enter the required information so that the checkout button will be enabled for further checkout."
+    },
+    {
+      "type": "header",
+      "content": "Builder Question"
+    },
+    {
+      "type": "text",
+      "id": "builder_label",
+      "label": "Builder Label",
+      "default": "Builder (Please choose one)"
+    },
+    {
+      "type": "checkbox",
+      "id": "builder_required",
+      "label": "Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "builder_name_label",
+      "label": "Builder Name Label",
+      "default": "If You Answered 'YES' Please Enter the Builders Name (Enter N/A, if you answered 'NO')"
+    },
+    {
+      "type": "checkbox",
+      "id": "builder_name_required",
+      "label": "Builder Name Required",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Notes"
+    },
+    {
+      "type": "text",
+      "id": "notes_label",
+      "label": "Notes Label",
+      "default": "Notes:"
+    },
+    {
+      "type": "checkbox",
+      "id": "notes_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Order Reason/Type"
+    },
+    {
+      "type": "text",
+      "id": "order_reason_label",
+      "label": "Order Reason Label",
+      "default": "Order Reason/Type:"
+    },
+    {
+      "type": "checkbox",
+      "id": "order_reason_required",
+      "label": "Required",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "order_reason_options",
+      "label": "Order Reason Options (one per line)",
+      "default": "Billable - WD WINSUPPLY PROMOTION\nBillable - Full Price\nBillable - SC SHOWROOMS 70% OFF DISCOUNT LIST\nN04-NC: Marketing Services\nN08-NC: Agency Services\nN09-NC: Agency General\nN10-NC: Builder Conversion\nN11-NC: Builder 1-100\nN12-NC: Builder 100+\nN14-NC: Wholesale - Rebath\nN16-NC: Trade Agency - Showroom\nN15-NC: Urban\nN17-NC: Trade Agency - Commercial\nN18-NC: Agency - Goodwill\nN19-NC: Builder - Other\nN20-NC: Trade Agency: Plumber\nN21-NC: International - HW\nN22-NC: Commercial\nN23-NC: Wholesale - National Account\nN24-NC: Trade Agency - Counter\nN25-NC: Retail"
+    },
+    {
+      "type": "header",
+      "content": "SAP Number"
+    },
+    {
+      "type": "text",
+      "id": "sap_label",
+      "label": "SAP Label",
+      "default": "SAP Number to be billed (Ship-To Account Number) To Be Applied to Standard Lead Time Items:"
+    },
+    {
+      "type": "checkbox",
+      "id": "sap_required",
+      "label": "Required",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Contact Email"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Label",
+      "default": "Order Contact E-mail Address"
+    },
+    {
+      "type": "checkbox",
+      "id": "email_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Reference Number"
+    },
+    {
+      "type": "text",
+      "id": "reference_label",
+      "label": "Reference Label",
+      "default": "Reference # (for Agency use only) MPS does not use this information for order fulfillment"
+    },
+    {
+      "type": "checkbox",
+      "id": "reference_required",
+      "label": "Required",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Attributes"
+    }
+  ]
+}
+{% endschema %}
+
