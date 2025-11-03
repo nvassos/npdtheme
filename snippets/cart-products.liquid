@@ -66,9 +66,11 @@
         class="cart-items spacing-style{% if block_settings.dividers %} cart-items--dividers{% endif %}"
         style="{%  render 'spacing-style', settings: block_settings %} --cart-items-gap:{{ block_settings.gap | append: "px" }};"
       >
+        <div class="cart-items__grid" style="display: none;">
         <table
           class="cart-items__table"
           role="table"
+          style="display: none;"
         >
           <caption
             class="visually-hidden"
@@ -117,7 +119,7 @@
             </tr>
           </thead>
 
-          <tbody role="rowgroup">
+          <tbody role="rowgroup" style="display: none;">
             {% for item in cart.items %}
               <tr
                 role="row"
@@ -329,6 +331,90 @@
             {% endfor %}
           </tbody>
         </table>
+        </div>
+        
+        {%- comment -%} NEW GRID LAYOUT {%- endcomment -%}
+        <div class="cart-items-grid-new">
+          {% for item in cart.items %}
+            <div class="cart-grid-item" data-key="{{ item.key }}">
+              
+              {%- comment -%} Image {%- endcomment -%}
+              <div class="cart-grid-item__image">
+                {% if item.image %}
+                  <a href="{{ item.url }}">
+                    <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title }}" loading="lazy">
+                  </a>
+                {% endif %}
+              </div>
+              
+              {%- comment -%} Product Info {%- endcomment -%}
+              <div class="cart-grid-item__info">
+                <a href="{{ item.url }}" class="cart-grid-item__title">{{ item.product.title }}</a>
+                {% if item.product.vendor and block_settings.vendor %}
+                  <div class="cart-grid-item__vendor">{{ item.product.vendor }}</div>
+                {% endif %}
+                
+                {%- if item.product.has_only_default_variant == false -%}
+                  <div class="cart-grid-item__variants">
+                    {%- for option in item.options_with_values -%}
+                      {{ option.value }}{% if forloop.last != true %}, {% endif %}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+                
+                {%- comment -%} Display estimated cost {%- endcomment -%}
+                {%- assign line_cost_variant = item.properties._cost_variant -%}
+                {%- if line_cost_variant != blank -%}
+                  {%- assign line_cost_int = line_cost_variant | times: 1 -%}
+                  {%- assign discounted_line_cost = line_cost_int | times: 30 | divided_by: 100 -%}
+                  {%- assign line_total_cents = discounted_line_cost | times: item.quantity -%}
+                  {%- assign line_dollars = line_total_cents | divided_by: 100 -%}
+                  {%- assign line_cents_remainder = line_total_cents | modulo: 100 -%}
+                  {%- if line_cents_remainder < 10 -%}
+                    {%- assign line_cents_display = '0' | append: line_cents_remainder -%}
+                  {%- else -%}
+                    {%- assign line_cents_display = line_cents_remainder -%}
+                  {%- endif -%}
+                  <div class="cart-grid-item__price">
+                    <span style="font-size: 11px; color: #666;">*ESTIMATED COST*</span><br>
+                    ${{ line_dollars }}.{{ line_cents_display }}
+                  </div>
+                {%- endif -%}
+              </div>
+              
+              {%- comment -%} Quantity & Remove {%- endcomment -%}
+              <div class="cart-grid-item__actions">
+                <quantity-input class="quantity">
+                  <button class="quantity__button" name="minus" type="button">
+                    <span class="visually-hidden">Decrease quantity</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" fill="none" width="10" height="2"><path fill-rule="evenodd" clip-rule="evenodd" d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 110 1H1A.5.5 0 01.5 1z" fill="currentColor"/></svg>
+                  </button>
+                  <input
+                    class="quantity__input"
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    data-line="{{ forloop.index }}"
+                    id="updates_{{ item.key }}"
+                  >
+                  <button class="quantity__button" name="plus" type="button">
+                    <span class="visually-hidden">Increase quantity</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" fill="none" width="10" height="10"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4.5a.5.5 0 000 1h3.5V9a.5.5 0 001 0V5.5H9a.5.5 0 000-1H5.5V1a.5.5 0 00-1 0v3.5H1z" fill="currentColor"/></svg>
+                  </button>
+                </quantity-input>
+                
+                <cart-remove-button>
+                  <button type="button" class="cart-grid-item__remove" data-line="{{ forloop.index }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M13.5 3.5L2.5 14.5M2.5 3.5L13.5 14.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                    <span class="visually-hidden">Remove</span>
+                  </button>
+                </cart-remove-button>
+              </div>
+              
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </form>
   {%- endif -%}
