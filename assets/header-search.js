@@ -3,7 +3,8 @@
  * Uses the same search logic as collection page
  */
 
-class HeaderSearch {
+if (!window.HeaderSearch) {
+  window.HeaderSearch = class HeaderSearch {
   constructor() {
     this.toggleBtn = document.getElementById('header-search-toggle');
     this.dropdown = document.getElementById('header-search-dropdown');
@@ -195,14 +196,19 @@ class HeaderSearch {
       this.searchResults.style.display = 'none';
     }
   }
+  };
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    new HeaderSearch();
-  });
-} else {
-  new HeaderSearch();
+// Initialize when DOM is ready (only once)
+if (!window.headerSearchInitialized) {
+  window.headerSearchInitialized = true;
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new window.HeaderSearch();
+    });
+  } else {
+    new window.HeaderSearch();
+  }
 }
 
