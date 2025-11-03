@@ -14,15 +14,32 @@ if (!window.HeaderSearch) {
     this.searchTimeout = null;
     this.searchQuery = '';
     
-    if (!this.toggleBtn || !this.dropdown || !this.searchInput) return;
+    console.log('🔍 Header Search Init:', {
+      toggleBtn: this.toggleBtn,
+      dropdown: this.dropdown,
+      searchInput: this.searchInput
+    });
+    
+    if (!this.toggleBtn || !this.dropdown || !this.searchInput) {
+      console.warn('❌ Header search elements not found');
+      return;
+    }
     
     this.init();
   }
 
   init() {
+    console.log('✅ Header Search initialized');
+    
     // Toggle dropdown
-    this.toggleBtn.addEventListener('click', () => {
+    this.toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🖱️ Search icon clicked');
+      
       const isVisible = this.dropdown.style.display === 'block';
+      console.log('Dropdown visible?', isVisible);
+      
       if (isVisible) {
         this.hideDropdown();
       } else {
@@ -76,6 +93,7 @@ if (!window.HeaderSearch) {
   }
 
   showDropdown() {
+    console.log('📖 Showing dropdown');
     this.dropdown.style.display = 'block';
     this.toggleBtn.setAttribute('aria-expanded', 'true');
     setTimeout(() => this.searchInput.focus(), 100);
