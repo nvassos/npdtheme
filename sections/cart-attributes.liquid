@@ -1,6 +1,8 @@
 {{ 'section-cart-attributes.css' | asset_url | stylesheet_tag }}
 
-<div class="cart-attributes-section">
+<div class="cart-attributes-wrapper">
+  <div class="cart-attributes-container page-width">
+    <div class="cart-attributes-section">
   {% if section.settings.show_tip %}
     <div class="cart-attributes-tip">
       <p>{{ section.settings.tip_text }}</p>
@@ -138,6 +140,7 @@
       >
     </div>
 
+    </div>
   </div>
 </div>
 

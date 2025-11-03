@@ -1,3 +1,15 @@
+/* Cart Attributes Wrapper */
+.cart-attributes-wrapper {
+  padding-top: 50px;
+  background: transparent;
+}
+
+.cart-attributes-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
 /* Cart Attributes Section */
 .cart-attributes-section {
   background: white;
@@ -5,6 +17,12 @@
   padding: 30px;
   margin-bottom: 30px;
   border: 1px solid #D4DCE7;
+}
+
+@media (max-width: 768px) {
+  .cart-attributes-container {
+    padding: 0 20px;
+  }
 }
 
 .cart-attributes-tip {
