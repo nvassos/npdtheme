@@ -6,7 +6,7 @@
 >
   <div class="section-background color-{{ section.settings.color_scheme }}"></div>
   <div
-    class="section color-{{ section.settings.color_scheme }} section--{{ section.settings.section_width }}"
+    class="section color-{{ section.settings.color_scheme }} section--{{ section.settings.section_width }} cart-page-section"
   >
     <div
       class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
@@ -38,6 +38,11 @@
 </cart-items-component>
 
 {% stylesheet %}
+  .cart-page-section {
+    background-color: #EBF0F9 !important;
+    min-height: calc(100vh - 200px);
+  }
+
   .cart-page {
     --cart-font-size--2xs: var(--font-size--2xs);
     --cart-font-size--xs: var(--font-size--xs);
