@@ -58,7 +58,7 @@
             "title": "Specialty Acrylics",
             "description": "A description would go here describing what these acrylics are used for.",
             "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
-            "filter_tag": "specialty-acrylics"
+            "filter_tag": "specialty-acrylic"
           }
         }
       },
@@ -103,7 +103,7 @@
           "type": "filter_pill",
           "settings": {
             "label": "Builder",
-            "filter_tag": "acrylics-builder"
+            "filter_tag": "acrylic-builder"
           }
         }
       },
