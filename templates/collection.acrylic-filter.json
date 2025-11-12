@@ -34,6 +34,15 @@
             "filter_tag": "delta-rectangle"
           }
         },
+        "filter_6": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Peerless Rectangle",
+            "description": "Description for the sixth filter type.",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_2_e2921528-fc86-43d4-87a1-5093134d0f21.png",
+            "filter_tag": "peerless-rectangle"
+          }
+        },
         "filter_3": {
           "type": "filter_card",
           "settings": {
@@ -52,15 +61,6 @@
             "filter_tag": "delta-curve-tab"
           }
         },
-        "filter_6": {
-          "type": "filter_card",
-          "settings": {
-            "title": "Peerless Rectangle",
-            "description": "Description for the sixth filter type.",
-            "image": "shopify://shop_images/BrizoBrandedPod_9981_2_e2921528-fc86-43d4-87a1-5093134d0f21.png",
-            "filter_tag": "peerless-rectangle"
-          }
-        },
         "filter_5": {
           "type": "filter_card",
           "settings": {
@@ -74,9 +74,9 @@
       "block_order": [
         "filter_1",
         "filter_2",
+        "filter_6",
         "filter_3",
         "filter_4",
-        "filter_6",
         "filter_5"
       ],
       "settings": {
