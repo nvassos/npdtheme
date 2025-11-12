@@ -72,7 +72,7 @@
         "description": "Choose from our standard acrylics, specify the product it's for, and MPS will custom drill it to fit your faucet.",
         "button_text": "Browse Acrylics",
         "button_link": "/collections/acrylics",
-        "collection": "dryden",
+        "collection": "acrylics",
         "products_to_show": 4,
         "show_border_top": true
       }
