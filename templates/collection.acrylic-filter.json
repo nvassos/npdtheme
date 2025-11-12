@@ -95,8 +95,8 @@
         "pill_3": {
           "type": "filter_pill",
           "settings": {
-            "label": "Brizo Paneled System",
-            "filter_tag": "brizo-paneled"
+            "label": "Slatwall",
+            "filter_tag": "acrylics-slatwall"
           }
         },
         "pill_4": {
