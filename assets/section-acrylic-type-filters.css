@@ -81,15 +81,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: transparent;
-  border: 1.5px solid #8EA2BB;
+  border: 2.5px solid #8EA2BB;
   color: #8EA2BB;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
   cursor: help;
   flex-shrink: 0;
 }
