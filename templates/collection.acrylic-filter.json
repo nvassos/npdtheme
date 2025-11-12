@@ -102,8 +102,8 @@
         "pill_4": {
           "type": "filter_pill",
           "settings": {
-            "label": "Brizo Cabinet System",
-            "filter_tag": "brizo-cabinet"
+            "label": "Builder",
+            "filter_tag": "acrylics-builder"
           }
         }
       },
