@@ -35,12 +35,14 @@
                 <div class="product-sku-primary">{{ product.selected_or_first_available_variant.sku }}</div>
               {% endif %}
               
-              {% comment %}
-                If you have a secondary SKU in metafields, add it here:
-                {% if product.metafields.custom.secondary_sku != blank %}
-                  <div class="product-sku-secondary">{{ product.metafields.custom.secondary_sku }}</div>
+              {% comment %} Display kit_number metafield only if it's different from SKU {% endcomment %}
+              {% if product.metafields.custom.kit_number != blank %}
+                {% assign sku_value = product.selected_or_first_available_variant.sku %}
+                {% assign kit_number_value = product.metafields.custom.kit_number %}
+                {% if sku_value != kit_number_value %}
+                  <div class="product-sku-secondary">{{ kit_number_value }}</div>
                 {% endif %}
-              {% endcomment %}
+              {% endif %}
             </div>
           </a>
         </div>
