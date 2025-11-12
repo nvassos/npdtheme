@@ -58,7 +58,7 @@
             "title": "Specialty Acrylics",
             "description": "A description would go here describing what these acrylics are used for.",
             "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
-            "filter_tag": "specialty-acrylics"
+            "filter_tag": "specialty-acrylic"
           }
         }
       },
@@ -81,29 +81,29 @@
         "pill_1": {
           "type": "filter_pill",
           "settings": {
-            "label": "Delta Paneled System",
-            "filter_tag": "delta-paneled"
+            "label": "Paneled System",
+            "filter_tag": "acrylic-panel"
           }
         },
         "pill_2": {
           "type": "filter_pill",
           "settings": {
-            "label": "Delta Cabinet System",
-            "filter_tag": "delta-cabinet"
+            "label": "Cabinet System",
+            "filter_tag": "acrylic-cabinet"
           }
         },
         "pill_3": {
           "type": "filter_pill",
           "settings": {
-            "label": "Brizo Paneled System",
-            "filter_tag": "brizo-paneled"
+            "label": "Slatwall",
+            "filter_tag": "acrylic-slatwall"
           }
         },
         "pill_4": {
           "type": "filter_pill",
           "settings": {
-            "label": "Brizo Cabinet System",
-            "filter_tag": "brizo-cabinet"
+            "label": "Builder",
+            "filter_tag": "acrylic-builder"
           }
         }
       },
