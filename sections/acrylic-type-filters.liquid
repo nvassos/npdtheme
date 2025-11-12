@@ -21,7 +21,15 @@
               {{ 'product-1' | placeholder_svg_tag: 'filter-card-image' }}
             {% endif %}
             
-            <div class="filter-card-title">{{ block.settings.title }}</div>
+            <div class="filter-card-title-wrapper">
+              <div class="filter-card-title">{{ block.settings.title }}</div>
+              {% if block.settings.description != blank %}
+                <div class="filter-card-info-icon">
+                  i
+                  <div class="filter-card-info-tooltip">{{ block.settings.description }}</div>
+                </div>
+              {% endif %}
+            </div>
             <div class="filter-card-description">{{ block.settings.description }}</div>
           </div>
         {% endif %}

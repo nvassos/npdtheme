@@ -60,6 +60,14 @@
             "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
             "filter_tag": "specialty-acrylic"
           }
+        },
+        "filter_6": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Filter 6",
+            "description": "Description for the sixth filter type.",
+            "filter_tag": "filter-6"
+          }
         }
       },
       "block_order": [
@@ -67,7 +75,8 @@
         "filter_2",
         "filter_3",
         "filter_4",
-        "filter_5"
+        "filter_5",
+        "filter_6"
       ],
       "settings": {
         "title": "Filter by Acrylic Type",
