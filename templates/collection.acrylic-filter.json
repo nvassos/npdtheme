@@ -82,21 +82,21 @@
           "type": "filter_pill",
           "settings": {
             "label": "Paneled System",
-            "filter_tag": "acrylics-panel"
+            "filter_tag": "acrylic-panel"
           }
         },
         "pill_2": {
           "type": "filter_pill",
           "settings": {
             "label": "Cabinet System",
-            "filter_tag": "acrylics-cabinet"
+            "filter_tag": "acrylic-cabinet"
           }
         },
         "pill_3": {
           "type": "filter_pill",
           "settings": {
             "label": "Slatwall",
-            "filter_tag": "acrylics-slatwall"
+            "filter_tag": "acrylic-slatwall"
           }
         },
         "pill_4": {
