@@ -76,10 +76,20 @@
   margin: 0 0 10px 0;
 }
 
+
+/* Product Description */
+.product-description {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* SKU */
 .product-sku {
   font-size: 16px;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-style: italic;
 }
 
@@ -92,6 +102,7 @@
   background: white;
   border-radius: 8px;
   border: 1px solid #D4DCE7;
+  font-style: italic;
 }
 
 /* Custom Input Section */

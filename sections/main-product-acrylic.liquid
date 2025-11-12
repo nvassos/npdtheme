@@ -48,12 +48,25 @@
                     {{ product.title }}
                   </h1>
 
+                {%- when 'product_description' -%}
+                  {% if product.description != blank %}
+                    <div class="product-description" {{ block.shopify_attributes }}>
+                      {{ product.description }}
+                    </div>
+                  {% endif %}
+
                 {%- when 'sku' -%}
                   <div class="product-sku" {{ block.shopify_attributes }}>
-                    {% if current_variant.sku != blank %}
-                      {{ current_variant.sku }}
+                    {% assign sku_value = current_variant.sku | default: product.metafields.custom.sku %}
+                    {% assign kit_number_value = product.metafields.custom.kit_number %}
+                    
+                    {% if sku_value != blank %}
+                      {{ sku_value }}
+                      {% if kit_number_value != blank and sku_value != kit_number_value %}
+                        | {{ kit_number_value }}
+                      {% endif %}
                     {% else %}
-                      {{ product.metafields.custom.sku | default: 'N/A' }}
+                      N/A
                     {% endif %}
                   </div>
 
@@ -61,6 +74,25 @@
                   {% if product.metafields.custom.dimensions != blank %}
                     <div class="product-dimensions" {{ block.shopify_attributes }}>
                       {{ product.metafields.custom.dimensions }}
+                    </div>
+                  {% endif %}
+
+                {%- when 'shipping_notice' -%}
+                  {% liquid
+                    assign quickship_inventory = current_variant.metafields.custom.quickship_inventory | default: 0
+                    assign has_quickship = false
+                    if quickship_inventory > 0
+                      assign has_quickship = true
+                    endif
+                  %}
+                  
+                  {% if has_quickship %}
+                    <div class="product-shipping-notice" id="ship-notice" data-quickship-inventory="{{ quickship_inventory }}" {{ block.shopify_attributes }}>
+                      <strong>Quick ship:</strong> items typically ship between 2-3 business days and have no cost towards your no-charge account.
+                    </div>
+                  {% else %}
+                    <div class="product-shipping-notice made-to-order" id="ship-notice" data-quickship-inventory="0" {{ block.shopify_attributes }}>
+                      <strong>Made to order product:</strong> This item is not quick ship. Made to order product typically takes 7-10 days to produce upon receiving product from Delta.
                     </div>
                   {% endif %}
 
@@ -192,6 +224,11 @@
       "limit": 1
     },
     {
+      "type": "product_description",
+      "name": "Product Description",
+      "limit": 1
+    },
+    {
       "type": "sku",
       "name": "SKU",
       "limit": 1
@@ -199,6 +236,11 @@
     {
       "type": "dimensions",
       "name": "Dimensions",
+      "limit": 1
+    },
+    {
+      "type": "shipping_notice",
+      "name": "Shipping Notice",
       "limit": 1
     },
     {

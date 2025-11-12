@@ -15,6 +15,10 @@
           "type": "title",
           "settings": {}
         },
+        "product_description": {
+          "type": "product_description",
+          "settings": {}
+        },
         "sku": {
           "type": "sku",
           "settings": {}
@@ -23,11 +27,9 @@
           "type": "dimensions",
           "settings": {}
         },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button"
-          }
+        "shipping_notice": {
+          "type": "shipping_notice",
+          "settings": {}
         },
         "custom_input": {
           "type": "custom_input",
@@ -35,6 +37,12 @@
             "label": "ENTER PRODUCT MODEL NUMBER FOR CUSTOMIZATION",
             "property_name": "Model Number",
             "placeholder": "Enter Model Number"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
           }
         },
         "quantity": {
@@ -57,10 +65,12 @@
       "block_order": [
         "vendor",
         "title",
+        "product_description",
         "sku",
         "dimensions",
-        "variant_picker",
+        "shipping_notice",
         "custom_input",
+        "variant_picker",
         "quantity",
         "price",
         "buy_buttons",
