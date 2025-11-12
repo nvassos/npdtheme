@@ -88,8 +88,8 @@
         "pill_2": {
           "type": "filter_pill",
           "settings": {
-            "label": "Delta Cabinet System",
-            "filter_tag": "delta-cabinet"
+            "label": "Cabinet System",
+            "filter_tag": "acrylics-cabinet"
           }
         },
         "pill_3": {
