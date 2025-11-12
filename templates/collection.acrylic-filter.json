@@ -52,21 +52,22 @@
             "filter_tag": "delta-curve-tab"
           }
         },
+        "filter_6": {
+          "type": "filter_card",
+          "settings": {
+            "title": "Peerless Rectangle",
+            "description": "Description for the sixth filter type.",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_2_e2921528-fc86-43d4-87a1-5093134d0f21.png",
+            "filter_tag": "peerless-rectangle"
+          }
+        },
         "filter_5": {
           "type": "filter_card",
           "settings": {
             "title": "Specialty Acrylics",
             "description": "A description would go here describing what these acrylics are used for.",
-            "image": "shopify://shop_images/BrizoBrandedPod_9981_1_14635d0f-cec6-4f7f-aa08-c6ddc6d71d3b.png",
+            "image": "shopify://shop_images/BrizoBrandedPod_9981_3c32027c-665a-4a6b-aba8-1b942eb98394_3.png",
             "filter_tag": "specialty-acrylic"
-          }
-        },
-        "filter_6": {
-          "type": "filter_card",
-          "settings": {
-            "title": "Filter 6",
-            "description": "Description for the sixth filter type.",
-            "filter_tag": "filter-6"
           }
         }
       },
@@ -75,8 +76,8 @@
         "filter_2",
         "filter_3",
         "filter_4",
-        "filter_5",
-        "filter_6"
+        "filter_6",
+        "filter_5"
       ],
       "settings": {
         "title": "Filter by Acrylic Type",
