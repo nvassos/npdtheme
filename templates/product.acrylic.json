@@ -56,10 +56,6 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {}
-        },
-        "description": {
-          "type": "description",
-          "settings": {}
         }
       },
       "block_order": [
@@ -73,8 +69,7 @@
         "variant_picker",
         "quantity",
         "price",
-        "buy_buttons",
-        "description"
+        "buy_buttons"
       ],
       "settings": {
         "enable_sticky_info": true,
